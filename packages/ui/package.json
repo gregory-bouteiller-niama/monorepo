@@ -14,7 +14,7 @@
 		"@tabler/icons-react": "^3.41.1",
 		"@tanstack/react-form": "^1.29.0",
 		"@tanstack/store": "^0.10.0",
-		"astro": "^6.1.5",
+		"astro": "^6.1.6",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"embla-carousel": "^8.6.0",

@@ -1,13 +1,13 @@
 // @ts-check
-// import cloudflare from "@astrojs/cloudflare";
+import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, fontProviders } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
-	// output: "server",
-	// adapter: cloudflare(),
+	output: "server",
+	adapter: cloudflare(),
 	fonts: [
 		{
 			provider: fontProviders.fontsource(),
