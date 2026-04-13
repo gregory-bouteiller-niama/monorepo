@@ -1,0 +1,20 @@
+{
+  "name": "@niama/backend",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "codegen": "convex codegen",
+    "deploy": "convex deploy",
+    "dev": "convex dev"
+  },
+  "dependencies": {
+    "@niama/domain": "workspace:*",
+    "convex": "^1.35.1",
+    "convex-helpers": "^0.1.114"
+  },
+  "exports": {
+    "./api": "./convex/_generated/api.js",
+    "./client": "./client.ts"
+  }
+}

@@ -1,12 +1,14 @@
 import { readIndexPage } from "@niama/domain/functions/pages";
+import { ContactForm } from "@niama/ui/react/contact-form";
 import { Separator } from "@niama/ui/react/separator";
 import { INDEX_PAGE, updateHash } from "@niama/ui/shared/index-page";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { toast } from "sonner";
 import { AttendantsCarousel } from "@/components/attendants/carousel";
 import { DisciplinesCarousel } from "@/components/disciplines/carousel";
 import { Section } from "@/components/section";
-import { ContactForm } from "./index/-contact-form";
+import { createContact } from "@/functions/form";
 
 // ROUTE -----------------------------------------------------------------------------------------------------------------------------------
 export const Route = createFileRoute("/_public/")({
@@ -36,7 +38,10 @@ function IndexPage() {
 				<AttendantsCarousel {...attendants} autoplay={10} />
 			</Section>
 			<Section id="contact" {...contact} withSeparator>
-				<ContactForm />
+				<ContactForm
+					onSubmit={async (value) => await createContact({ data: value })}
+					onSuccess={() => toast.success("Merci de votre intérêt ! Nous reviendrons vers vous très bientôt.")}
+				/>
 				<Separator className="self-center! mb-34 h-24" orientation="vertical" />
 			</Section>
 		</div>
