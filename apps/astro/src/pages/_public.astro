@@ -1,0 +1,17 @@
+---
+import { readPublicLayout } from "@niama/domain/functions/layouts";
+import Sky from "@/components/sky.astro";
+import TheFooter from "./_public/_the-footer.astro";
+import TheHeader from "./_public/_the-header.astro";
+import RootLayout from "./_root.astro";
+
+// DATA ------------------------------------------------------------------------------------------------------------------------------------
+const { navs, socials } = readPublicLayout()
+---
+
+<RootLayout>
+  <TheHeader navs={navs} />
+  <Sky class="fixed inset-0" />
+  <slot />
+  <TheFooter socials={socials} />
+</RootLayout>

@@ -1,0 +1,33 @@
+---
+import "@niama/ui/globals.css";
+import { Font } from "astro:assets";
+import { themeScript } from "@niama/ui/shared/theme";
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <!-- <title>{title}</title> -->
+    <!-- <meta content={description} name="description"> -->
+    <!-- <meta content={siteMeta.keywords} name="keywords"> -->
+    <meta content="index, follow" name="robots">
+    <link href="/logo.svg" rel="icon">
+    <Font cssVariable="--font-heading" preload />
+    <Font cssVariable="--font-logo" preload />
+    <Font cssVariable="--font-sans" preload />
+    <script is:inline set:html={themeScript}></script>
+  </head>
+  <body class="group/body" data-scrolled="false">
+    <slot />
+  </body>
+</html>
+
+<script>
+  import { initialize } from "@niama/ui/shared/root-layout";
+  import { applyTheme } from "@niama/ui/shared/theme";
+
+  initialize();
+  document.addEventListener("astro:after-swap", () => applyTheme());
+</script>

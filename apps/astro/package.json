@@ -1,0 +1,35 @@
+{
+	"name": "@niama/astro",
+	"version": "0.0.1",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"preview:cf": "wrangler dev",
+		"deploy": "wrangler deploy",
+		"astro": "astro"
+	},
+	"dependencies": {
+		"@astrojs/cloudflare": "^12.6.7",
+		"@astrojs/react": "^5.0.3",
+		"@niama/domain": "workspace:*",
+		"@niama/ui": "workspace:*",
+		"@tabler/icons-react": "^3.41.1",
+		"@types/react": "^19.2.14",
+		"@types/react-dom": "^19.2.3",
+		"astro": "^6.1.5",
+		"class-variance-authority": "^0.7.1",
+		"embla-carousel-autoplay": "^8.6.0",
+		"react": "^19.2.5",
+		"react-dom": "^19.2.5"
+	},
+	"devDependencies": {
+		"@tailwindcss/vite": "^4.1.18",
+		"@types/node": "^25.6.0",
+		"globals": "^17.5.0",
+		"typescript": "^6.0.2",
+		"wrangler": "^4.11.1"
+	}
+}

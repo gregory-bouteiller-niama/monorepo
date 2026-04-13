@@ -1,0 +1,61 @@
+---
+import type { Disciplines } from "@niama/domain/functions/disciplines";
+import { Carousel as Carousel_, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui/astro/carousel/index.ts";
+import { ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@niama/ui/astro/item/index.ts";
+import { Logo } from "@niama/ui/react/logo";
+import { DISCIPLINES_CAROUSEL } from "@niama/ui/styles/disciplines/carousel";
+import Glow from "@/components/glow.astro";
+
+// BASE ------------------------------------------------------------------------------------------------------------------------------------
+const { items } = Astro.props
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+type Props = { items: Disciplines["Entity"][] };
+---
+
+<div class={DISCIPLINES_CAROUSEL.base()}>
+	<Carousel_ class={DISCIPLINES_CAROUSEL.carousel()} opts={{ loop: true }}>
+		<CarouselContent>
+			{items.map((item) => (
+				<CarouselItem class={DISCIPLINES_CAROUSEL.carouselItem()}>
+					<Glow class={DISCIPLINES_CAROUSEL.item()} data-tone={item.slug} kind="item" variant="outline">
+						<ItemMedia class={DISCIPLINES_CAROUSEL.itemMedia()}>
+							<Logo className={DISCIPLINES_CAROUSEL.logo()} discipline={item.name} tone={item.slug} />
+						</ItemMedia>
+						<ItemContent class={DISCIPLINES_CAROUSEL.itemContent()}>
+							<ItemTitle class={DISCIPLINES_CAROUSEL.itemTitle()}>{item.title}</ItemTitle>
+							{item.description.map((sentence) => (
+								<ItemDescription class={DISCIPLINES_CAROUSEL.itemDescription()}>
+									{sentence}
+								</ItemDescription>
+							))}
+						</ItemContent>
+					</Glow>
+				</CarouselItem>
+			))}
+		</CarouselContent>
+		<CarouselPrevious class={DISCIPLINES_CAROUSEL.carouselControl()} />
+		<CarouselNext class={DISCIPLINES_CAROUSEL.carouselControl()} />
+		<aside class={DISCIPLINES_CAROUSEL.mobileControls()}>
+			<CarouselPrevious class={DISCIPLINES_CAROUSEL.mobileControl()} />
+			<CarouselNext class={DISCIPLINES_CAROUSEL.mobileControl()} />
+		</aside>
+	</Carousel_>
+</div>
+
+<script>
+  import { initCarousel } from "@niama/ui/astro/carousel/index.ts";
+  import Autoplay from "embla-carousel-autoplay";
+
+  function initAutoplayCarousel() {
+    const carouselElement = document.getElementById("disciplines-carousel");
+    if (!carouselElement) return;
+    initCarousel(carouselElement, {
+      opts: { loop: true },
+      plugins: [Autoplay({ delay: 10_000 })],
+    });
+  }
+
+  initAutoplayCarousel();
+  document.addEventListener("astro:after-swap", initAutoplayCarousel);
+</script>

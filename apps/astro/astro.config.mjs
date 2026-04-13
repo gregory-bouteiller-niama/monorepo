@@ -1,0 +1,39 @@
+// @ts-check
+// import cloudflare from "@astrojs/cloudflare";
+import react from "@astrojs/react";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig, fontProviders } from "astro/config";
+
+// https://astro.build/config
+export default defineConfig({
+	// output: "server",
+	// adapter: cloudflare(),
+	fonts: [
+		{
+			provider: fontProviders.fontsource(),
+			name: "Outfit",
+			cssVariable: "--font-sans",
+			subsets: ["latin"],
+		},
+		{
+			provider: fontProviders.fontsource(),
+			name: "Cormorant Upright",
+			cssVariable: "--font-heading",
+			weights: [400],
+			styles: ["normal"],
+			subsets: ["latin"],
+		},
+		{
+			provider: fontProviders.fontsource(),
+			name: "MuseoModerno",
+			cssVariable: "--font-logo",
+			weights: [400],
+			styles: ["normal"],
+			subsets: ["latin"],
+		},
+	],
+	vite: {
+		plugins: [tailwindcss()],
+	},
+	integrations: [react()],
+});
