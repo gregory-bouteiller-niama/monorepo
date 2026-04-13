@@ -1,10 +1,12 @@
 ---
+import { actions } from "astro:actions";
 import { readIndexPage } from "@niama/domain/functions/pages";
+import { toast } from "@niama/ui/astro/toast/index.ts";
+import { ContactForm } from "@niama/ui/react/contact-form";
 import { Section } from "@niama/ui/react/section";
 import { Separator } from "@niama/ui/react/separator";
 import { INDEX_PAGE } from "@niama/ui/shared/index-page";
 import AttendantsCarousel from "@/components/attendants/carousel.astro";
-import { ContactForm } from "@/components/contact-form";
 import DisciplinesCarousel from "@/components/disciplines/carousel.astro";
 import PublicLayout from "./_public.astro";
 
@@ -26,7 +28,14 @@ const { attendants, contact, disciplines, hero } = readIndexPage();
 			<AttendantsCarousel {...attendants} autoplay={10} />
 		</Section>
 		<Section id="contact" {...contact} withSeparator>
-			<ContactForm client:load />
+			<ContactForm
+				client:load
+				onSubmit={async (value) => {
+					const { error } = await actions.contact.create(value);
+					if (error) throw error;
+				}}
+				onSuccess={() => toast.success("Succès", { description: "Merci de votre intérêt ! Nous reviendrons vers vous très bientôt." })}
+			/>
 			<Separator className="self-center! mb-34 h-24" orientation="vertical" />
 		</Section>
 	</div>
@@ -35,5 +44,5 @@ const { attendants, contact, disciplines, hero } = readIndexPage();
 <script>
 	import { nativeHashUpdater, updateHash } from "@niama/ui/shared/index-page";
 
-		updateHash(nativeHashUpdater);
+	updateHash(nativeHashUpdater);
 </script>

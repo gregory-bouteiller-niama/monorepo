@@ -1,6 +1,7 @@
 ---
 import "@niama/ui/globals.css";
 import { Font } from "astro:assets";
+import { Toaster } from "@niama/ui/astro/toast/index.ts";
 import { themeScript } from "@niama/ui/shared/theme";
 ---
 
@@ -21,13 +22,14 @@ import { themeScript } from "@niama/ui/shared/theme";
   </head>
   <body class="group/body" data-scrolled="false">
     <slot />
+    <Toaster position="bottom-center" />
   </body>
 </html>
 
 <script>
   import { initialize } from "@niama/ui/shared/root-layout";
-  import { applyTheme } from "@niama/ui/shared/theme";
+    import { applyTheme } from "@niama/ui/shared/theme";
 
-  initialize();
-  document.addEventListener("astro:after-swap", () => applyTheme());
+    initialize();
+    document.addEventListener("astro:after-swap", () => applyTheme());
 </script>

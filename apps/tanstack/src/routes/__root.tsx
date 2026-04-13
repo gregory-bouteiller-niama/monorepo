@@ -41,7 +41,8 @@ function RootDocument({ children }: RootDocumentProps) {
 			</head>
 			<body className="group/body">
 				<TooltipProvider>
-					{children} <Toaster position="bottom-center" richColors />
+					{children}
+					<Toaster position="bottom-center" richColors />
 				</TooltipProvider>
 				<Scripts />
 			</body>
