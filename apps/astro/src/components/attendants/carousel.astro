@@ -48,7 +48,8 @@ const getImageStatus = (index: number) => {
   <aside class={ATTENDANTS.aside()}>
     {items.map((attendant, index) => (
       <Image
-        {...attendant.image}
+        src={attendant.image.src}
+        alt={attendant.image.alt}
         layout="constrained"
         data-index={index}
         data-slot="attendant-image"
