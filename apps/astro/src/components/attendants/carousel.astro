@@ -48,14 +48,13 @@ const getImageStatus = (index: number) => {
   <aside class={ATTENDANTS.aside()}>
     {items.map((attendant, index) => (
       <Image
-        src={attendant.image.src}
-        alt={attendant.image.alt}
-        layout="constrained"
+        {...attendant.image}
         data-index={index}
         data-slot="attendant-image"
         format="avif"
         class:list={[ATTENDANTS.image(), getImageStatus(index)]}
-        loading={index === 0 ? "eager" : "lazy"}
+        widths={[536, 710, 1074, 1420]}
+        sizes="(min-width: 1280px) 536px, (min-width: 1024px) 440px, (min-width: 768px) 704px, (min-width: 640px) 576px, 100vw" 
       />
     ))}
   </aside>
