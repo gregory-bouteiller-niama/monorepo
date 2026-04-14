@@ -5,6 +5,7 @@ export const allImages = [
     alt: "Eliana Corré",
     blurhash: "UAGH;w^PM^~C009[0i9u-4NM%LDjyE=]^N-:",
     height: 2731,
+    key: "attendants/corre-eliana.png",
     slug: "eliana-corre",
     src: "https://ik.imagekit.io/niamafr/eliana-corre.png",
     width: 2731,
@@ -13,16 +14,18 @@ export const allImages = [
     alt: "Grégory Bouteiller",
     blurhash: "U5DR+p4:00~UQ-58x[Rk=r%fS5IV0hWU=wxa",
     height: 2169,
+    key: "attendants/bouteiller-gregory.png",
     slug: "gregory-bouteiller",
     src: "https://ik.imagekit.io/niamafr/gregory-bouteiller.png",
     width: 2168,
   },
 ] as const;
 
-export const imageFrom = ({ alt, blurhash, height, src, width }: Images["Entry"]) => ({
+export const imageFrom = ({ alt, blurhash, height, key, src, width }: Images["Entry"]) => ({
   alt,
   background: blurhashToCssGradientString(blurhash),
   height,
+  key,
   src,
   width,
 });

@@ -5,6 +5,7 @@ import { CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui/a
 import { ATTENDANTS } from "@niama/ui/styles/attendants/carousel";
 import DisciplinesBadge from "@/components/disciplines/badge.astro";
 import Glow from "@/components/glow.astro";
+import { buildImageUrl } from "@/lib/images";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { autoplay = Number.NaN, class: className = "", items } = Astro.props;
@@ -18,6 +19,7 @@ type AttendantDiscipline = {
 type AttendantImage = {
   alt: string;
   height: number;
+  key: string;
   src: string;
   width: number;
 };
@@ -52,7 +54,7 @@ const getImageStatus = (index: number) => {
         data-slot="attendant-image"
         height={attendant.image.height}
         class:list={[ATTENDANTS.image(), getImageStatus(index)]}
-        src={attendant.image.src}
+        src={buildImageUrl(attendant.image.key, { width: Math.min(attendant.image.width, 1200) })}
         width={attendant.image.width}
       />
     ))}
@@ -92,121 +94,121 @@ const getImageStatus = (index: number) => {
 
 <script>
   const initializeAttendantsCarousels = () => {
-    const carousels = document.querySelectorAll("[data-attendants-carousel]") as NodeListOf<HTMLElement>;
+      const carousels = document.querySelectorAll("[data-attendants-carousel]") as NodeListOf<HTMLElement>;
 
-    for (const carousel of carousels) {
-      if (carousel.dataset.initialized === "true") {
-        continue;
-      }
-
-      const previousButton = carousel.querySelector("[data-attendants-prev]");
-      const nextButton = carousel.querySelector("[data-attendants-next]");
-      const images = carousel.querySelectorAll("[data-slot='attendant-image']") as NodeListOf<HTMLElement>;
-      const panels = carousel.querySelectorAll("[data-slot='attendant-panel']") as NodeListOf<HTMLElement>;
-      const size = Number(carousel.dataset.size ?? "0");
-
-      if (!(previousButton instanceof HTMLElement && nextButton instanceof HTMLElement) || size === 0) {
-        continue;
-      }
-
-      carousel.dataset.initialized = "true";
-
-      let activeIndex = 0;
-      let autoplayId = 0;
-      const autoplaySeconds = Number(carousel.dataset.attendantsAutoplay ?? Number.NaN);
-
-      const getStatus = (index: number) => {
-        if (index === activeIndex) return "current";
-        if ((activeIndex - 1 + size) % size === index) return "prev";
-        if ((activeIndex + 1) % size === index) return "next";
-        return "other";
-      };
-
-      const updateView = () => {
-        for (const image of images) {
-          const index = Number(image.dataset.index ?? "-1");
-          image.dataset.status = getStatus(index);
-
-          image.classList.toggle("translate-x-0", image.dataset.status === "current");
-          image.classList.toggle("translate-y-0", image.dataset.status === "current");
-          image.classList.toggle("rotate-y-0", image.dataset.status === "current");
-          image.classList.toggle("scale-100", image.dataset.status === "current");
-          image.classList.toggle("opacity-100", image.dataset.status !== "other");
-          image.classList.toggle("z-40", image.dataset.status === "current");
-          image.classList.toggle("pointer-events-auto", image.dataset.status !== "other");
-
-          image.classList.toggle("translate-x-15", image.dataset.status === "next");
-          image.classList.toggle("-translate-y-12", image.dataset.status === "next" || image.dataset.status === "prev");
-          image.classList.toggle("-rotate-y-15", image.dataset.status === "next");
-          image.classList.toggle("scale-85", image.dataset.status === "next" || image.dataset.status === "prev");
-          image.classList.toggle("z-30", image.dataset.status === "next");
-
-          image.classList.toggle("-translate-x-15", image.dataset.status === "prev");
-          image.classList.toggle("rotate-y-15", image.dataset.status === "prev");
-          image.classList.toggle("z-20", image.dataset.status === "prev");
-
-          image.classList.toggle("pointer-events-none", image.dataset.status === "other");
-          image.classList.toggle("opacity-0", image.dataset.status === "other");
-          image.classList.toggle("z-10", image.dataset.status === "other");
+      for (const carousel of carousels) {
+        if (carousel.dataset.initialized === "true") {
+          continue;
         }
 
-        for (const panel of panels) {
-          const index = Number(panel.dataset.index ?? "-1");
-          panel.dataset.state = index === activeIndex ? "active" : "inactive";
-        }
-      };
+        const previousButton = carousel.querySelector("[data-attendants-prev]");
+        const nextButton = carousel.querySelector("[data-attendants-next]");
+        const images = carousel.querySelectorAll("[data-slot='attendant-image']") as NodeListOf<HTMLElement>;
+        const panels = carousel.querySelectorAll("[data-slot='attendant-panel']") as NodeListOf<HTMLElement>;
+        const size = Number(carousel.dataset.size ?? "0");
 
-      const stopAutoplay = () => {
-        if (autoplayId) {
-          window.clearInterval(autoplayId);
-          autoplayId = 0;
+        if (!(previousButton instanceof HTMLElement && nextButton instanceof HTMLElement) || size === 0) {
+          continue;
         }
-      };
 
-      const goTo = (index: number, fromUser = false) => {
-        activeIndex = (index + size) % size;
+        carousel.dataset.initialized = "true";
+
+        let activeIndex = 0;
+        let autoplayId = 0;
+        const autoplaySeconds = Number(carousel.dataset.attendantsAutoplay ?? Number.NaN);
+
+        const getStatus = (index: number) => {
+          if (index === activeIndex) return "current";
+          if ((activeIndex - 1 + size) % size === index) return "prev";
+          if ((activeIndex + 1) % size === index) return "next";
+          return "other";
+        };
+
+        const updateView = () => {
+          for (const image of images) {
+            const index = Number(image.dataset.index ?? "-1");
+            image.dataset.status = getStatus(index);
+
+            image.classList.toggle("translate-x-0", image.dataset.status === "current");
+            image.classList.toggle("translate-y-0", image.dataset.status === "current");
+            image.classList.toggle("rotate-y-0", image.dataset.status === "current");
+            image.classList.toggle("scale-100", image.dataset.status === "current");
+            image.classList.toggle("opacity-100", image.dataset.status !== "other");
+            image.classList.toggle("z-40", image.dataset.status === "current");
+            image.classList.toggle("pointer-events-auto", image.dataset.status !== "other");
+
+            image.classList.toggle("translate-x-15", image.dataset.status === "next");
+            image.classList.toggle("-translate-y-12", image.dataset.status === "next" || image.dataset.status === "prev");
+            image.classList.toggle("-rotate-y-15", image.dataset.status === "next");
+            image.classList.toggle("scale-85", image.dataset.status === "next" || image.dataset.status === "prev");
+            image.classList.toggle("z-30", image.dataset.status === "next");
+
+            image.classList.toggle("-translate-x-15", image.dataset.status === "prev");
+            image.classList.toggle("rotate-y-15", image.dataset.status === "prev");
+            image.classList.toggle("z-20", image.dataset.status === "prev");
+
+            image.classList.toggle("pointer-events-none", image.dataset.status === "other");
+            image.classList.toggle("opacity-0", image.dataset.status === "other");
+            image.classList.toggle("z-10", image.dataset.status === "other");
+          }
+
+          for (const panel of panels) {
+            const index = Number(panel.dataset.index ?? "-1");
+            panel.dataset.state = index === activeIndex ? "active" : "inactive";
+          }
+        };
+
+        const stopAutoplay = () => {
+          if (autoplayId) {
+            window.clearInterval(autoplayId);
+            autoplayId = 0;
+          }
+        };
+
+        const goTo = (index: number, fromUser = false) => {
+          activeIndex = (index + size) % size;
+          updateView();
+
+          if (fromUser) {
+            stopAutoplay();
+          }
+        };
+
+        const handleNext = () => {
+          goTo(activeIndex + 1, true);
+        };
+
+        const handlePrev = () => {
+          goTo(activeIndex - 1, true);
+        };
+
+        previousButton.addEventListener("click", handlePrev);
+        nextButton.addEventListener("click", handleNext);
+
+        window.addEventListener("keydown", (event) => {
+          if (event.key === "ArrowLeft") {
+            handlePrev();
+          }
+          if (event.key === "ArrowRight") {
+            handleNext();
+          }
+        });
+
+        if (!Number.isNaN(autoplaySeconds)) {
+          autoplayId = window.setInterval(() => {
+            goTo(activeIndex + 1);
+          }, autoplaySeconds * 1000);
+        }
+
         updateView();
-
-        if (fromUser) {
-          stopAutoplay();
-        }
-      };
-
-      const handleNext = () => {
-        goTo(activeIndex + 1, true);
-      };
-
-      const handlePrev = () => {
-        goTo(activeIndex - 1, true);
-      };
-
-      previousButton.addEventListener("click", handlePrev);
-      nextButton.addEventListener("click", handleNext);
-
-      window.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowLeft") {
-          handlePrev();
-        }
-        if (event.key === "ArrowRight") {
-          handleNext();
-        }
-      });
-
-      if (!Number.isNaN(autoplaySeconds)) {
-        autoplayId = window.setInterval(() => {
-          goTo(activeIndex + 1);
-        }, autoplaySeconds * 1000);
       }
+    };
 
-      updateView();
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initializeAttendantsCarousels, { once: true });
+    } else {
+      initializeAttendantsCarousels();
     }
-  };
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initializeAttendantsCarousels, { once: true });
-  } else {
-    initializeAttendantsCarousels();
-  }
-
-  document.addEventListener("astro:after-swap", initializeAttendantsCarousels);
+    document.addEventListener("astro:after-swap", initializeAttendantsCarousels);
 </script>

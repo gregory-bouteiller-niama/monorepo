@@ -4,10 +4,10 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
-		"dev": "astro dev",
+		"dev": "bun run seed:images:local && wrangler types && astro dev",
 		"build": "astro build",
-		"preview": "astro preview",
-		"preview:cf": "astro build && wrangler dev",
+		"preview": "bun run seed:images:local && wrangler types && astro preview",
+		"seed:images:local": "bun run ./scripts/seed-local-images.ts",
 		"deploy": "astro build && wrangler deploy",
 		"astro": "astro"
 	},
