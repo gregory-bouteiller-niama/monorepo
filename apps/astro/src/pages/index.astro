@@ -29,7 +29,7 @@ const { attendants, contact, disciplines, hero } = readIndexPage();
 		</Section>
 		<Section id="contact" {...contact} withSeparator>
 			<ContactForm
-				client:load
+				client:visible
 				onSubmit={async (value) => {
 					const { error } = await actions.contact.create(value);
 					if (error) throw error;
