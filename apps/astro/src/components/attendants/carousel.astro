@@ -49,13 +49,12 @@ const getImageStatus = (index: number) => {
     {items.map((attendant, index) => (
       <Image
         {...attendant.image}
+        layout="constrained"
         data-index={index}
         data-slot="attendant-image"
-        densities={[1.5, 2]}
         format="avif"
         class:list={[ATTENDANTS.image(), getImageStatus(index)]}
         loading={index === 0 ? "eager" : "lazy"}
-        sizes="(min-width: 1280px) 536px, (min-width: 1024px) 440px, (min-width: 768px) 704px, (min-width: 640px) 576px, 100vw" 
       />
     ))}
   </aside>
