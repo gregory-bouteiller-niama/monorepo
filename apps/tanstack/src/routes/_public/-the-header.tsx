@@ -22,7 +22,7 @@ export function TheHeader({ navs }: Pick<ReadPublicLayoutProps, "navs">) {
 		<>
 			<div className={THE_HEADER.wrapper()}>
 				<header className={THE_HEADER.base()}>
-					<Link className={THE_HEADER.logo()} to="/">
+					<Link aria-label="Retour à l'accueil" className={THE_HEADER.logo()} to="/">
 						<Logo showTitle={false} />
 					</Link>
 
@@ -34,7 +34,7 @@ export function TheHeader({ navs }: Pick<ReadPublicLayoutProps, "navs">) {
 				</header>
 			</div>
 			<Section className="flex justify-center" id="top-1">
-				<Link className={THE_HEADER.logoMain()} to="/">
+				<Link aria-label="Retour à l'accueil" className={THE_HEADER.logoMain()} to="/">
 					<Logo className="w-full" />
 				</Link>
 			</Section>
@@ -76,7 +76,7 @@ function HeaderBurger({ navs }: Pick<ReadPublicLayoutProps, "navs">) {
 		<DropdownMenu>
 			<DropdownMenuTrigger
 				render={
-					<Button className={THE_HEADER.burger()} size="icon" variant="outline">
+					<Button aria-label="Menu" className={THE_HEADER.burger()} size="icon" variant="outline">
 						<span className={THE_HEADER.burgerIcon()} />
 					</Button>
 				}

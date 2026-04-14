@@ -21,7 +21,7 @@ type Props = Pick<ReadPublicLayoutProps, "navs">;
 
 <div class={THE_HEADER.wrapper()}>
 	<header class={THE_HEADER.base()}>
-		<a class={THE_HEADER.logo()} href="/#top">
+		<a aria-label="Retour à l'accueil" class={THE_HEADER.logo()} href="/#top">
 			<Logo showTitle={false} />
 		</a>
 
@@ -33,7 +33,7 @@ type Props = Pick<ReadPublicLayoutProps, "navs">;
 			</Button>
 			<Dropdown>
 				<DropdownTrigger asChild>
-					<Button class={THE_HEADER.burger()} size="icon" variant="outline">
+					<Button aria-label="Menu" class={THE_HEADER.burger()} size="icon" variant="outline">
 						<span class={THE_HEADER.burgerIcon()}></span>
 					</Button>
 				</DropdownTrigger>
@@ -55,7 +55,7 @@ type Props = Pick<ReadPublicLayoutProps, "navs">;
 	</header>
 </div>
 <Section className="flex justify-center" id="top-1">
-	<a class={THE_HEADER.logoMain()} href="/#top">
+	<a aria-label="Retour à l'accueil" class={THE_HEADER.logoMain()} href="/#top">
 		<Logo className="w-full" />
 	</a>
 </Section>
