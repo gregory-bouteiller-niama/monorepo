@@ -1,11 +1,11 @@
 ---
 // import type { DisciplineTone } from "@niama/domain/functions/disciplines";
+import { Image } from "astro:assets";
 import {Button} from "@niama/ui/astro/button/index.ts";
 import { CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui/astro/card/index.ts";
 import { ATTENDANTS } from "@niama/ui/styles/attendants/carousel";
 import DisciplinesBadge from "@/components/disciplines/badge.astro";
 import Glow from "@/components/glow.astro";
-import { buildImageUrl } from "@/lib/images";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { autoplay = Number.NaN, class: className = "", items } = Astro.props;
@@ -19,7 +19,6 @@ type AttendantDiscipline = {
 type AttendantImage = {
   alt: string;
   height: number;
-  key: string;
   src: string;
   width: number;
 };
@@ -48,13 +47,18 @@ const getImageStatus = (index: number) => {
 <div class:list={[ATTENDANTS.base(), className]} data-attendants-autoplay={autoplay} data-attendants-carousel data-size={items.length}>
   <aside class={ATTENDANTS.aside()}>
     {items.map((attendant, index) => (
-      <img
+      <Image
         alt={attendant.image.alt}
         data-index={index}
         data-slot="attendant-image"
+        densities={[1.5, 2]}
+        format="avif"
         height={attendant.image.height}
         class:list={[ATTENDANTS.image(), getImageStatus(index)]}
-        src={buildImageUrl(attendant.image.key, { width: Math.min(attendant.image.width, 1200) })}
+        loading={index === 0 ? "eager" : "lazy"}
+        sizes="(max-width: 768px) 70vw, 40vw"
+        src={attendant.image.src}
+        widths={[480, 720, 960, 1200]}
         width={attendant.image.width}
       />
     ))}

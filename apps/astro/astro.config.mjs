@@ -7,9 +7,10 @@ import { defineConfig, fontProviders } from "astro/config";
 // https://astro.build/config
 export default defineConfig({
 	output: "server",
-	adapter: cloudflare({
-		persistState: { path: "./.wrangler/state" },
-	}),
+	adapter: cloudflare(),
+	image: {
+		remotePatterns: [{ protocol: "https", hostname: "images.niama.fr" }],
+	},
 	fonts: [
 		{
 			provider: fontProviders.fontsource(),

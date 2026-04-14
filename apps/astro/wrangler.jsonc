@@ -5,12 +5,6 @@
 	"images": {
 		"binding": "IMAGES"
 	},
-	"r2_buckets": [
-		{
-			"binding": "IMAGES_BUCKET",
-			"bucket_name": "images"
-		}
-	],
 	"vars": {
 		"VITE_CONVEX_URL": "https://helpful-bobcat-596.convex.cloud"
 	}
