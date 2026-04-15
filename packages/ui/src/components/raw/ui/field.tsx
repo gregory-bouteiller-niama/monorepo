@@ -2,8 +2,8 @@ import { useMemo } from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@niama/ui/lib/utils"
-import { Label } from "@niama/ui/components/raw/label"
-import { Separator } from "@niama/ui/components/raw/separator"
+import { Label } from "@niama/ui/components/raw/ui/label"
+import { Separator } from "@niama/ui/components/raw/ui/separator"
 
 function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
   return (

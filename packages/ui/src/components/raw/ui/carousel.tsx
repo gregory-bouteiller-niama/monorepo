@@ -1,10 +1,12 @@
+"use client"
+
 import * as React from "react"
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react"
 
 import { cn } from "@niama/ui/lib/utils"
-import { Button } from "@niama/ui/components/raw/button"
+import { Button } from "@niama/ui/components/raw/ui/button"
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react"
 
 type CarouselApi = UseEmblaCarouselType[1]
