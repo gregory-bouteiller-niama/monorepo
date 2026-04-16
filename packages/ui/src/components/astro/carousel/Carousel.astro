@@ -1,29 +1,19 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { type EmblaOptionsType } from "embla-carousel";
-import { tv } from "tailwind-variants";
-
-const carousel = tv({
-  base: "starwind-carousel group/carousel relative",
-});
+import type { EmblaOptionsType } from "embla-carousel";
+import { carousel } from "./index.ts";
 
 export interface Props extends HTMLAttributes<"div"> {
-  orientation?: "horizontal" | "vertical";
-  opts?: EmblaOptionsType;
   autoInit?: boolean;
+  opts?: EmblaOptionsType;
+  orientation?: "horizontal" | "vertical";
 }
 
-const {
-  class: className,
-  orientation = "horizontal",
-  opts = {},
-  autoInit = true,
-  ...rest
-} = Astro.props;
+const { class: className, orientation = "horizontal", opts = {}, autoInit = true, ...rest } = Astro.props;
 ---
 
 <div
-  class={carousel({ class: className })}
+  class:list={[carousel(), className]}
   role="region"
   aria-roledescription="carousel"
   data-axis={orientation === "horizontal" ? "x" : "y"}

@@ -1,17 +1,7 @@
 ---
-import { Button } from "@niama/ui/astro/button/index.ts";
+import { Button } from "@niama/ui/astro/button";
 import type { ComponentProps } from "astro/types";
-import { tv } from "tailwind-variants";
-
-export const carouselPrevious = tv({
-  base: [
-    "starwind-carousel-previous absolute size-8 rounded-full",
-    // Horizontal positioning
-    "group-data-[axis=x]/carousel:top-1/2 group-data-[axis=x]/carousel:-left-12 group-data-[axis=x]/carousel:-translate-y-1/2",
-    // Vertical positioning
-    "group-data-[axis=y]/carousel:-top-12 group-data-[axis=y]/carousel:left-1/2 group-data-[axis=y]/carousel:-translate-x-1/2 group-data-[axis=y]/carousel:rotate-90",
-  ],
-});
+import { carouselPrevious } from "./index.ts";
 
 type Props = ComponentProps<typeof Button>;
 
@@ -21,15 +11,11 @@ const { class: className = "", variant = "outline", size = "icon", ...rest } = A
 <Button
   variant={variant}
   size={size}
-  class={carouselPrevious({ class: className })}
+  class:list={[carouselPrevious(), className]}
   aria-label="Previous slide"
   {...rest}
   data-slot="carousel-previous"
 >
-  <slot name="icon">
-    <span class="icon-[tabler--arrow-left]" />
-  </slot>
-  <slot>
-    <span class="sr-only">Previous slide</span>
-  </slot>
+  <slot name="icon"> <span class="icon-[tabler--arrow-left]" /> </slot>
+  <slot> <span class="sr-only">Previous slide</span> </slot>
 </Button>

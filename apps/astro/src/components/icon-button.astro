@@ -1,5 +1,5 @@
 ---
-import { Button, type ButtonProps } from "@niama/ui/astro/button/index.ts";
+import { Button, type ButtonProps } from "@niama/ui/astro/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@niama/ui/astro/tooltip/index.ts";
 import { ICON_BUTTON } from "@niama/ui/styles/icon-button";
 
@@ -11,18 +11,18 @@ const isDisabled = disabled || loading;
 type Props = { className?: string; icon: string; label: string; loading?: boolean } & ButtonProps;
 ---
 
-		<Tooltip>
-			<TooltipTrigger>
-				<Button
-						aria-label={label}
-						class={ICON_BUTTON.base({ className, loading })}
-						disabled={isDisabled}
-						size={size}
-						variant={variant}
-						{...rest}
-				>
-					<span class={ICON_BUTTON.icon({ loading, className: icon })} />
-				</Button>
-			</TooltipTrigger>
-			<TooltipContent>{label}</TooltipContent>
-		</Tooltip>
+<Tooltip>
+  <TooltipTrigger>
+    <Button
+      aria-label={label}
+      class={ICON_BUTTON.base({ className, loading })}
+      disabled={isDisabled}
+      size={size}
+      variant={variant}
+      {...rest}
+    >
+      <span class={ICON_BUTTON.icon({ loading, className: icon })} />
+    </Button>
+  </TooltipTrigger>
+  <TooltipContent>{label}</TooltipContent>
+</Tooltip>

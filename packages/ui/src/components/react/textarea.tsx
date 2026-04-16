@@ -1,20 +1,20 @@
+import { cva } from "class-variance-authority";
 import type * as React from "react";
-import { tv } from "tailwind-variants";
+import { cn } from "../../lib/utils";
 
 // STYLES ----------------------------------------------------------------------------------------------------------------------------------
-export const TEXTAREA = tv({
-	base: `field-sizing-content flex min-h-16 w-full resize-none rounded-xl border border-input bg-input/30 px-3 py-3 text-base outline-none 
-  transition-colors 
-  placeholder:text-muted-foreground 
-  focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 
-  disabled:cursor-not-allowed disabled:opacity-50 
-  aria-invalid:border-destructive aria-invalid:ring-[3px] aria-invalid:ring-destructive/20 
-  md:text-sm 
-  dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40`,
-});
+export const TEXTAREA =
+  cva(`field-sizing-content flex min-h-16 w-full resize-none rounded-xl border border-input bg-input/30 px-3 py-3 text-base outline-none 
+	transition-colors 
+	placeholder:text-muted-foreground 
+	focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 
+	disabled:cursor-not-allowed disabled:opacity-50 
+	aria-invalid:border-destructive aria-invalid:ring-[3px] aria-invalid:ring-destructive/20 
+	md:text-sm 
+	dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40`);
 
 // BASE ------------------------------------------------------------------------------------------------------------------------------------
 export function Textarea({ className, ...props }: TextareaProps) {
-	return <textarea className={TEXTAREA({ className })} data-slot="textarea" {...props} />;
+  return <textarea className={cn(TEXTAREA(), className)} data-slot="textarea" {...props} />;
 }
 export type TextareaProps = React.ComponentProps<"textarea">;

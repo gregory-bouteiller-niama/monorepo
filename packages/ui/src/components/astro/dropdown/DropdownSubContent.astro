@@ -1,7 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import { dropdownContent } from "./DropdownContent.astro";
+import { dropdownContent, dropdownSubContent } from "./index.ts";
 
 type Props = HTMLAttributes<"div"> & {
   /**
@@ -15,11 +15,7 @@ const { class: className, animationDuration = 150, ...rest } = Astro.props;
 ---
 
 <div
-  class={dropdownContent({
-    side: "right",
-    align: "start",
-    class: ["starwind-dropdown-sub-content", className],
-  })}
+  class:list={[dropdownContent({ side: "right", align: "start" }), dropdownSubContent(), className]}
   data-sub-content
   role="menu"
   data-state="closed"

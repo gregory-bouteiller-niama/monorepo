@@ -1,20 +1,11 @@
 ---
 import { Separator } from "@niama/ui/astro/separator/index.ts";
 import type { ComponentProps } from "astro/types";
-import { tv } from "tailwind-variants";
+import { itemSeparator } from "./index.ts";
 
 type Props = ComponentProps<typeof Separator>;
-
-export const itemSeparator = tv({
-  base: "my-0",
-});
 
 const { class: className, orientation = "horizontal", ...rest } = Astro.props;
 ---
 
-<Separator
-  orientation={orientation}
-  class={itemSeparator({ class: className })}
-  {...rest}
-  data-slot="item-separator"
-/>
+<Separator orientation={orientation} class:list={[itemSeparator(), className]} {...rest} data-slot="item-separator" />

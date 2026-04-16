@@ -1,12 +1,7 @@
 ---
 import type { ReadPublicLayoutProps } from "@niama/domain/functions/layouts";
-import { Button } from "@niama/ui/astro/button/index.ts";
-import {
-	Dropdown,
-	DropdownContent,
-	DropdownItem,
-	DropdownTrigger,
-} from "@niama/ui/astro/dropdown/index.ts";
+import { Button } from "@niama/ui/astro/button";
+import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "@niama/ui/astro/dropdown/index.ts";
 import { Logo } from "@niama/ui/react/logo";
 import { Section } from "@niama/ui/react/section";
 import { Separator } from "@niama/ui/react/separator";
@@ -20,62 +15,50 @@ type Props = Pick<ReadPublicLayoutProps, "navs">;
 ---
 
 <div class={THE_HEADER.wrapper()}>
-	<header class={THE_HEADER.base()}>
-		<a aria-label="Retour à l'accueil" class={THE_HEADER.logo()} href="/#top">
-			<Logo showTitle={false} />
-		</a>
+  <header class={THE_HEADER.base()}>
+    <a aria-label="Retour à l'accueil" class={THE_HEADER.logo()} href="/#top"> <Logo showTitle={false} /> </a>
 
-		<div class={THE_HEADER.actions()}>
-			<Button class={THE_HEADER.themeSwitcher()} data-theme-switcher size="icon" type="button" variant="outline">
-				<span class={THE_HEADER.sun()} />
-				<span class={THE_HEADER.moon()} />
-				<span class="sr-only">Toggle theme</span>
-			</Button>
-			<Dropdown>
-				<DropdownTrigger asChild>
-					<Button aria-label="Menu" class={THE_HEADER.burger()} size="icon" variant="outline">
-						<span class={THE_HEADER.burgerIcon()}></span>
-					</Button>
-				</DropdownTrigger>
-				<DropdownContent
-					align="end"
-					class={THE_HEADER.burgerContent()}
-					sideOffset={18}
-				>
-					{
-						navs.map(({ hash, text, to }) => (
+    <div class={THE_HEADER.actions()}>
+      <Button class={THE_HEADER.themeSwitcher()} data-theme-switcher size="icon" type="button" variant="outline">
+        <span class={THE_HEADER.sun()} />
+        <span class={THE_HEADER.moon()} />
+        <span class="sr-only">Toggle theme</span>
+      </Button>
+      <Dropdown>
+        <DropdownTrigger asChild>
+          <Button aria-label="Menu" class={THE_HEADER.burger()} size="icon" variant="outline">
+            <span class={THE_HEADER.burgerIcon()}></span>
+          </Button>
+        </DropdownTrigger>
+        <DropdownContent align="end" class={THE_HEADER.burgerContent()} sideOffset={18}>
+          {navs.map(({ hash, text, to }) => (
 							<DropdownItem class={THE_HEADER.burgerItem()}>
 								<a href={`${to}#${hash}`}>{text}</a>
 							</DropdownItem>
-						))
-					}
-				</DropdownContent>
-			</Dropdown>
-		</div>
-	</header>
+						))}
+        </DropdownContent>
+      </Dropdown>
+    </div>
+  </header>
 </div>
 <Section className="flex justify-center" id="top-1">
-	<a aria-label="Retour à l'accueil" class={THE_HEADER.logoMain()} href="/#top">
-		<Logo className="w-full" />
-	</a>
+  <a aria-label="Retour à l'accueil" class={THE_HEADER.logoMain()} href="/#top"> <Logo className="w-full" /> </a>
 </Section>
 <Separator className="self-center! h-6" orientation="vertical" />
 <Section className={THE_HEADER.menu()} id="top-2">
-	<nav class={THE_HEADER.nav()} data-nav>
-		<div aria-hidden="true" class={THE_HEADER.stain()} data-nav-stain></div>
-		{
-			navs.map(({ hash, text, to }) => (
+  <nav class={THE_HEADER.nav()} data-nav>
+    <div aria-hidden="true" class={THE_HEADER.stain()} data-nav-stain></div>
+    {navs.map(({ hash, text, to }) => (
 				<Button class={THE_HEADER.navLink()} data-nav-link={hash} href={`${to}#${hash}`} variant="ghost">
 					{text}
 				</Button>
-			))
-		}
-	</nav>
+			))}
+  </nav>
 </Section>
 <Separator className="self-center! h-24" orientation="vertical" />
 
 <script>
-	import { initialize } from "@niama/ui/shared/the-header";
+  import { initialize } from "@niama/ui/shared/the-header";
 
-	initialize();
+  initialize();
 </script>

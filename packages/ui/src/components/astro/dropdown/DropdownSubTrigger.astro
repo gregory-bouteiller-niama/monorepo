@@ -1,7 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import { dropdownItem } from "./DropdownItem.astro";
+import { dropdownItem, dropdownSubTrigger, dropdownSubTriggerIcon } from "./index.ts";
 
 type Props = HTMLAttributes<"div"> & {
   /**
@@ -18,7 +18,7 @@ const { class: className, inset = false, disabled = false, ...rest } = Astro.pro
 ---
 
 <div
-  class={dropdownItem({ inset, disabled, class: ["starwind-dropdown-sub-trigger", className] })}
+  class:list={[dropdownItem({ inset, disabled }), dropdownSubTrigger(), className]}
   role="menuitem"
   aria-haspopup="true"
   aria-expanded="false"
@@ -29,5 +29,5 @@ const { class: className, inset = false, disabled = false, ...rest } = Astro.pro
   data-slot="dropdown-item"
 >
   <slot />
-  <span class="icon-[lucide--chevron-right] ml-auto size-4" />
+  <span class={dropdownSubTriggerIcon()} />
 </div>

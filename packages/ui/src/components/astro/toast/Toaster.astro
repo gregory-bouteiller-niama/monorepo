@@ -1,28 +1,10 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { tv } from "tailwind-variants";
+import { toastViewport } from "./index.ts";
 
 import ToastTemplate from "./ToastTemplate.astro";
 
-export const toastViewport = tv({
-  base: [
-    "starwind-toast-viewport fixed z-50 flex w-80 outline-none",
-    "data-[position=bottom-center]:bottom-4 data-[position=bottom-center]:left-1/2 data-[position=bottom-center]:-translate-x-1/2",
-    "data-[position=bottom-left]:bottom-4 data-[position=bottom-left]:left-4",
-    "data-[position=bottom-right]:right-4 data-[position=bottom-right]:bottom-4",
-    "data-[position=top-center]:top-4 data-[position=top-center]:left-1/2 data-[position=top-center]:-translate-x-1/2",
-    "data-[position=top-left]:top-4 data-[position=top-left]:left-4",
-    "data-[position=top-right]:top-4 data-[position=top-right]:right-4",
-  ],
-});
-
-type Position =
-  | "top-left"
-  | "top-center"
-  | "top-right"
-  | "bottom-left"
-  | "bottom-center"
-  | "bottom-right";
+type Position = "top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right";
 
 type Props = HTMLAttributes<"div"> & {
   position?: Position;
@@ -32,19 +14,11 @@ type Props = HTMLAttributes<"div"> & {
   duration?: number;
 };
 
-const {
-  class: className,
-  position = "bottom-right",
-  gap = "0.5rem",
-  peek = "1rem",
-  limit = 3,
-  duration = 5000,
-  ...rest
-} = Astro.props;
+const { class: className, position = "bottom-right", gap = "0.5rem", peek = "1rem", limit = 3, duration = 5000, ...rest } = Astro.props;
 ---
 
 <div
-  class={toastViewport({ class: className })}
+  class:list={[toastViewport(), className]}
   data-position={position}
   data-limit={limit}
   data-duration={duration}
@@ -75,8 +49,7 @@ const {
 
     z-index: calc(1000 - var(--toast-index, 0));
     transform: translateX(var(--toast-swipe-movement-x, 0px))
-      translateY(calc(var(--toast-swipe-movement-y, 0px) - (var(--toast-index, 0) * var(--peek))))
-      scale(var(--scale));
+      translateY(calc(var(--toast-swipe-movement-y, 0px) - (var(--toast-index, 0) * var(--peek)))) scale(var(--scale));
   }
 
   .starwind-toast-viewport [data-slot="toast"][data-swiping] {
@@ -92,35 +65,32 @@ const {
 
   /* Exit animations by swipe direction */
   .starwind-toast-viewport [data-slot="toast"][data-state="closed"][data-swipe-direction="down"] {
-    transform: translateY(calc(var(--toast-swipe-movement-y, 0px) + 150%));
     opacity: 0;
+    transform: translateY(calc(var(--toast-swipe-movement-y, 0px) + 150%));
   }
 
   .starwind-toast-viewport [data-slot="toast"][data-state="closed"][data-swipe-direction="up"] {
-    transform: translateY(calc(var(--toast-swipe-movement-y, 0px) - 150%));
     opacity: 0;
+    transform: translateY(calc(var(--toast-swipe-movement-y, 0px) - 150%));
   }
 
   .starwind-toast-viewport [data-slot="toast"][data-state="closed"][data-swipe-direction="right"] {
-    transform: translateX(calc(var(--toast-swipe-movement-x, 0px) + 150%))
-      translateY(calc(var(--toast-offset-y, 0px) * -1));
     opacity: 0;
+    transform: translateX(calc(var(--toast-swipe-movement-x, 0px) + 150%)) translateY(calc(var(--toast-offset-y, 0px) * -1));
   }
 
   .starwind-toast-viewport [data-slot="toast"][data-state="closed"][data-swipe-direction="left"] {
-    transform: translateX(calc(var(--toast-swipe-movement-x, 0px) - 150%))
-      translateY(calc(var(--toast-offset-y, 0px) * -1));
     opacity: 0;
+    transform: translateX(calc(var(--toast-swipe-movement-x, 0px) - 150%)) translateY(calc(var(--toast-offset-y, 0px) * -1));
   }
 
   /* Position-specific overrides for top positions */
   .starwind-toast-viewport[data-position^="top"] [data-slot="toast"] {
     top: 0;
     bottom: auto;
-    transform-origin: top center;
     transform: translateX(var(--toast-swipe-movement-x, 0px))
-      translateY(calc(var(--toast-swipe-movement-y, 0px) + (var(--toast-index, 0) * var(--peek))))
-      scale(var(--scale));
+      translateY(calc(var(--toast-swipe-movement-y, 0px) + (var(--toast-index, 0) * var(--peek)))) scale(var(--scale));
+    transform-origin: top center;
   }
 
   .starwind-toast-viewport[data-position^="top"] [data-slot="toast"][data-expanded] {
@@ -128,53 +98,46 @@ const {
       translateY(calc(var(--toast-swipe-movement-y, 0px) + var(--toast-offset-y, 0px)));
   }
 
-  .starwind-toast-viewport[data-position^="top"]
-    [data-slot="toast"][data-state="closed"][data-swipe-direction="up"] {
+  .starwind-toast-viewport[data-position^="top"] [data-slot="toast"][data-state="closed"][data-swipe-direction="up"] {
     transform: translateY(calc(var(--toast-swipe-movement-y, 0px) - 150%));
   }
 
-  .starwind-toast-viewport[data-position^="top"]
-    [data-slot="toast"][data-state="closed"][data-swipe-direction="down"] {
+  .starwind-toast-viewport[data-position^="top"] [data-slot="toast"][data-state="closed"][data-swipe-direction="down"] {
     transform: translateY(calc(var(--toast-swipe-movement-y, 0px) + 150%));
   }
 
-  .starwind-toast-viewport[data-position^="top"]
-    [data-slot="toast"][data-state="closed"][data-swipe-direction="left"] {
-    transform: translateX(calc(var(--toast-swipe-movement-x, 0px) - 150%))
-      translateY(var(--toast-offset-y, 0px));
+  .starwind-toast-viewport[data-position^="top"] [data-slot="toast"][data-state="closed"][data-swipe-direction="left"] {
     opacity: 0;
+    transform: translateX(calc(var(--toast-swipe-movement-x, 0px) - 150%)) translateY(var(--toast-offset-y, 0px));
   }
 
-  .starwind-toast-viewport[data-position^="top"]
-    [data-slot="toast"][data-state="closed"][data-swipe-direction="right"] {
-    transform: translateX(calc(var(--toast-swipe-movement-x, 0px) + 150%))
-      translateY(var(--toast-offset-y, 0px));
+  .starwind-toast-viewport[data-position^="top"] [data-slot="toast"][data-state="closed"][data-swipe-direction="right"] {
     opacity: 0;
+    transform: translateX(calc(var(--toast-swipe-movement-x, 0px) + 150%)) translateY(var(--toast-offset-y, 0px));
   }
 
   /* Entry animation - starting state (must come after base transforms) */
   .starwind-toast-viewport [data-slot="toast"][data-starting-style] {
-    transform: translateY(150%);
     opacity: 0;
+    transform: translateY(150%);
   }
 
   /* Default exit animation - slide down (for non-swipe closes) */
   .starwind-toast-viewport [data-slot="toast"][data-state="closed"]:not([data-swipe-direction]) {
-    transform: translateY(150%);
     opacity: 0;
+    transform: translateY(150%);
   }
 
   /* Top position entry - slide from top */
   .starwind-toast-viewport[data-position^="top"] [data-slot="toast"][data-starting-style] {
-    transform: translateY(-150%);
     opacity: 0;
+    transform: translateY(-150%);
   }
 
   /* Top position default exit - slide up */
-  .starwind-toast-viewport[data-position^="top"]
-    [data-slot="toast"][data-state="closed"]:not([data-swipe-direction]) {
-    transform: translateY(-150%);
+  .starwind-toast-viewport[data-position^="top"] [data-slot="toast"][data-state="closed"]:not([data-swipe-direction]) {
     opacity: 0;
+    transform: translateY(-150%);
   }
 </style>
 
@@ -182,30 +145,30 @@ const {
   type Variant = "default" | "success" | "error" | "warning" | "info" | "loading";
 
   interface ToastOptions {
-    id?: string;
-    title?: string;
-    description?: string;
-    variant?: Variant;
-    duration?: number;
     action?: {
       label: string;
       onClick: () => void;
     };
+    description?: string;
+    duration?: number;
+    id?: string;
     onClose?: () => void;
     onRemove?: () => void;
+    title?: string;
+    variant?: Variant;
   }
 
   interface ToastState extends ToastOptions {
-    id: string;
-    element?: HTMLElement;
-    timeoutId?: number;
-    height?: number;
     closing?: boolean;
-    // Swipe state
-    swiping?: boolean;
+    element?: HTMLElement;
+    height?: number;
+    id: string;
+    swipeDirection?: "up" | "down" | "left" | "right";
     swipeX?: number;
     swipeY?: number;
-    swipeDirection?: "up" | "down" | "left" | "right";
+    // Swipe state
+    swiping?: boolean;
+    timeoutId?: number;
   }
 
   // Swipe constants
@@ -221,11 +184,11 @@ const {
     private queue: ToastState[] = [];
     private limit: number;
     private defaultDuration: number;
-    private expanded: boolean = false;
-    private expandedByTouch: boolean = false;
-    private counter: number = 0;
+    private expanded = false;
+    private expandedByTouch = false;
+    private counter = 0;
     private swipeDirections: SwipeDirection[] = ["down", "right"];
-    private destroyed: boolean = false;
+    private destroyed = false;
 
     // Swipe tracking
     private activeSwipe: {
@@ -283,11 +246,7 @@ const {
 
       // Check if mouse is still within viewport bounds (handles case where toast is removed)
       const rect = this.viewport.getBoundingClientRect();
-      const isStillInside =
-        e.clientX >= rect.left &&
-        e.clientX <= rect.right &&
-        e.clientY >= rect.top &&
-        e.clientY <= rect.bottom;
+      const isStillInside = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
 
       if (!isStillInside) {
         this.expanded = false;
@@ -311,13 +270,9 @@ const {
       const rect = this.viewport.getBoundingClientRect();
       const mouseEvent = (window as any).__lastMousePosition;
       const isMouseInside =
-        mouseEvent &&
-        mouseEvent.x >= rect.left &&
-        mouseEvent.x <= rect.right &&
-        mouseEvent.y >= rect.top &&
-        mouseEvent.y <= rect.bottom;
+        mouseEvent && mouseEvent.x >= rect.left && mouseEvent.x <= rect.right && mouseEvent.y >= rect.top && mouseEvent.y <= rect.bottom;
 
-      if (!this.viewport.contains(e.relatedTarget as Node) && !isMouseInside) {
+      if (!(this.viewport.contains(e.relatedTarget as Node) || isMouseInside)) {
         this.expanded = false;
         this.updateExpanded();
         this.resumeAllTimers();
@@ -329,7 +284,7 @@ const {
     }
 
     private handleDocumentPointerdown(e: PointerEvent): void {
-      if (!this.expandedByTouch || !this.expanded) return;
+      if (!(this.expandedByTouch && this.expanded)) return;
 
       const target = e.target as HTMLElement;
       if (!this.viewport.contains(target)) {
@@ -566,9 +521,7 @@ const {
 
     private renderToast(toast: ToastState): void {
       const variant = toast.variant || "default";
-      const template = this.viewport.querySelector(
-        `template[data-toast-template="${variant}"]`,
-      ) as HTMLTemplateElement;
+      const template = this.viewport.querySelector(`template[data-toast-template="${variant}"]`) as HTMLTemplateElement;
 
       if (!template) {
         console.error(`Toast template for variant "${variant}" not found`);
@@ -661,9 +614,7 @@ const {
       if (!toast.element) return;
 
       const variant = toast.variant || "default";
-      const template = this.viewport.querySelector(
-        `template[data-toast-template="${variant}"]`,
-      ) as HTMLTemplateElement;
+      const template = this.viewport.querySelector(`template[data-toast-template="${variant}"]`) as HTMLTemplateElement;
 
       if (!template) {
         console.error(`Toast template for variant "${variant}" not found`);
@@ -685,10 +636,7 @@ const {
       // Copy CSS variables
       const oldStyle = toast.element.style;
       newElement.style.setProperty("--toast-index", oldStyle.getPropertyValue("--toast-index"));
-      newElement.style.setProperty(
-        "--toast-offset-y",
-        oldStyle.getPropertyValue("--toast-offset-y"),
-      );
+      newElement.style.setProperty("--toast-offset-y", oldStyle.getPropertyValue("--toast-offset-y"));
       newElement.style.setProperty("--toast-swipe-movement-x", "0px");
       newElement.style.setProperty("--toast-swipe-movement-y", "0px");
 
@@ -757,9 +705,7 @@ const {
       if (e.button !== 0) return;
 
       const target = e.target as HTMLElement;
-      const isInteractive = target.closest(
-        'button, a, input, textarea, [role="button"], [data-swipe-ignore]',
-      );
+      const isInteractive = target.closest('button, a, input, textarea, [role="button"], [data-swipe-ignore]');
       if (isInteractive) return;
 
       // Treat touch/pointer down as hover to expand stacked toasts
@@ -808,10 +754,8 @@ const {
         const absY = Math.abs(deltaY);
         if (absX > 5 || absY > 5) {
           this.activeSwipe.didMove = true;
-          const hasHorizontal =
-            this.swipeDirections.includes("left") || this.swipeDirections.includes("right");
-          const hasVertical =
-            this.swipeDirections.includes("up") || this.swipeDirections.includes("down");
+          const hasHorizontal = this.swipeDirections.includes("left") || this.swipeDirections.includes("right");
+          const hasVertical = this.swipeDirections.includes("up") || this.swipeDirections.includes("down");
           if (hasHorizontal && hasVertical) {
             this.activeSwipe.lockedDirection = absX > absY ? "horizontal" : "vertical";
           } else if (hasHorizontal) {
@@ -891,11 +835,7 @@ const {
 
       // Check if pointer is outside viewport bounds
       const rect = this.viewport.getBoundingClientRect();
-      const isOutsideViewport =
-        e.clientX < rect.left ||
-        e.clientX > rect.right ||
-        e.clientY < rect.top ||
-        e.clientY > rect.bottom;
+      const isOutsideViewport = e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom;
 
       if (shouldClose && direction) {
         toast.swipeDirection = direction;
@@ -909,7 +849,7 @@ const {
         toast.element?.style.setProperty("--toast-swipe-movement-y", "0px");
 
         // Collapse if: short tap without movement, OR pointer ended outside viewport
-        if ((!isLongPress && !didMove && this.expandedByTouch) || isOutsideViewport) {
+        if ((!(isLongPress || didMove) && this.expandedByTouch) || isOutsideViewport) {
           this.expandedByTouch = false;
           this.expanded = false;
           this.updateExpanded();
@@ -942,7 +882,7 @@ const {
             e.preventDefault();
           }
         },
-        { passive: false },
+        { passive: false }
       );
     }
   }

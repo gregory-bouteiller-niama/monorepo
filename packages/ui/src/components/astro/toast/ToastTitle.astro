@@ -1,50 +1,13 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { tv } from "tailwind-variants";
+import { type ToastTitleStyles, toastTitle, toastTitleIcons } from "./index.ts";
 
-export const toastTitle = tv({
-  base: "starwind-toast-title flex items-center gap-1 text-sm font-semibold [&_svg]:size-4",
-  variants: {
-    variant: {
-      default: "",
-      success: "[&_svg]:text-success",
-      error: "[&_svg]:text-error",
-      warning: "[&_svg]:text-warning",
-      info: "[&_svg]:text-info",
-      loading: "[&_svg]:text-muted-foreground",
-    },
-  },
-  defaultVariants: {
-    variant: "default",
-  },
-});
-
-type Variant = "default" | "success" | "error" | "warning" | "info" | "loading";
-
-type Props = HTMLAttributes<"div"> & {
-  variant?: Variant;
-};
+type Props = HTMLAttributes<"div"> & Pick<ToastTitleStyles, "variant">;
 
 const { class: className, variant = "default", ...rest } = Astro.props;
-
-const icons = {
-  default: null,
-  success: "icon-[tabler--circle-check] text-success",
-  error: "icon-[tabler--circle-x]",
-  warning: "icon-[tabler--alert-triangle]",
-  info: "icon-[tabler--info-circle]",
-  loading: "icon-[tabler--loader-2]",
-};
 ---
 
-<div
-  class={toastTitle({ variant, class: className })}
-  data-slot="toast-title"
-  data-toast-title
-  {...rest}
->
-  <slot name="icon">
-    {variant !== "default" && <span class={variant === "loading" ? "icon-[tabler--loader-2] animate-spin" : icons[variant]} />}
-  </slot>
+<div class:list={[toastTitle({ variant }), className]} data-slot="toast-title" data-toast-title {...rest}>
+  <slot name="icon"> {variant !== "default" && <span class={toastTitleIcons[variant]} />} </slot>
   <span data-toast-title-text><slot /></span>
 </div>

@@ -1,20 +1,18 @@
 ---
 import type { ReadPublicLayoutProps } from "@niama/domain/functions/layouts";
-import { Button } from "@niama/ui/astro/button/index.ts";
+import { Button } from "@niama/ui/astro/button";
 import { THE_FOOTER } from "@niama/ui/styles/the-footer";
 import IconButton from "@/components/icon-button.astro";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
-const { socials } = Astro.props
+const { socials } = Astro.props;
 
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------
 type Props = Pick<ReadPublicLayoutProps, "socials">;
 ---
 
 <footer class={THE_FOOTER.base()}>
-  <Button class={THE_FOOTER.disclaimer()} href="/" variant="outline">
-    Mentions Légales
-  </Button>
+  <Button class={THE_FOOTER.disclaimer()} href="/" variant="outline"> Mentions Légales </Button>
   <div class={THE_FOOTER.socials()}>
     {socials.map(({ href, icon, key, label }) => (
       <IconButton
@@ -27,4 +25,3 @@ type Props = Pick<ReadPublicLayoutProps, "socials">;
     ))}
   </div>
 </footer>
-	

@@ -1,9 +1,4 @@
-import EmblaCarousel, {
-  type EmblaCarouselType,
-  type EmblaEventType,
-  type EmblaOptionsType,
-  type EmblaPluginType,
-} from "embla-carousel";
+import EmblaCarousel, { type EmblaCarouselType, type EmblaOptionsType, type EmblaPluginType } from "embla-carousel";
 
 export type CarouselApi = EmblaCarouselType;
 
@@ -15,17 +10,14 @@ export interface CarouselOptions {
 
 export interface CarouselManager {
   api: CarouselApi;
-  scrollPrev: () => void;
-  scrollNext: () => void;
-  canScrollPrev: () => boolean;
   canScrollNext: () => boolean;
+  canScrollPrev: () => boolean;
   destroy: () => void;
+  scrollNext: () => void;
+  scrollPrev: () => void;
 }
 
-export function initCarousel(
-  carouselElement: HTMLElement,
-  options: CarouselOptions = {},
-): CarouselManager | null {
+export function initCarousel(carouselElement: HTMLElement, options: CarouselOptions = {}): CarouselManager | null {
   // don't re-initialize if already initialized
   if (carouselElement.dataset.initialized === "true") return null;
   carouselElement.dataset.initialized = "true";
@@ -36,9 +28,7 @@ export function initCarousel(
   }
 
   // Find content element - Embla expects the viewport element, not the container
-  const viewportElement = carouselElement.querySelector(
-    '[data-slot="carousel-content"]',
-  ) as HTMLElement;
+  const viewportElement = carouselElement.querySelector('[data-slot="carousel-content"]') as HTMLElement;
   if (!viewportElement) {
     console.warn("Carousel content element not found");
     return null;
@@ -80,9 +70,7 @@ export function initCarousel(
   // console.log("Options:", emblaOptions);
 
   // Find navigation buttons
-  const prevButton = carouselElement.querySelector(
-    ".starwind-carousel-previous",
-  ) as HTMLButtonElement;
+  const prevButton = carouselElement.querySelector(".starwind-carousel-previous") as HTMLButtonElement;
   const nextButton = carouselElement.querySelector(".starwind-carousel-next") as HTMLButtonElement;
 
   // Initialize Embla
