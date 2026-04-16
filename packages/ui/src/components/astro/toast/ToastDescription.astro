@@ -1,10 +1,12 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { toastDescription } from "../toast.ts";
+import { TOAST } from "../toast";
 
-type Props = HTMLAttributes<"div">;
-
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className, ...rest } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div">;
 ---
 
-<div class:list={[toastDescription(), className]} data-toast-description {...rest} data-slot="toast-description"><slot /></div>
+<div class:list={[TOAST.description(), className]} data-toast-description {...rest} data-slot="toast-description"><slot /></div>

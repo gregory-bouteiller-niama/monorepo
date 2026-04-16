@@ -1,8 +1,12 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { tooltipCaret, tooltipCaretIcon, tooltipContent } from "../tooltip.ts";
+import { TOOLTIP } from "../tooltip";
 
-type Props = HTMLAttributes<"div"> & {
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
+const { side = "top", align = "center", sideOffset = 8, avoidCollisions = true, animationDuration = 150, class: className } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div"> & {
   /**
    * Side of the tooltip
    * @default top
@@ -29,12 +33,10 @@ type Props = HTMLAttributes<"div"> & {
    */
   animationDuration?: number;
 };
-
-const { side = "top", align = "center", sideOffset = 8, avoidCollisions = true, animationDuration = 150, class: className } = Astro.props;
 ---
 
 <div
-  class:list={[tooltipContent(), className]}
+  class:list={[TOOLTIP.content(), className]}
   data-state="closed"
   data-side={side}
   data-align={align}
@@ -45,5 +47,5 @@ const { side = "top", align = "center", sideOffset = 8, avoidCollisions = true, 
   data-slot="tooltip-content"
 >
   <slot> My tooltip! </slot>
-  <span class:list={[tooltipCaret(), tooltipCaretIcon()]} />
+  <span class:list={[TOOLTIP.caret(), TOOLTIP.caretIcon()]} />
 </div>

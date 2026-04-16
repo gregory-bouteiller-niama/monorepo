@@ -1,10 +1,12 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { type CardStyles, card } from "../card.ts";
+import { CARD, type CardStyles } from "../card";
 
-type Props = HTMLAttributes<"div"> & CardStyles;
-
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className, size, ...rest } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div"> & CardStyles;
 ---
 
-<div class:list={[card({ size }), className]} data-size={size ?? "default"} {...rest} data-slot="card"><slot /></div>
+<div class:list={[CARD.base({ size }), className]} data-size={size ?? "default"} {...rest} data-slot="card"><slot /></div>

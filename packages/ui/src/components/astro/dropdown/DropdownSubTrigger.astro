@@ -1,9 +1,12 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import { DROPDOWN } from "../dropdown";
 
-import { dropdownItem, dropdownSubTrigger, dropdownSubTriggerIcon } from "../dropdown.ts";
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
+const { class: className, inset = false, disabled = false, ...rest } = Astro.props;
 
-type Props = HTMLAttributes<"div"> & {
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div"> & {
   /**
    * Whether the item is inset (has left padding)
    */
@@ -13,12 +16,10 @@ type Props = HTMLAttributes<"div"> & {
    */
   disabled?: boolean;
 };
-
-const { class: className, inset = false, disabled = false, ...rest } = Astro.props;
 ---
 
 <div
-  class:list={[dropdownItem({ inset, disabled }), dropdownSubTrigger(), className]}
+  class:list={[DROPDOWN.item({ inset, disabled }), DROPDOWN.subTrigger(), className]}
   role="menuitem"
   aria-haspopup="true"
   aria-expanded="false"
@@ -29,5 +30,5 @@ const { class: className, inset = false, disabled = false, ...rest } = Astro.pro
   data-slot="dropdown-item"
 >
   <slot />
-  <span class={dropdownSubTriggerIcon()} />
+  <span class={DROPDOWN.subTriggerIcon()} />
 </div>

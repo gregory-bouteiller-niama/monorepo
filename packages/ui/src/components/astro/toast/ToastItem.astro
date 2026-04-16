@@ -1,14 +1,16 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { type ToastItemStyles, toastClose, toastCloseIcon, toastContent, toastItem } from "../toast.ts";
+import { TOAST, type ToastItemStyles } from "../toast";
 
-type Props = HTMLAttributes<"div"> & Pick<ToastItemStyles, "variant">;
-
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className, variant = "default", ...rest } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div"> & Pick<ToastItemStyles, "variant">;
 ---
 
 <div
-  class:list={[toastItem({ variant }), className]}
+  class:list={[TOAST.item({ variant }), className]}
   data-variant={variant}
   data-state="open"
   role="dialog"
@@ -16,8 +18,8 @@ const { class: className, variant = "default", ...rest } = Astro.props;
   {...rest}
   data-slot="toast"
 >
-  <div class={toastContent()} data-slot="toast-content"><slot /></div>
-  <button type="button" class={toastClose()} data-slot="toast-close" aria-label="Close notification">
-    <span class={toastCloseIcon()} />
+  <div class={TOAST.content()} data-slot="toast-content"><slot /></div>
+  <button type="button" class={TOAST.close()} data-slot="toast-close" aria-label="Close notification">
+    <span class={TOAST.closeIcon()} />
   </button>
 </div>

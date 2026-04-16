@@ -1,10 +1,12 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { cardHeader } from "../card.ts";
+import { CARD } from "../card";
 
-type Props = HTMLAttributes<"div">;
-
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className, ...rest } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div">;
 ---
 
-<div class:list={[cardHeader(), className]} {...rest} data-slot="card-header"><slot /></div>
+<div class:list={[CARD.header(), className]} {...rest} data-slot="card-header"><slot /></div>

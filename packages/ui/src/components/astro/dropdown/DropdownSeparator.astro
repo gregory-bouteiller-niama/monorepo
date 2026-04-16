@@ -1,14 +1,16 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { dropdownSeparator } from "../dropdown.ts";
+import { DROPDOWN } from "../dropdown";
 
-type Props = HTMLAttributes<"div">;
-
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className, ...rest } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div">;
 ---
 
 <div
-  class:list={[dropdownSeparator(), className]}
+  class:list={[DROPDOWN.separator(), className]}
   role="separator"
   aria-orientation="horizontal"
   {...rest}

@@ -1,12 +1,12 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { toastViewport } from "../toast.ts";
-
+import { TOAST } from "../toast";
 import ToastTemplate from "./ToastTemplate.astro";
 
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
 type Position = "top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right";
 
-type Props = HTMLAttributes<"div"> & {
+export type Props = HTMLAttributes<"div"> & {
   position?: Position;
   limit?: number;
   gap?: string;
@@ -14,11 +14,12 @@ type Props = HTMLAttributes<"div"> & {
   duration?: number;
 };
 
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className, position = "bottom-right", gap = "0.5rem", peek = "1rem", limit = 3, duration = 5000, ...rest } = Astro.props;
 ---
 
 <div
-  class:list={[toastViewport(), className]}
+  class:list={[TOAST.viewport(), className]}
   data-position={position}
   data-limit={limit}
   data-duration={duration}

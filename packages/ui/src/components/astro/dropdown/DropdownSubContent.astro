@@ -1,21 +1,22 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import { DROPDOWN } from "../dropdown";
 
-import { dropdownContent, dropdownSubContent } from "../dropdown.ts";
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
+const { class: className, animationDuration = 150, ...rest } = Astro.props;
 
-type Props = HTMLAttributes<"div"> & {
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div"> & {
   /**
    * Open and close animation duration in milliseconds
    * @default 150
    */
   animationDuration?: number;
 };
-
-const { class: className, animationDuration = 150, ...rest } = Astro.props;
 ---
 
 <div
-  class:list={[dropdownContent({ side: "right", align: "start" }), dropdownSubContent(), className]}
+  class:list={[DROPDOWN.content({ side: "right", align: "start" }), DROPDOWN.subContent(), className]}
   data-sub-content
   role="menu"
   data-state="closed"

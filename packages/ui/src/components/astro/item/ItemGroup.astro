@@ -1,10 +1,12 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { itemGroup } from "../item.ts";
+import { ITEM } from "../item";
 
-type Props = HTMLAttributes<"div">;
-
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className, ...rest } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div">;
 ---
 
-<div role="list" class:list={[itemGroup(), className]} {...rest} data-slot="item-group"><slot /></div>
+<div role="list" class:list={[ITEM.group(), className]} {...rest} data-slot="item-group"><slot /></div>

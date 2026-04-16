@@ -1,8 +1,12 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { tooltip } from "../tooltip.ts";
+import { TOOLTIP } from "../tooltip";
 
-type Props = HTMLAttributes<"div"> & {
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
+const { openDelay = 200, closeDelay = 200, disableHoverableContent = false, class: className } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div"> & {
   /**
    * Time in milliseconds to wait before showing the tooltip
    */
@@ -16,12 +20,10 @@ type Props = HTMLAttributes<"div"> & {
    */
   disableHoverableContent?: boolean;
 };
-
-const { openDelay = 200, closeDelay = 200, disableHoverableContent = false, class: className } = Astro.props;
 ---
 
 <div
-  class:list={[tooltip(), className]}
+  class:list={[TOOLTIP.base(), className]}
   data-state="closed"
   data-open-delay={openDelay}
   data-close-delay={closeDelay}

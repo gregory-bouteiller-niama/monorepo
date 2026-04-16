@@ -1,10 +1,12 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { cardAction } from "../card.ts";
+import { CARD } from "../card";
 
-type Props = HTMLAttributes<"div">;
-
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className, ...rest } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div">;
 ---
 
-<div class:list={[cardAction(), className]} {...rest} data-slot="card-action"><slot /></div>
+<div class:list={[CARD.action(), className]} {...rest} data-slot="card-action"><slot /></div>

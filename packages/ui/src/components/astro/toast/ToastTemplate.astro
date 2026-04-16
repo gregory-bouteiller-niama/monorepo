@@ -3,12 +3,14 @@ import ToastDescription from "./ToastDescription.astro";
 import ToastItem from "./ToastItem.astro";
 import ToastTitle from "./ToastTitle.astro";
 
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
 type Variant = "default" | "success" | "error" | "warning" | "info" | "loading";
 
-interface Props {
+export type Props = {
   variant: Variant;
-}
+};
 
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { variant } = Astro.props;
 
 // Loading variant uses default item styling but loading title styling

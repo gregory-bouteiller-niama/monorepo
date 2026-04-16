@@ -1,8 +1,12 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { dropdownContent } from "../dropdown.ts";
+import { DROPDOWN } from "../dropdown";
 
-type Props = HTMLAttributes<"div"> & {
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
+const { class: className, side = "bottom", align = "start", sideOffset = 4, animationDuration = 150, ...rest } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div"> & {
   /**
    * Side of the dropdown
    * @default bottom
@@ -24,12 +28,10 @@ type Props = HTMLAttributes<"div"> & {
    */
   animationDuration?: number;
 };
-
-const { class: className, side = "bottom", align = "start", sideOffset = 4, animationDuration = 150, ...rest } = Astro.props;
 ---
 
 <div
-  class:list={[dropdownContent({ side, align }), className]}
+  class:list={[DROPDOWN.content({ side, align }), className]}
   role="menu"
   data-side={side}
   data-align={align}

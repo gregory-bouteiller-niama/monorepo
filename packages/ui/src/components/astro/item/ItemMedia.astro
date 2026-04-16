@@ -1,10 +1,12 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { type ItemMediaStyles, itemMedia } from "../item.ts";
+import { ITEM, type ItemMediaStyles } from "../item";
 
-type Props = HTMLAttributes<"div"> & Pick<ItemMediaStyles, "variant">;
-
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { variant = "default", class: className, ...rest } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div"> & Pick<ItemMediaStyles, "variant">;
 ---
 
-<div class:list={[itemMedia({ variant }), className]} data-variant={variant} {...rest} data-slot="item-media"><slot /></div>
+<div class:list={[ITEM.media({ variant }), className]} data-variant={variant} {...rest} data-slot="item-media"><slot /></div>

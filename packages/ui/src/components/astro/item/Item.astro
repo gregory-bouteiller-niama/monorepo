@@ -1,10 +1,12 @@
 ---
 import type { HTMLTag, Polymorphic } from "astro/types";
-import { type ItemStyles, item } from "../item.ts";
+import { ITEM, type ItemStyles } from "../item";
 
-type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & Pick<ItemStyles, "size" | "variant">;
-
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { variant = "default", size = "default", class: className, as: Tag = "div", ...rest } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props<Tag extends HTMLTag = "div"> = Polymorphic<{ as: Tag }> & Pick<ItemStyles, "size" | "variant">;
 ---
 
-<Tag class:list={[item({ variant, size }), className]} data-slot="item" {...rest}> <slot /> </Tag>
+<Tag class:list={[ITEM.base({ variant, size }), className]} data-slot="item" {...rest}> <slot /> </Tag>

@@ -1,13 +1,15 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { type ToastTitleStyles, toastTitle, toastTitleIcons } from "../toast.ts";
+import { TOAST, type ToastTitleStyles } from "../toast";
 
-type Props = HTMLAttributes<"div"> & Pick<ToastTitleStyles, "variant">;
-
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className, variant = "default", ...rest } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div"> & Pick<ToastTitleStyles, "variant">;
 ---
 
-<div class:list={[toastTitle({ variant }), className]} data-slot="toast-title" data-toast-title {...rest}>
-  <slot name="icon"> {variant !== "default" && <span class={toastTitleIcons[variant]} />} </slot>
+<div class:list={[TOAST.title({ variant }), className]} data-slot="toast-title" data-toast-title {...rest}>
+  <slot name="icon"> {variant !== "default" && <span class={TOAST.titleIcons[variant]} />} </slot>
   <span data-toast-title-text><slot /></span>
 </div>
