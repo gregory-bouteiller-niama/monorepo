@@ -1,8 +1,8 @@
-/** biome-ignore-all lint/performance/noBarrelFile: folder index is the public Astro component API and now owns the local styles. */
+/** biome-ignore-all lint/performance/noBarrelFile: flat Astro entrypoint exporting the component API and local styles. */
 import { cva } from "class-variance-authority";
-import TooltipComponent from "./Tooltip.astro";
-import TooltipContentComponent from "./TooltipContent.astro";
-import TooltipTriggerComponent from "./TooltipTrigger.astro";
+import TooltipComponent from "./tooltip/Tooltip.astro";
+import TooltipContentComponent from "./tooltip/TooltipContent.astro";
+import TooltipTriggerComponent from "./tooltip/TooltipTrigger.astro";
 
 export const tooltip = cva("starwind-tooltip relative inline-block");
 export const tooltipContent = cva([
@@ -30,9 +30,9 @@ const TooltipVariants = {
   tooltipCaretIcon,
 };
 
-export { default as Tooltip } from "./Tooltip.astro";
-export { default as TooltipContent } from "./TooltipContent.astro";
-export { default as TooltipTrigger } from "./TooltipTrigger.astro";
+export { default as Tooltip } from "./tooltip/Tooltip.astro";
+export { default as TooltipContent } from "./tooltip/TooltipContent.astro";
+export { default as TooltipTrigger } from "./tooltip/TooltipTrigger.astro";
 export { TooltipVariants };
 
 export default {

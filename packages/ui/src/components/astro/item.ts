@@ -1,15 +1,15 @@
-/** biome-ignore-all lint/performance/noBarrelFile: folder index is the public Astro component API and now owns the local styles. */
+/** biome-ignore-all lint/performance/noBarrelFile: flat Astro entrypoint exporting the component API and local styles. */
 import { cva, type VariantProps } from "class-variance-authority";
-import ItemComponent from "./Item.astro";
-import ItemActionsComponent from "./ItemActions.astro";
-import ItemContentComponent from "./ItemContent.astro";
-import ItemDescriptionComponent from "./ItemDescription.astro";
-import ItemFooterComponent from "./ItemFooter.astro";
-import ItemGroupComponent from "./ItemGroup.astro";
-import ItemHeaderComponent from "./ItemHeader.astro";
-import ItemMediaComponent from "./ItemMedia.astro";
-import ItemSeparatorComponent from "./ItemSeparator.astro";
-import ItemTitleComponent from "./ItemTitle.astro";
+import ItemComponent from "./item/Item.astro";
+import ItemActionsComponent from "./item/ItemActions.astro";
+import ItemContentComponent from "./item/ItemContent.astro";
+import ItemDescriptionComponent from "./item/ItemDescription.astro";
+import ItemFooterComponent from "./item/ItemFooter.astro";
+import ItemGroupComponent from "./item/ItemGroup.astro";
+import ItemHeaderComponent from "./item/ItemHeader.astro";
+import ItemMediaComponent from "./item/ItemMedia.astro";
+import ItemSeparatorComponent from "./item/ItemSeparator.astro";
+import ItemTitleComponent from "./item/ItemTitle.astro";
 
 export const item = cva(
   [
@@ -82,16 +82,16 @@ const ItemVariants = {
   itemTitle,
 };
 
-export { default as Item } from "./Item.astro";
-export { default as ItemActions } from "./ItemActions.astro";
-export { default as ItemContent } from "./ItemContent.astro";
-export { default as ItemDescription } from "./ItemDescription.astro";
-export { default as ItemFooter } from "./ItemFooter.astro";
-export { default as ItemGroup } from "./ItemGroup.astro";
-export { default as ItemHeader } from "./ItemHeader.astro";
-export { default as ItemMedia } from "./ItemMedia.astro";
-export { default as ItemSeparator } from "./ItemSeparator.astro";
-export { default as ItemTitle } from "./ItemTitle.astro";
+export { default as Item } from "./item/Item.astro";
+export { default as ItemActions } from "./item/ItemActions.astro";
+export { default as ItemContent } from "./item/ItemContent.astro";
+export { default as ItemDescription } from "./item/ItemDescription.astro";
+export { default as ItemFooter } from "./item/ItemFooter.astro";
+export { default as ItemGroup } from "./item/ItemGroup.astro";
+export { default as ItemHeader } from "./item/ItemHeader.astro";
+export { default as ItemMedia } from "./item/ItemMedia.astro";
+export { default as ItemSeparator } from "./item/ItemSeparator.astro";
+export { default as ItemTitle } from "./item/ItemTitle.astro";
 export { ItemVariants };
 
 export default {

@@ -1,11 +1,11 @@
-/** biome-ignore-all lint/performance/noBarrelFile: folder index is the public Astro component API and now owns the local styles. */
+/** biome-ignore-all lint/performance/noBarrelFile: flat Astro entrypoint exporting the component API and local styles. */
 import { cva } from "class-variance-authority";
-import CarouselComponent from "./Carousel.astro";
-import CarouselContentComponent from "./CarouselContent.astro";
-import CarouselItemComponent from "./CarouselItem.astro";
-import CarouselNextComponent from "./CarouselNext.astro";
-import CarouselPreviousComponent from "./CarouselPrevious.astro";
-import { initCarousel as initCarouselComponent } from "./carousel-script";
+import CarouselComponent from "./carousel/Carousel.astro";
+import CarouselContentComponent from "./carousel/CarouselContent.astro";
+import CarouselItemComponent from "./carousel/CarouselItem.astro";
+import CarouselNextComponent from "./carousel/CarouselNext.astro";
+import CarouselPreviousComponent from "./carousel/CarouselPrevious.astro";
+import { initCarousel as initCarouselComponent } from "./carousel/carousel-script";
 
 export const carousel = cva("starwind-carousel group/carousel relative");
 export const carouselContent = cva("overflow-hidden");
@@ -39,13 +39,13 @@ const CarouselVariants = {
   carouselPrevious,
 };
 
-export { default as Carousel } from "./Carousel.astro";
-export { default as CarouselContent } from "./CarouselContent.astro";
-export { default as CarouselItem } from "./CarouselItem.astro";
-export { default as CarouselNext } from "./CarouselNext.astro";
-export { default as CarouselPrevious } from "./CarouselPrevious.astro";
-export type { CarouselApi, CarouselManager, CarouselOptions } from "./carousel-script";
-export { initCarousel } from "./carousel-script";
+export { default as Carousel } from "./carousel/Carousel.astro";
+export { default as CarouselContent } from "./carousel/CarouselContent.astro";
+export { default as CarouselItem } from "./carousel/CarouselItem.astro";
+export { default as CarouselNext } from "./carousel/CarouselNext.astro";
+export { default as CarouselPrevious } from "./carousel/CarouselPrevious.astro";
+export type { CarouselApi, CarouselManager, CarouselOptions } from "./carousel/carousel-script";
+export { initCarousel } from "./carousel/carousel-script";
 export { CarouselVariants };
 
 export default {

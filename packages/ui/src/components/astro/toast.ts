@@ -1,11 +1,11 @@
-/** biome-ignore-all lint/performance/noBarrelFile: folder index is the public Astro component API and now owns the local styles. */
+/** biome-ignore-all lint/performance/noBarrelFile: flat Astro entrypoint exporting the component API and local styles. */
 import { cva, type VariantProps } from "class-variance-authority";
-import ToastDescriptionComponent from "./ToastDescription.astro";
-import ToasterComponent from "./Toaster.astro";
-import ToastItemComponent from "./ToastItem.astro";
-import ToastTemplateComponent from "./ToastTemplate.astro";
-import ToastTitleComponent from "./ToastTitle.astro";
-import { toast as toastManager } from "./toast-manager";
+import ToastDescriptionComponent from "./toast/ToastDescription.astro";
+import ToasterComponent from "./toast/Toaster.astro";
+import ToastItemComponent from "./toast/ToastItem.astro";
+import ToastTemplateComponent from "./toast/ToastTemplate.astro";
+import ToastTitleComponent from "./toast/ToastTitle.astro";
+import { toast as toastManager } from "./toast/toast-manager";
 
 export const toastDescription = cva("starwind-toast-description text-muted-foreground text-sm");
 export const toastItem = cva(
@@ -79,13 +79,13 @@ const ToastVariants = {
   toastViewport,
 };
 
-export { default as ToastDescription } from "./ToastDescription.astro";
-export { default as Toaster } from "./Toaster.astro";
-export { default as ToastItem } from "./ToastItem.astro";
-export { default as ToastTemplate } from "./ToastTemplate.astro";
-export { default as ToastTitle } from "./ToastTitle.astro";
-export type { PromiseOptions, PromiseStateOption, ToastOptions, Variant } from "./toast-manager";
-export { toast } from "./toast-manager";
+export { default as ToastDescription } from "./toast/ToastDescription.astro";
+export { default as Toaster } from "./toast/Toaster.astro";
+export { default as ToastItem } from "./toast/ToastItem.astro";
+export { default as ToastTemplate } from "./toast/ToastTemplate.astro";
+export { default as ToastTitle } from "./toast/ToastTitle.astro";
+export type { PromiseOptions, PromiseStateOption, ToastOptions, Variant } from "./toast/toast-manager";
+export { toast } from "./toast/toast-manager";
 export { ToastVariants };
 
 export default {

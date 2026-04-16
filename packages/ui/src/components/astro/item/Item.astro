@@ -1,6 +1,6 @@
 ---
 import type { HTMLTag, Polymorphic } from "astro/types";
-import { type ItemStyles, item } from "./index.ts";
+import { type ItemStyles, item } from "../item.ts";
 
 type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & Pick<ItemStyles, "size" | "variant">;
 

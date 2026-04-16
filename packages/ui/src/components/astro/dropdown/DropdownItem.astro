@@ -1,6 +1,6 @@
 ---
 import type { HTMLTag, Polymorphic } from "astro/types";
-import { type DropdownItemStyles, dropdownItem } from "./index.ts";
+import { type DropdownItemStyles, dropdownItem } from "../dropdown.ts";
 
 type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & Pick<DropdownItemStyles, "disabled" | "inset">;
 

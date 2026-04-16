@@ -1,12 +1,12 @@
-/** biome-ignore-all lint/performance/noBarrelFile: folder index is the public Astro component API and now owns the local styles. */
+/** biome-ignore-all lint/performance/noBarrelFile: flat Astro entrypoint exporting the component API and local styles. */
 import { cva, type VariantProps } from "class-variance-authority";
-import CardComponent from "./Card.astro";
-import CardActionComponent from "./CardAction.astro";
-import CardContentComponent from "./CardContent.astro";
-import CardDescriptionComponent from "./CardDescription.astro";
-import CardFooterComponent from "./CardFooter.astro";
-import CardHeaderComponent from "./CardHeader.astro";
-import CardTitleComponent from "./CardTitle.astro";
+import CardComponent from "./card/Card.astro";
+import CardActionComponent from "./card/CardAction.astro";
+import CardContentComponent from "./card/CardContent.astro";
+import CardDescriptionComponent from "./card/CardDescription.astro";
+import CardFooterComponent from "./card/CardFooter.astro";
+import CardHeaderComponent from "./card/CardHeader.astro";
+import CardTitleComponent from "./card/CardTitle.astro";
 
 export const card = cva(
   [
@@ -49,13 +49,13 @@ const CardVariants = {
   cardTitle,
 };
 
-export { default as Card } from "./Card.astro";
-export { default as CardAction } from "./CardAction.astro";
-export { default as CardContent } from "./CardContent.astro";
-export { default as CardDescription } from "./CardDescription.astro";
-export { default as CardFooter } from "./CardFooter.astro";
-export { default as CardHeader } from "./CardHeader.astro";
-export { default as CardTitle } from "./CardTitle.astro";
+export { default as Card } from "./card/Card.astro";
+export { default as CardAction } from "./card/CardAction.astro";
+export { default as CardContent } from "./card/CardContent.astro";
+export { default as CardDescription } from "./card/CardDescription.astro";
+export { default as CardFooter } from "./card/CardFooter.astro";
+export { default as CardHeader } from "./card/CardHeader.astro";
+export { default as CardTitle } from "./card/CardTitle.astro";
 export { CardVariants };
 
 export default {

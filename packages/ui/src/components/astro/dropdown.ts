@@ -1,15 +1,15 @@
-/** biome-ignore-all lint/performance/noBarrelFile: folder index is the public Astro component API and now owns the local styles. */
+/** biome-ignore-all lint/performance/noBarrelFile: flat Astro entrypoint exporting the component API and local styles. */
 import { cva, type VariantProps } from "class-variance-authority";
-import DropdownComponent from "./Dropdown.astro";
-import DropdownContentComponent from "./DropdownContent.astro";
-import DropdownItemComponent from "./DropdownItem.astro";
-import DropdownLabelComponent from "./DropdownLabel.astro";
-import DropdownSeparatorComponent from "./DropdownSeparator.astro";
-import DropdownShortcutComponent from "./DropdownShortcut.astro";
-import DropdownSubComponent from "./DropdownSub.astro";
-import DropdownSubContentComponent from "./DropdownSubContent.astro";
-import DropdownSubTriggerComponent from "./DropdownSubTrigger.astro";
-import DropdownTriggerComponent from "./DropdownTrigger.astro";
+import DropdownComponent from "./dropdown/Dropdown.astro";
+import DropdownContentComponent from "./dropdown/DropdownContent.astro";
+import DropdownItemComponent from "./dropdown/DropdownItem.astro";
+import DropdownLabelComponent from "./dropdown/DropdownLabel.astro";
+import DropdownSeparatorComponent from "./dropdown/DropdownSeparator.astro";
+import DropdownShortcutComponent from "./dropdown/DropdownShortcut.astro";
+import DropdownSubComponent from "./dropdown/DropdownSub.astro";
+import DropdownSubContentComponent from "./dropdown/DropdownSubContent.astro";
+import DropdownSubTriggerComponent from "./dropdown/DropdownSubTrigger.astro";
+import DropdownTriggerComponent from "./dropdown/DropdownTrigger.astro";
 
 export const dropdown = cva(["starwind-dropdown", "relative"]);
 
@@ -142,16 +142,16 @@ const DropdownVariants = {
   dropdownTriggerAsChild,
 };
 
-export { default as Dropdown } from "./Dropdown.astro";
-export { default as DropdownContent } from "./DropdownContent.astro";
-export { default as DropdownItem } from "./DropdownItem.astro";
-export { default as DropdownLabel } from "./DropdownLabel.astro";
-export { default as DropdownSeparator } from "./DropdownSeparator.astro";
-export { default as DropdownShortcut } from "./DropdownShortcut.astro";
-export { default as DropdownSub } from "./DropdownSub.astro";
-export { default as DropdownSubContent } from "./DropdownSubContent.astro";
-export { default as DropdownSubTrigger } from "./DropdownSubTrigger.astro";
-export { default as DropdownTrigger } from "./DropdownTrigger.astro";
+export { default as Dropdown } from "./dropdown/Dropdown.astro";
+export { default as DropdownContent } from "./dropdown/DropdownContent.astro";
+export { default as DropdownItem } from "./dropdown/DropdownItem.astro";
+export { default as DropdownLabel } from "./dropdown/DropdownLabel.astro";
+export { default as DropdownSeparator } from "./dropdown/DropdownSeparator.astro";
+export { default as DropdownShortcut } from "./dropdown/DropdownShortcut.astro";
+export { default as DropdownSub } from "./dropdown/DropdownSub.astro";
+export { default as DropdownSubContent } from "./dropdown/DropdownSubContent.astro";
+export { default as DropdownSubTrigger } from "./dropdown/DropdownSubTrigger.astro";
+export { default as DropdownTrigger } from "./dropdown/DropdownTrigger.astro";
 export { DropdownVariants };
 
 export default {
