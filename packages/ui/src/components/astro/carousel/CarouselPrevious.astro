@@ -1,17 +1,19 @@
 ---
 import { Button } from "@niama/ui/astro/button";
 import type { ComponentProps } from "astro/types";
-import { carouselPrevious } from "../carousel.ts";
+import { CAROUSEL } from "../carousel";
 
-type Props = ComponentProps<typeof Button>;
-
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className = "", variant = "outline", size = "icon", ...rest } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = ComponentProps<typeof Button>;
 ---
 
 <Button
   variant={variant}
   size={size}
-  class:list={[carouselPrevious(), className]}
+  class:list={[CAROUSEL.previous(), className]}
   aria-label="Previous slide"
   {...rest}
   data-slot="carousel-previous"

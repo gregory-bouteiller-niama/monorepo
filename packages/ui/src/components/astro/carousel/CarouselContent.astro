@@ -1,12 +1,14 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { carouselContainer, carouselContent } from "../carousel.ts";
+import { CAROUSEL } from "../carousel";
 
-type Props = HTMLAttributes<"div">;
-
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className = "", ...rest } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div">;
 ---
 
-<div class={carouselContent()} {...rest} data-slot="carousel-content">
-  <div class:list={[carouselContainer(), className]} data-slot="carousel-container"><slot /></div>
+<div class={CAROUSEL.content()} {...rest} data-slot="carousel-content">
+  <div class:list={[CAROUSEL.container(), className]} data-slot="carousel-container"><slot /></div>
 </div>

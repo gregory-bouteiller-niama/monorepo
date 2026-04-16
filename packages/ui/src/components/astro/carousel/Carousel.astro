@@ -1,19 +1,17 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 import type { EmblaOptionsType } from "embla-carousel";
-import { carousel } from "../carousel.ts";
+import { CAROUSEL } from "../carousel";
 
-export interface Props extends HTMLAttributes<"div"> {
-  autoInit?: boolean;
-  opts?: EmblaOptionsType;
-  orientation?: "horizontal" | "vertical";
-}
-
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className, orientation = "horizontal", opts = {}, autoInit = true, ...rest } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div"> & { autoInit?: boolean; opts?: EmblaOptionsType; orientation?: "horizontal" | "vertical" };
 ---
 
 <div
-  class:list={[carousel(), className]}
+  class:list={[CAROUSEL.base(), className]}
   role="region"
   aria-roledescription="carousel"
   data-axis={orientation === "horizontal" ? "x" : "y"}
@@ -30,12 +28,10 @@ const { class: className, orientation = "horizontal", opts = {}, autoInit = true
 
   const setupCarousels = () => {
     const carousels = document.querySelectorAll(".starwind-carousel") as NodeListOf<HTMLElement>;
-    carousels.forEach((carousel) => {
-      if (carousel.dataset.autoInit === "false") {
-        return;
-      }
+    for (const carousel of carousels) {
+      if (carousel.dataset.autoInit === "false") continue;
       initCarousel(carousel);
-    });
+    }
   };
 
   document.addEventListener("DOMContentLoaded", setupCarousels);

@@ -1,22 +1,5 @@
 import EmblaCarousel, { type EmblaCarouselType, type EmblaOptionsType, type EmblaPluginType } from "embla-carousel";
 
-export type CarouselApi = EmblaCarouselType;
-
-export interface CarouselOptions {
-  opts?: EmblaOptionsType;
-  plugins?: EmblaPluginType[];
-  setApi?: (api: CarouselApi) => void;
-}
-
-export interface CarouselManager {
-  api: CarouselApi;
-  canScrollNext: () => boolean;
-  canScrollPrev: () => boolean;
-  destroy: () => void;
-  scrollNext: () => void;
-  scrollPrev: () => void;
-}
-
 export function initCarousel(carouselElement: HTMLElement, options: CarouselOptions = {}): CarouselManager | null {
   // don't re-initialize if already initialized
   if (carouselElement.dataset.initialized === "true") return null;
@@ -42,18 +25,14 @@ export function initCarousel(carouselElement: HTMLElement, options: CarouselOpti
   let dataOpts = {};
   try {
     const optsString = carouselElement.dataset.opts;
-    if (optsString && optsString !== "undefined" && optsString !== "null") {
-      dataOpts = JSON.parse(optsString);
-    }
+    if (optsString && optsString !== "undefined" && optsString !== "null") dataOpts = JSON.parse(optsString);
   } catch (e) {
     console.warn("Failed to parse carousel opts:", e);
     dataOpts = {};
   }
 
   // Ensure dataOpts is a valid object
-  if (!dataOpts || typeof dataOpts !== "object") {
-    dataOpts = {};
-  }
+  if (!dataOpts || typeof dataOpts !== "object") dataOpts = {};
 
   // Merge options - ensure we always have a valid object
   const emblaOptions: EmblaOptionsType = {
@@ -74,12 +53,7 @@ export function initCarousel(carouselElement: HTMLElement, options: CarouselOpti
   const nextButton = carouselElement.querySelector(".starwind-carousel-next") as HTMLButtonElement;
 
   // Initialize Embla
-  let emblaApi: EmblaCarouselType;
-  if (plugins) {
-    emblaApi = EmblaCarousel(viewportElement, emblaOptions, plugins);
-  } else {
-    emblaApi = EmblaCarousel(viewportElement, emblaOptions);
-  }
+  const emblaApi: EmblaCarouselType = EmblaCarousel(viewportElement, emblaOptions, plugins);
 
   // Update button states
   const updateButtons = () => {
@@ -110,15 +84,12 @@ export function initCarousel(carouselElement: HTMLElement, options: CarouselOpti
         event.preventDefault();
         emblaApi.scrollNext();
       }
-    } else {
-      // Horizontal axis (default): ArrowLeft = previous, ArrowRight = next
-      if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        emblaApi.scrollPrev();
-      } else if (event.key === "ArrowRight") {
-        event.preventDefault();
-        emblaApi.scrollNext();
-      }
+    } else if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      emblaApi.scrollPrev();
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      emblaApi.scrollNext();
     }
   };
 
@@ -134,9 +105,7 @@ export function initCarousel(carouselElement: HTMLElement, options: CarouselOpti
 
   // Setup user API callback
   const setupUserCallbacks = () => {
-    if (options.setApi) {
-      options.setApi(emblaApi);
-    }
+    if (options.setApi) options.setApi(emblaApi);
   };
 
   // Initialize everything
@@ -162,12 +131,9 @@ export function initCarousel(carouselElement: HTMLElement, options: CarouselOpti
     canScrollNext: () => emblaApi.canScrollNext(),
     destroy: () => {
       // Remove event listeners to prevent memory leaks
-      if (prevButton) {
-        prevButton.removeEventListener("click", prevClickHandler);
-      }
-      if (nextButton) {
-        nextButton.removeEventListener("click", nextClickHandler);
-      }
+      if (prevButton) prevButton.removeEventListener("click", prevClickHandler);
+      if (nextButton) nextButton.removeEventListener("click", nextClickHandler);
+
       carouselElement.removeEventListener("keydown", keydownHandler);
 
       // Destroy the Embla instance
@@ -175,3 +141,21 @@ export function initCarousel(carouselElement: HTMLElement, options: CarouselOpti
     },
   };
 }
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type CarouselApi = EmblaCarouselType;
+
+export type CarouselOptions = {
+  opts?: EmblaOptionsType;
+  plugins?: EmblaPluginType[];
+  setApi?: (api: CarouselApi) => void;
+};
+
+export type CarouselManager = {
+  api: CarouselApi;
+  canScrollNext: () => boolean;
+  canScrollPrev: () => boolean;
+  destroy: () => void;
+  scrollNext: () => void;
+  scrollPrev: () => void;
+};
