@@ -1,5 +1,5 @@
 ---
-import { Separator } from "@niama/ui/astro/separator";
+import { Separator as SeparatorNative } from "@niama/ui/astro/separator";
 import type { ComponentProps } from "astro/types";
 import { ITEM } from "../item";
 
@@ -7,7 +7,7 @@ import { ITEM } from "../item";
 const { class: className, orientation = "horizontal", ...rest } = Astro.props;
 
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------
-export type Props = ComponentProps<typeof Separator>;
+export type Props = ComponentProps<typeof SeparatorNative>;
 ---
 
-<Separator orientation={orientation} class:list={[ITEM.separator(), className]} {...rest} data-slot="item-separator" />
+<SeparatorNative orientation={orientation} class:list={[ITEM.separator(), className]} {...rest} data-slot="item-separator" />

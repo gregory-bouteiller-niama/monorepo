@@ -5,8 +5,8 @@ export const SEPARATOR = {
   base: cva("shrink-0 bg-border", {
     variants: {
       orientation: {
-        horizontal: "h-[1px] w-full",
-        vertical: "h-full w-[1px]",
+        horizontal: "h-px w-full",
+        vertical: "h-full w-px",
       },
     },
     defaultVariants: {
@@ -17,4 +17,4 @@ export const SEPARATOR = {
 
 export type SeparatorStyles = VariantProps<typeof SEPARATOR.base>;
 
-export { default as Separator, type Props as SeparatorProps } from "./separator/Separator.astro";
+export { default as Separator, type Props as SeparatorProps } from "./separator/separator.astro";

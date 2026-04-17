@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "astro/types";
 import { DROPDOWN } from "../dropdown";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
-const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Astro.props;
+const { class: className, openOnHover = false, closeDelay = 200, modal = true, ...rest } = Astro.props;
 
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------
 export type Props = HTMLAttributes<"div"> & {
@@ -16,8 +16,11 @@ export type Props = HTMLAttributes<"div"> & {
    * @default 200
    */
   closeDelay?: number;
-
-  children: any;
+  /**
+   * When true, root dropdowns lock page scrolling while open
+   * @default true
+   */
+  modal?: boolean;
 };
 ---
 
@@ -25,6 +28,7 @@ export type Props = HTMLAttributes<"div"> & {
   class:list={[DROPDOWN.base(), className]}
   data-open-on-hover={openOnHover ? "true" : undefined}
   data-close-delay={closeDelay}
+  data-modal={modal ? "true" : "false"}
   {...rest}
   data-slot="dropdown"
 >
@@ -32,6 +36,77 @@ export type Props = HTMLAttributes<"div"> & {
 </div>
 
 <script>
+  class ScrollLockController {
+    private lockCount = 0;
+    private restore: (() => void) | null = null;
+
+    acquire() {
+      this.lockCount += 1;
+
+      if (this.lockCount === 1) {
+        this.restore = this.lock();
+      }
+
+      return () => {
+        if (this.lockCount === 0) return;
+
+        this.lockCount -= 1;
+
+        if (this.lockCount === 0) {
+          this.restore?.();
+          this.restore = null;
+        }
+      };
+    }
+
+    private lock() {
+      const { body, documentElement } = document;
+      const supportsStableScrollbarGutter = typeof CSS !== "undefined" && CSS.supports("scrollbar-gutter", "stable");
+      const scrollbarWidth = window.innerWidth - documentElement.clientWidth;
+      const previousHtmlStyles = {
+        overflow: documentElement.style.overflow,
+        scrollbarGutter: documentElement.style.scrollbarGutter,
+        scrollBehavior: documentElement.style.scrollBehavior,
+      };
+      const previousBodyStyles = {
+        overflow: body.style.overflow,
+        paddingRight: body.style.paddingRight,
+        scrollBehavior: body.style.scrollBehavior,
+      };
+
+      documentElement.style.scrollBehavior = "auto";
+      body.style.scrollBehavior = "auto";
+      documentElement.style.overflow = "hidden";
+      body.style.overflow = "hidden";
+
+      if (supportsStableScrollbarGutter) {
+        documentElement.style.scrollbarGutter = "stable";
+      } else if (scrollbarWidth > 0) {
+        body.style.paddingRight = `${scrollbarWidth}px`;
+      }
+
+      return () => {
+        documentElement.style.overflow = previousHtmlStyles.overflow;
+        documentElement.style.scrollbarGutter = previousHtmlStyles.scrollbarGutter;
+        documentElement.style.scrollBehavior = previousHtmlStyles.scrollBehavior;
+        body.style.overflow = previousBodyStyles.overflow;
+        body.style.paddingRight = previousBodyStyles.paddingRight;
+        body.style.scrollBehavior = previousBodyStyles.scrollBehavior;
+      };
+    }
+  }
+
+  const dropdownWindow = window as Window & { __starwindDropdownScrollLock?: ScrollLockController };
+  if (!dropdownWindow.__starwindDropdownScrollLock) {
+    dropdownWindow.__starwindDropdownScrollLock = new ScrollLockController();
+  }
+  const scrollLockController = dropdownWindow.__starwindDropdownScrollLock;
+
+  type DropdownContentElement = HTMLElement & {
+    __dropdownHandler?: DropdownHandler;
+    __rootDropdown?: HTMLElement;
+  };
+
   class DropdownHandler {
     private dropdown: HTMLElement;
     private trigger: HTMLElement | null;
@@ -41,6 +116,8 @@ export type Props = HTMLAttributes<"div"> & {
     private isOpen = false;
     private isClosing = false;
     private animationDuration = 150;
+    private preferredAlign: "center" | "end" | "start" = "start";
+    private preferredSide: "bottom" | "left" | "right" | "top" = "bottom";
     private openOnHover: boolean;
     private closeDelay: number;
     private closeTimerRef: number | null = null;
@@ -52,12 +129,15 @@ export type Props = HTMLAttributes<"div"> & {
     private cleanupAutoUpdate: (() => void) | null = null;
     private openChildCount = 0;
     private parentHandler: DropdownHandler | null = null;
+    private modal: boolean;
+    private releaseScrollLock: (() => void) | null = null;
 
     constructor(dropdown: HTMLElement, dropdownIdx: number) {
       this.dropdown = dropdown;
       this.isSubmenu = dropdown.classList.contains("starwind-dropdown-sub");
       this.openOnHover = dropdown.getAttribute("data-open-on-hover") === "true" || this.isSubmenu;
-      this.closeDelay = Number.parseInt(dropdown.getAttribute("data-close-delay") || "200");
+      this.closeDelay = Number.parseInt(dropdown.getAttribute("data-close-delay") || "200", 10);
+      this.modal = dropdown.getAttribute("data-modal") !== "false";
 
       // Find the trigger and content that belong to this dropdown, avoiding nested ones
       this.trigger = this.findOwnElement('[data-slot="dropdown-trigger"], [data-sub-trigger]');
@@ -74,11 +154,22 @@ export type Props = HTMLAttributes<"div"> & {
 
       // Store handler reference and root dropdown on content element for lookups
       if (this.content) {
-        (this.content as any).__dropdownHandler = this;
-        (this.content as any).__rootDropdown = this.rootDropdown;
+        const contentElement = this.content as DropdownContentElement;
+        contentElement.__dropdownHandler = this;
+        contentElement.__rootDropdown = this.rootDropdown;
       }
 
       if (!(this.trigger && this.content)) return;
+
+      const preferredSide = this.content.dataset.preferredSide;
+      if (preferredSide === "top" || preferredSide === "bottom" || preferredSide === "left" || preferredSide === "right") {
+        this.preferredSide = preferredSide;
+      }
+
+      const preferredAlign = this.content.dataset.preferredAlign;
+      if (preferredAlign === "start" || preferredAlign === "center" || preferredAlign === "end") {
+        this.preferredAlign = preferredAlign;
+      }
 
       // Get animation duration from inline styles if available
       const animationDurationString = this.content.style.animationDuration;
@@ -331,6 +422,8 @@ export type Props = HTMLAttributes<"div"> & {
             this.items[currentIdx].click();
           }
           break;
+        default:
+          break;
       }
     }
 
@@ -338,7 +431,7 @@ export type Props = HTMLAttributes<"div"> & {
       const el = target instanceof HTMLElement ? target : target.parentElement;
       if (!el) return false;
       const contentEl = el.closest('[data-slot="dropdown-content"]');
-      return !!contentEl && (contentEl as any).__rootDropdown === this.rootDropdown;
+      return !!contentEl && (contentEl as DropdownContentElement).__rootDropdown === this.rootDropdown;
     }
 
     private updateDropdownItems() {
@@ -369,16 +462,13 @@ export type Props = HTMLAttributes<"div"> & {
 
     private openDropdown() {
       if (this.isClosing) return;
-      if (!(this.content && this.trigger) || (this.trigger as any).disabled) return;
+      if (!(this.content && this.trigger) || this.trigger.matches(":disabled")) return;
 
       this.isOpen = true;
       this.trigger.setAttribute("aria-expanded", "true");
       this.content.style.removeProperty("display");
-
-      // Portal sub-content to body before triggering animation
-      if (this.isSubmenu) {
-        this.portalContent();
-      }
+      this.portalContent();
+      this.acquireScrollLock();
 
       this.content.setAttribute("data-state", "open");
 
@@ -405,6 +495,8 @@ export type Props = HTMLAttributes<"div"> & {
       this.isClosing = true;
       this.isOpen = false;
       this.content.setAttribute("data-state", "closed");
+      this.releaseScrollLock?.();
+      this.releaseScrollLock = null;
 
       // Set focus back on trigger only if opened or closed by keyboard
       // Skip focus if a close-all with focusRoot is closing this submenu (root will handle focus)
@@ -418,9 +510,7 @@ export type Props = HTMLAttributes<"div"> & {
       // Give the content time to animate before hiding
       setTimeout(() => {
         if (!this.content) return;
-        if (this.isSubmenu) {
-          this.unportalContent();
-        }
+        this.unportalContent();
         this.content.style.display = "none";
         this.isClosing = false;
       }, this.animationDuration);
@@ -453,11 +543,20 @@ export type Props = HTMLAttributes<"div"> & {
       }
     }
 
+    private acquireScrollLock() {
+      if (this.isSubmenu || this.openOnHover || !this.modal || this.releaseScrollLock) return;
+      this.releaseScrollLock = scrollLockController.acquire();
+    }
+
     private portalContent() {
       if (!(this.content && this.trigger)) return;
+      if (this.contentPlaceholder || this.content.parentElement === document.body) {
+        this.positionContent();
+        return;
+      }
 
       // Save the original position with a placeholder
-      this.contentPlaceholder = document.createComment("dropdown-sub-placeholder");
+      this.contentPlaceholder = document.createComment(this.isSubmenu ? "dropdown-sub-placeholder" : "dropdown-placeholder");
       this.content.parentNode?.insertBefore(this.contentPlaceholder, this.content);
 
       // Move content to body
@@ -468,47 +567,51 @@ export type Props = HTMLAttributes<"div"> & {
       this.content.style.zIndex = "50";
 
       // Position relative to trigger
-      this.positionSubContent();
+      this.positionContent();
 
       // Set up auto-update for scroll/resize
-      const updatePosition = () => this.positionSubContent();
+      const updatePosition = () => this.positionContent();
       window.addEventListener("scroll", updatePosition, true);
       window.addEventListener("resize", updatePosition);
 
       // Find and link to parent handler for child-tracking
       const parentContent = this.trigger.closest('[data-slot="dropdown-content"]');
       if (parentContent) {
-        this.parentHandler = (parentContent as any).__dropdownHandler || null;
+        this.parentHandler = (parentContent as DropdownContentElement).__dropdownHandler || null;
         if (this.parentHandler) {
           this.parentHandler.openChildCount++;
         }
       }
 
-      // Handle hover interactions for portaled content
-      const onPointerEnter = (e: PointerEvent) => {
-        if (e.pointerType !== "mouse") return;
-        this.clearCloseTimer();
-        // Cancel close timers for all handlers in the group (parents included)
-        this.rootDropdown.dispatchEvent(new CustomEvent("starwind-dropdown:cancel-close"));
-      };
-
-      const onPointerLeave = (e: PointerEvent) => {
-        if (e.pointerType !== "mouse") return;
-        // Don't close if a child submenu is still open
-        if (this.openChildCount > 0) return;
-        this.lastCloseSource = "mouse";
-        this.closeDropdownDelayed();
-      };
-
-      this.content.addEventListener("pointerenter", onPointerEnter);
-      this.content.addEventListener("pointerleave", onPointerLeave);
-
       this.cleanupAutoUpdate = () => {
         window.removeEventListener("scroll", updatePosition, true);
         window.removeEventListener("resize", updatePosition);
-        this.content?.removeEventListener("pointerenter", onPointerEnter);
-        this.content?.removeEventListener("pointerleave", onPointerLeave);
       };
+
+      if (this.openOnHover) {
+        const onPointerEnter = (e: PointerEvent) => {
+          if (e.pointerType !== "mouse") return;
+          this.clearCloseTimer();
+          this.rootDropdown.dispatchEvent(new CustomEvent("starwind-dropdown:cancel-close"));
+        };
+
+        const onPointerLeave = (e: PointerEvent) => {
+          if (e.pointerType !== "mouse") return;
+          if (this.openChildCount > 0) return;
+          this.lastCloseSource = "mouse";
+          this.closeDropdownDelayed();
+        };
+
+        this.content.addEventListener("pointerenter", onPointerEnter);
+        this.content.addEventListener("pointerleave", onPointerLeave);
+
+        const cleanupAutoUpdate = this.cleanupAutoUpdate;
+        this.cleanupAutoUpdate = () => {
+          cleanupAutoUpdate?.();
+          this.content?.removeEventListener("pointerenter", onPointerEnter);
+          this.content?.removeEventListener("pointerleave", onPointerLeave);
+        };
+      }
     }
 
     private unportalContent() {
@@ -534,6 +637,8 @@ export type Props = HTMLAttributes<"div"> & {
       this.content.style.removeProperty("z-index");
       this.content.style.removeProperty("top");
       this.content.style.removeProperty("left");
+      this.content.style.removeProperty("width");
+      this.content.style.removeProperty("--starwind-dropdown-trigger-width");
     }
 
     private positionSubContent() {
@@ -566,11 +671,89 @@ export type Props = HTMLAttributes<"div"> & {
     }
 
     private positionContent() {
-      if (!(this.content && this.trigger) || this.isSubmenu) return;
+      if (!(this.content && this.trigger)) return;
 
-      // Set content width to match trigger width
-      this.content.style.width = "var(--starwind-dropdown-trigger-width)";
       this.content.style.setProperty("--starwind-dropdown-trigger-width", `${this.trigger.offsetWidth}px`);
+
+      if (this.isSubmenu) {
+        this.positionSubContent();
+        return;
+      }
+
+      const sideOffsetValue = Number.parseFloat(this.content.dataset.sideOffset || "0");
+      const sideOffset = Number.isFinite(sideOffsetValue) ? sideOffsetValue : 0;
+      const triggerRect = this.trigger.getBoundingClientRect();
+      const viewportPadding = 8;
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+
+      const computePosition = (side: "bottom" | "left" | "right" | "top") => {
+        const contentWidth = this.content?.offsetWidth ?? 0;
+        const contentHeight = this.content?.offsetHeight ?? 0;
+        let top = triggerRect.bottom + sideOffset;
+        let left = triggerRect.left;
+
+        if (side === "top") {
+          top = triggerRect.top - contentHeight - sideOffset;
+        } else if (side === "left") {
+          top = triggerRect.top;
+          left = triggerRect.left - contentWidth - sideOffset;
+        } else if (side === "right") {
+          top = triggerRect.top;
+          left = triggerRect.right + sideOffset;
+        }
+
+        if (side === "top" || side === "bottom") {
+          if (this.preferredAlign === "center") {
+            left = triggerRect.left + triggerRect.width / 2 - contentWidth / 2;
+          } else if (this.preferredAlign === "end") {
+            left = triggerRect.right - contentWidth;
+          }
+        } else if (this.preferredAlign === "center") {
+          top = triggerRect.top + triggerRect.height / 2 - contentHeight / 2;
+        } else if (this.preferredAlign === "end") {
+          top = triggerRect.bottom - contentHeight;
+        }
+
+        return { contentHeight, contentWidth, left, top };
+      };
+
+      let side = this.preferredSide;
+      let { contentHeight, contentWidth, left, top } = computePosition(side);
+
+      if (
+        side === "bottom" &&
+        top + contentHeight > viewportHeight - viewportPadding &&
+        triggerRect.top - contentHeight - sideOffset >= viewportPadding
+      ) {
+        side = "top";
+        ({ contentHeight, contentWidth, left, top } = computePosition(side));
+      } else if (
+        side === "top" &&
+        top < viewportPadding &&
+        triggerRect.bottom + contentHeight + sideOffset <= viewportHeight - viewportPadding
+      ) {
+        side = "bottom";
+        ({ contentHeight, contentWidth, left, top } = computePosition(side));
+      } else if (
+        side === "right" &&
+        left + contentWidth > viewportWidth - viewportPadding &&
+        triggerRect.left - contentWidth - sideOffset >= viewportPadding
+      ) {
+        side = "left";
+        ({ contentHeight, contentWidth, left, top } = computePosition(side));
+      } else if (
+        side === "left" &&
+        left < viewportPadding &&
+        triggerRect.right + contentWidth + sideOffset <= viewportWidth - viewportPadding
+      ) {
+        side = "right";
+        ({ contentHeight, contentWidth, left, top } = computePosition(side));
+      }
+
+      this.content.dataset.side = side;
+      this.content.style.top = `${Math.min(Math.max(viewportPadding, top), viewportHeight - contentHeight - viewportPadding)}px`;
+      this.content.style.left = `${Math.min(Math.max(viewportPadding, left), viewportWidth - contentWidth - viewportPadding)}px`;
     }
   }
 
@@ -580,11 +763,11 @@ export type Props = HTMLAttributes<"div"> & {
 
   // Initialize dropdowns
   const initDropdowns = () => {
-    document.querySelectorAll(".starwind-dropdown, .starwind-dropdown-sub").forEach((dropdown) => {
+    for (const dropdown of document.querySelectorAll(".starwind-dropdown, .starwind-dropdown-sub")) {
       if (dropdown instanceof HTMLElement && !dropdownInstances.has(dropdown)) {
         dropdownInstances.set(dropdown, new DropdownHandler(dropdown, dropdownCounter++));
       }
-    });
+    }
   };
 
   initDropdowns();

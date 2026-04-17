@@ -22,6 +22,6 @@ export const TOOLTIP = {
   caretIcon: cva("icon-[tabler--caret-up]"),
 } as const;
 
-export { default as Tooltip, type Props as TooltipProps } from "./tooltip/Tooltip.astro";
-export { default as TooltipContent, type Props as TooltipContentProps } from "./tooltip/TooltipContent.astro";
-export { default as TooltipTrigger, type Props as TooltipTriggerProps } from "./tooltip/TooltipTrigger.astro";
+export { default as TooltipContent, type Props as TooltipContentProps } from "./tooltip/content.astro";
+export { default as Tooltip, type Props as TooltipProps } from "./tooltip/tooltip.astro";
+export { default as TooltipTrigger, type Props as TooltipTriggerProps } from "./tooltip/trigger.astro";

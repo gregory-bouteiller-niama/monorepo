@@ -22,10 +22,10 @@ export const CAROUSEL = {
   ),
 } as const;
 
-export { default as Carousel, type Props as CarouselProps } from "./carousel/Carousel.astro";
-export { default as CarouselContent, type Props as CarouselContentProps } from "./carousel/CarouselContent.astro";
-export { default as CarouselItem, type Props as CarouselItemProps } from "./carousel/CarouselItem.astro";
-export { default as CarouselNext, type Props as CarouselNextProps } from "./carousel/CarouselNext.astro";
-export { default as CarouselPrevious, type Props as CarouselPreviousProps } from "./carousel/CarouselPrevious.astro";
-export type { CarouselApi, CarouselManager, CarouselOptions } from "./carousel/carousel-script";
-export { initCarousel } from "./carousel/carousel-script";
+export { default as Carousel, type Props as CarouselProps } from "./carousel/carousel.astro";
+export { default as CarouselContent, type Props as CarouselContentProps } from "./carousel/content.astro";
+export { default as CarouselItem, type Props as CarouselItemProps } from "./carousel/item.astro";
+export { default as CarouselNext, type Props as CarouselNextProps } from "./carousel/next.astro";
+export { default as CarouselPrevious, type Props as CarouselPreviousProps } from "./carousel/previous.astro";
+export type { CarouselApi, CarouselManager, CarouselOptions } from "./carousel/utils";
+export { initCarousel } from "./carousel/utils";

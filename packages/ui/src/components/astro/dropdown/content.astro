@@ -33,6 +33,9 @@ export type Props = HTMLAttributes<"div"> & {
 <div
   class:list={[DROPDOWN.content({ side, align }), className]}
   role="menu"
+  data-preferred-align={align}
+  data-preferred-side={side}
+  data-side-offset={sideOffset}
   data-side={side}
   data-align={align}
   data-state="closed"
@@ -41,10 +44,6 @@ export type Props = HTMLAttributes<"div"> & {
   style={{
     display: "none",
     animationDuration: `${animationDuration}ms`,
-    marginTop: side === "bottom" ? `${sideOffset}px` : undefined,
-    marginBottom: side === "top" ? `${sideOffset}px` : undefined,
-    marginLeft: side === "right" ? `${sideOffset}px` : undefined,
-    marginRight: side === "left" ? `${sideOffset}px` : undefined,
   }}
   {...rest}
   data-slot="dropdown-content"

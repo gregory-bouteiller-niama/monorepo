@@ -38,7 +38,7 @@ export const ITEM = {
   media: cva(
     [
       "flex shrink-0 items-center justify-center gap-2 [&_svg]:pointer-events-none",
-      "group-has-[[data-slot=item-description]]/item:translate-y-0.5 group-has-[[data-slot=item-description]]/item:self-start",
+      "group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start",
     ],
     {
       variants: {
@@ -60,13 +60,13 @@ export const ITEM = {
 export type ItemStyles = VariantProps<typeof ITEM.base>;
 export type ItemMediaStyles = VariantProps<typeof ITEM.media>;
 
-export { default as Item, type Props as ItemProps } from "./item/Item.astro";
-export { default as ItemActions, type Props as ItemActionsProps } from "./item/ItemActions.astro";
-export { default as ItemContent, type Props as ItemContentProps } from "./item/ItemContent.astro";
-export { default as ItemDescription, type Props as ItemDescriptionProps } from "./item/ItemDescription.astro";
-export { default as ItemFooter, type Props as ItemFooterProps } from "./item/ItemFooter.astro";
-export { default as ItemGroup, type Props as ItemGroupProps } from "./item/ItemGroup.astro";
-export { default as ItemHeader, type Props as ItemHeaderProps } from "./item/ItemHeader.astro";
-export { default as ItemMedia, type Props as ItemMediaProps } from "./item/ItemMedia.astro";
-export { default as ItemSeparator, type Props as ItemSeparatorProps } from "./item/ItemSeparator.astro";
-export { default as ItemTitle, type Props as ItemTitleProps } from "./item/ItemTitle.astro";
+export { default as ItemActions, type Props as ItemActionsProps } from "./item/actions.astro";
+export { default as ItemContent, type Props as ItemContentProps } from "./item/content.astro";
+export { default as ItemDescription, type Props as ItemDescriptionProps } from "./item/description.astro";
+export { default as ItemFooter, type Props as ItemFooterProps } from "./item/footer.astro";
+export { default as ItemGroup, type Props as ItemGroupProps } from "./item/group.astro";
+export { default as ItemHeader, type Props as ItemHeaderProps } from "./item/header.astro";
+export { default as Item, type Props as ItemProps } from "./item/item.astro";
+export { default as ItemMedia, type Props as ItemMediaProps } from "./item/media.astro";
+export { default as ItemSeparator, type Props as ItemSeparatorProps } from "./item/separator.astro";
+export { default as ItemTitle, type Props as ItemTitleProps } from "./item/title.astro";

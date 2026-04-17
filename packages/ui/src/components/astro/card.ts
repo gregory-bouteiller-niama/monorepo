@@ -33,10 +33,10 @@ export const CARD = {
 
 export type CardStyles = VariantProps<typeof CARD.base>;
 
-export { default as Card, type Props as CardProps } from "./card/Card.astro";
-export { default as CardAction, type Props as CardActionProps } from "./card/CardAction.astro";
-export { default as CardContent, type Props as CardContentProps } from "./card/CardContent.astro";
-export { default as CardDescription, type Props as CardDescriptionProps } from "./card/CardDescription.astro";
-export { default as CardFooter, type Props as CardFooterProps } from "./card/CardFooter.astro";
-export { default as CardHeader, type Props as CardHeaderProps } from "./card/CardHeader.astro";
-export { default as CardTitle, type Props as CardTitleProps } from "./card/CardTitle.astro";
+export { default as CardAction, type Props as CardActionProps } from "./card/action.astro";
+export { default as Card, type Props as CardProps } from "./card/card.astro";
+export { default as CardContent, type Props as CardContentProps } from "./card/content.astro";
+export { default as CardDescription, type Props as CardDescriptionProps } from "./card/description.astro";
+export { default as CardFooter, type Props as CardFooterProps } from "./card/footer.astro";
+export { default as CardHeader, type Props as CardHeaderProps } from "./card/header.astro";
+export { default as CardTitle, type Props as CardTitleProps } from "./card/title.astro";

@@ -61,10 +61,10 @@ export const TOAST = {
 export type ToastItemStyles = VariantProps<typeof TOAST.item>;
 export type ToastTitleStyles = VariantProps<typeof TOAST.title>;
 
-export { default as ToastDescription, type Props as ToastDescriptionProps } from "./toast/ToastDescription.astro";
-export { default as Toaster, type Props as ToasterProps } from "./toast/Toaster.astro";
-export { default as ToastItem, type Props as ToastItemProps } from "./toast/ToastItem.astro";
-export { default as ToastTemplate, type Props as ToastTemplateProps } from "./toast/ToastTemplate.astro";
-export { default as ToastTitle, type Props as ToastTitleProps } from "./toast/ToastTitle.astro";
-export type { PromiseOptions, PromiseStateOption, ToastOptions, Variant } from "./toast/toast-manager";
-export { toast } from "./toast/toast-manager";
+export { default as ToastDescription, type Props as ToastDescriptionProps } from "./toast/description.astro";
+export { default as ToastItem, type Props as ToastItemProps } from "./toast/item.astro";
+export { default as ToastTemplate, type Props as ToastTemplateProps } from "./toast/template.astro";
+export { default as ToastTitle, type Props as ToastTitleProps } from "./toast/title.astro";
+export { default as Toaster, type Props as ToasterProps } from "./toast/toaster.astro";
+export type { PromiseOptions, PromiseStateOption, ToastOptions, Variant } from "./toast/utils";
+export { toast } from "./toast/utils";
