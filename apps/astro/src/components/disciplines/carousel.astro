@@ -34,11 +34,9 @@ type Props = { items: Disciplines["Entity"][] };
 				</CarouselItem>
 			))}
     </CarouselContent>
-    <CarouselPrevious class={DISCIPLINES_CAROUSEL.carouselControl()} />
-    <CarouselNext class={DISCIPLINES_CAROUSEL.carouselControl()} />
-    <aside class={DISCIPLINES_CAROUSEL.mobileControls()}>
-      <CarouselPrevious class={DISCIPLINES_CAROUSEL.mobileControl()} />
-      <CarouselNext class={DISCIPLINES_CAROUSEL.mobileControl()} />
+    <aside class={DISCIPLINES_CAROUSEL.controls()}>
+      <CarouselPrevious class={DISCIPLINES_CAROUSEL.control()} />
+      <CarouselNext class={DISCIPLINES_CAROUSEL.control()} />
     </aside>
   </CarouselNative>
 </div>

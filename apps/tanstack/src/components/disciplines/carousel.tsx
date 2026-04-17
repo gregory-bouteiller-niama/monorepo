@@ -32,11 +32,9 @@ export function DisciplinesCarousel({ items }: DisciplinesCarouselProps) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className={DISCIPLINES_CAROUSEL.carouselControl()} />
-        <CarouselNext className={DISCIPLINES_CAROUSEL.carouselControl()} />
-        <aside className={DISCIPLINES_CAROUSEL.mobileControls()}>
-          <CarouselPrevious className={DISCIPLINES_CAROUSEL.mobileControl()} />
-          <CarouselNext className={DISCIPLINES_CAROUSEL.mobileControl()} />
+        <aside className={DISCIPLINES_CAROUSEL.controls()}>
+          <CarouselPrevious className={DISCIPLINES_CAROUSEL.control()} />
+          <CarouselNext className={DISCIPLINES_CAROUSEL.control()} />
         </aside>
       </Carousel>
     </div>
