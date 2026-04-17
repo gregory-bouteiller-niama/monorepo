@@ -1,5 +1,6 @@
 ---
 import { Button } from "@niama/ui/astro/button";
+import { cn } from "@niama/ui/lib/utils";
 import type { ComponentProps } from "astro/types";
 import { CAROUSEL } from "../carousel";
 
@@ -13,7 +14,7 @@ export type Props = ComponentProps<typeof Button>;
 <Button
   variant={variant}
   size={size}
-  class:list={[CAROUSEL.previous(), className]}
+  class={cn(CAROUSEL.previous(), className)}
   aria-label="Previous slide"
   {...rest}
   data-slot="carousel-previous"
