@@ -7,7 +7,7 @@ import { DISCIPLINES_BADGE } from "@niama/ui/shared/disciplines/badge";
 export const DisciplinesBadge = ({ className, slug, ...props }: DisciplinesBadgeProps) => {
   const { title } = readDisciplineBySlug(slug);
   return (
-    <Badge {...props} className={cn(DISCIPLINES_BADGE, className)} data-discipline={slug}>
+    <Badge {...props} className={cn(DISCIPLINES_BADGE(), className)} data-discipline={slug}>
       {title}
     </Badge>
   );
