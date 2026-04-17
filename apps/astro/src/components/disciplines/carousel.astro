@@ -1,26 +1,26 @@
 ---
 import type { Disciplines } from "@niama/domain/functions/disciplines";
-import { Carousel as Carousel_, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui/astro/carousel";
+import { CarouselContent, CarouselItem, Carousel as CarouselNative, CarouselNext, CarouselPrevious } from "@niama/ui/astro/carousel";
 import { ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@niama/ui/astro/item";
 import { Logo } from "@niama/ui/react/logo";
-import { DISCIPLINES_CAROUSEL } from "@niama/ui/styles/disciplines/carousel";
+import { DISCIPLINES_CAROUSEL } from "@niama/ui/shared/disciplines/carousel";
 import Glow from "@/components/glow.astro";
 
 // BASE ------------------------------------------------------------------------------------------------------------------------------------
-const { items } = Astro.props
+const { items } = Astro.props;
 
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------
 type Props = { items: Disciplines["Entity"][] };
 ---
 
 <div class={DISCIPLINES_CAROUSEL.base()}>
-	<Carousel_ class={DISCIPLINES_CAROUSEL.carousel()} opts={{ loop: true }}>
-		<CarouselContent>
-			{items.map((item) => (
+  <CarouselNative class={DISCIPLINES_CAROUSEL.carousel()} opts={{ loop: true }}>
+    <CarouselContent>
+      {items.map((item) => (
 				<CarouselItem class={DISCIPLINES_CAROUSEL.carouselItem()}>
-					<Glow class={DISCIPLINES_CAROUSEL.item()} data-tone={item.slug} kind="item" variant="outline">
+					<Glow class={DISCIPLINES_CAROUSEL.item()} data-discipline={item.slug} kind="item" variant="outline">
 						<ItemMedia class={DISCIPLINES_CAROUSEL.itemMedia()}>
-							<Logo className={DISCIPLINES_CAROUSEL.logo()} discipline={item.name} tone={item.slug} />
+							<Logo className={DISCIPLINES_CAROUSEL.logo()} discipline={item} />
 						</ItemMedia>
 						<ItemContent class={DISCIPLINES_CAROUSEL.itemContent()}>
 							<ItemTitle class={DISCIPLINES_CAROUSEL.itemTitle()}>{item.title}</ItemTitle>
@@ -33,14 +33,14 @@ type Props = { items: Disciplines["Entity"][] };
 					</Glow>
 				</CarouselItem>
 			))}
-		</CarouselContent>
-		<CarouselPrevious class={DISCIPLINES_CAROUSEL.carouselControl()} />
-		<CarouselNext class={DISCIPLINES_CAROUSEL.carouselControl()} />
-		<aside class={DISCIPLINES_CAROUSEL.mobileControls()}>
-			<CarouselPrevious class={DISCIPLINES_CAROUSEL.mobileControl()} />
-			<CarouselNext class={DISCIPLINES_CAROUSEL.mobileControl()} />
-		</aside>
-	</Carousel_>
+    </CarouselContent>
+    <CarouselPrevious class={DISCIPLINES_CAROUSEL.carouselControl()} />
+    <CarouselNext class={DISCIPLINES_CAROUSEL.carouselControl()} />
+    <aside class={DISCIPLINES_CAROUSEL.mobileControls()}>
+      <CarouselPrevious class={DISCIPLINES_CAROUSEL.mobileControl()} />
+      <CarouselNext class={DISCIPLINES_CAROUSEL.mobileControl()} />
+    </aside>
+  </CarouselNative>
 </div>
 
 <script>

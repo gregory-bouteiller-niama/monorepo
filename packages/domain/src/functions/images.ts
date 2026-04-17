@@ -17,6 +17,14 @@ export const allImages = [
     src: "https://images.niama.fr/attendants/bouteiller-gregory.png",
     width: 2168,
   },
+  {
+    alt: "Laura Hoareau",
+    blurhash: "UAGH;w^PM^~C009[0i9u-4NM%LDjyE=]^N-:",
+    height: 2731,
+    slug: "laura-hoareau",
+    src: "https://images.niama.fr/attendants/corre-eliana.png",
+    width: 2731,
+  },
 ] as const;
 
 export const imageFrom = ({ alt, blurhash, height, src, width }: Images["Entry"]) => ({

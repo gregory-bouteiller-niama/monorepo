@@ -23,6 +23,16 @@ export const allAttendants = [
     imageSlug: "gregory-bouteiller" as const,
     name: "Grégory Bouteiller",
   },
+  {
+    description: [
+      "J’ai longtemps été la petite Lolo calme et introvertie, souvent la tête dans les nuages, étrangère à sa propre planète.",
+      "Avec un mental omniprésent, m’empêchant de m’ancrer véritablement, et surtout d’être moi-même, c'est par une reconnexion profonde au plan subtil que j’ai harmonisé la caractéristique première de mon signe solaire: la balance.",
+      "Aujourd’hui j'accompagne les gens en les aidant à retrouver leur propre équilibre pour mener une vie plus alignée.",
+    ],
+    disciplineSlugs: ["astro" as const],
+    imageSlug: "laura-hoareau" as const,
+    name: "Laura Hoareau",
+  },
 ];
 
 export const attendantFrom = ({ description, disciplineSlugs, imageSlug, name }: Attendants["Entry"]) => ({

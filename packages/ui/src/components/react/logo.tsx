@@ -1,30 +1,24 @@
-import { cva, type VariantProps } from "class-variance-authority";
+import type { Disciplines } from "@niama/domain/functions/disciplines";
+import { cva } from "class-variance-authority";
 import { cn } from "../../lib/utils";
 
 // STYLES ----------------------------------------------------------------------------------------------------------------------------------
 export const LOGO = {
-  base: cva("@container flex flex-col items-end font-logo", {
-    variants: {
-      tone: {
-        anima: "text-anima",
-        animus: "text-animus",
-        neutral: "text-primary",
-        yogart: "text-yogart",
-      },
-    },
-    defaultVariants: {
-      tone: "neutral",
-    },
-  }),
+  base: cva(`@container flex flex-col items-end font-logo text-primary
+    data-[discipline=anima]:text-anima
+    data-[discipline=animus]:text-animus
+    data-[discipline=astro]:text-astro
+    data-[discipline=yogart]:text-yogart
+    `),
   mark: cva("w-full"),
   subtitle: cva("text-[20cqw] lowercase leading-none"),
   title: cva("text-[32cqw] text-foreground leading-none"),
 } as const;
 
 // MAIN ------------------------------------------------------------------------------------------------------------------------------------
-export function Logo({ className, discipline, showTitle = true, tone, ...props }: LogoProps) {
+export function Logo({ className, discipline, showTitle = true, ...props }: LogoProps) {
   return (
-    <div className={cn(LOGO.base({ tone }), className)}>
+    <div className={cn(LOGO.base(), className)} data-discipline={discipline?.slug}>
       <svg viewBox="0 0 860 860" {...props} aria-label="title" role="img">
         <g clipPath="url(#clip0_260_223)">
           <path
@@ -65,11 +59,8 @@ export function Logo({ className, discipline, showTitle = true, tone, ...props }
         </defs>
       </svg>
       {showTitle && <span className={LOGO.title()}>níama</span>}
-      <span className={LOGO.subtitle()}>{discipline}</span>
+      <span className={LOGO.subtitle()}>{discipline?.name}</span>
     </div>
   );
 }
-type LogoProps = React.ComponentProps<"svg"> & LogoStyles & { discipline?: string; showTitle?: boolean };
-
-// TYPES -----------------------------------------------------------------------------------------------------------------------------------
-export type LogoStyles = VariantProps<typeof LOGO.base>;
+type LogoProps = React.ComponentProps<"svg"> & { discipline?: Disciplines["Entity"]; showTitle?: boolean };

@@ -1,7 +1,8 @@
 ---
 import { type Disciplines, readDisciplineBySlug } from "@niama/domain/functions/disciplines";
-import { Badge as Badge_, type BadgeProps } from "@niama/ui/react/badge";
-import { DISCIPLINES_BADGE } from "@niama/ui/styles/disciplines/badge";
+import { cn } from "@niama/ui/lib/utils";
+import { type BadgeProps, Badge as BadgeReact } from "@niama/ui/react/badge";
+import { DISCIPLINES_BADGE } from "@niama/ui/shared/disciplines/badge";
 
 // MAIN ------------------------------------------------------------------------------------------------------------------------------------
 const { className, slug, ...props } = Astro.props;
@@ -13,7 +14,4 @@ const { title } = readDisciplineBySlug(slug);
 type Props = BadgeProps & { slug: Disciplines["Entity"]["slug"] };
 ---
 
-<Badge_ {...props} className={DISCIPLINES_BADGE({ discipline: slug, className })}>
-	{title}
-</Badge_>
-	
+<BadgeReact {...props} className={cn(DISCIPLINES_BADGE(), className)} data-discipline={slug}> {title} </BadgeReact>

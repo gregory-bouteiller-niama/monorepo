@@ -1,18 +1,20 @@
 ---
-import { SKY } from "@niama/ui/styles/sky";
+import { cn } from "@niama/ui/lib/utils";
+import { SKY } from "@niama/ui/shared/sky";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className } = Astro.props;
 
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------
-type Props = { class ?: string }
+type Props = { class?: string };
 ---
 
-<div aria-hidden="true" class={SKY.base({ className })}>
+<div aria-hidden="true" class={cn(SKY.base(), className)}>
   <div class={SKY.orbits()}>
-    <div class={SKY.orbit({ variant: "first" })}><span class={SKY.planet({ variant: "first" })}></span></div>
-    <div class={SKY.orbit({ variant: "second" })}><span class={SKY.planet({ variant: "second" })}></span></div>
-    <div class={SKY.orbit({ variant: "third" })}><span class={SKY.planet({ variant: "third" })}></span></div>
+    <div class={SKY.orbit()}><span class={SKY.planet()}></span></div>
+    <div class={SKY.orbit()}><span class={SKY.planet()}></span></div>
+    <div class={SKY.orbit()}><span class={SKY.planet()}></span></div>
+    <div class={SKY.orbit()}><span class={SKY.planet()}></span></div>
   </div>
   <div class={SKY.stars()} data-gravity-stars><canvas class={SKY.canvas()} data-gravity-stars-canvas></canvas></div>
 </div>

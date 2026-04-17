@@ -2,7 +2,7 @@ import { z } from "zod/mini";
 
 // FIELDS ----------------------------------------------------------------------------------------------------------------------------------
 export const zContactFields = z.object({
-  discipline: z.enum(["anima", "animus", "new", "unknown", "yogart"]),
+  discipline: z.enum(["anima", "animus", "astro", "new", "unknown", "yogart"]),
   email: z.email(),
   forename: z.string(),
   message: z.string(),
@@ -12,7 +12,7 @@ export const zContactFields = z.object({
 
 // VALUES ----------------------------------------------------------------------------------------------------------------------------------
 export const zContactCreateValues = z.object({
-  discipline: z.enum(["anima", "animus", "new", "unknown", "yogart"]),
+  discipline: z.enum(["anima", "animus", "astro", "new", "unknown", "yogart"]),
   email: z.email("Ce champ doit être un courriel valide"),
   forename: z.string().check(z.minLength(1, "Ce champ est requis")),
   message: z.string().check(z.minLength(1, "Ce champ est requis")),
