@@ -12,6 +12,8 @@ export const DISCIPLINES_CAROUSEL = {
   itemMedia: cva("self-center!"),
   itemTitle: cva("mb-3 @lg:self-start self-center font-bold font-heading text-3xl"),
   logo: cva("w-32"),
-  mobileControl: cva("translate-0! static cursor-pointer"),
-  mobileControls: cva("mt-4 flex w-32 justify-between self-center rounded-full border p-2 sm:hidden"),
+  control: cva(`translate-0! static cursor-pointer 
+    sm:absolute sm:-translate-y-1/2!`),
+  controls: cva(`mt-4 flex w-32 justify-between self-center rounded-full border p-2 
+    sm:mt-0 sm:border-none sm:p-0`),
 };

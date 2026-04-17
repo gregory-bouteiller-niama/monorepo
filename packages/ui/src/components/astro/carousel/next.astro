@@ -11,6 +11,6 @@ export type Props = ComponentProps<typeof Button>;
 ---
 
 <Button variant={variant} size={size} class:list={[CAROUSEL.next(), className]} aria-label="Next slide" {...rest} data-slot="carousel-next">
-  <slot name="icon"> <span class="icon-[tabler--arrow-right]" /> </slot>
+  <slot name="icon"> <span class="icon-[tabler--chevron-right]" /> </slot>
   <slot> <span class="sr-only">Next slide</span> </slot>
 </Button>
