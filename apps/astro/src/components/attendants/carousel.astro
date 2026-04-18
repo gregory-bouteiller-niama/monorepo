@@ -3,9 +3,11 @@
 import { Image } from "astro:assets";
 import { Button } from "@niama/ui/astro/button";
 import { CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui/astro/card";
-import { ATTENDANTS } from "@niama/ui/styles/attendants/carousel";
+import { ATTENDANTS } from "@niama/ui/shared/attendants/carousel";
 import DisciplinesBadge from "@/components/disciplines/badge.astro";
 import Glow from "@/components/glow.astro";
+
+import "@niama/ui/styles/attendants/carousel.css";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { autoplay = Number.NaN, class: className = "", items } = Astro.props;
@@ -53,8 +55,8 @@ const getImageStatus = (index: number) => {
         data-slot="attendant-image"
         format="avif"
         class:list={[ATTENDANTS.image(), getImageStatus(index)]}
-        widths={[536, 710, 1074, 1420]}
         sizes="(min-width: 1280px) 536px, (min-width: 1024px) 440px, (min-width: 768px) 704px, (min-width: 640px) 576px, 100vw" 
+        widths={[536, 710, 1074, 1420]}
       />
     ))}
   </aside>
@@ -154,6 +156,7 @@ const getImageStatus = (index: number) => {
         for (const panel of panels) {
           const index = Number(panel.dataset.index ?? "-1");
           panel.dataset.state = index === activeIndex ? "active" : "inactive";
+          panel.style.viewTransitionName = index === activeIndex ? "attendants-card" : "none";
         }
       };
 
@@ -166,7 +169,14 @@ const getImageStatus = (index: number) => {
 
       const goTo = (index: number, fromUser = false) => {
         activeIndex = (index + size) % size;
-        updateView();
+
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !document.startViewTransition) {
+          updateView();
+        } else {
+          document.startViewTransition(() => {
+            updateView();
+          });
+        }
 
         if (fromUser) {
           stopAutoplay();

@@ -1,0 +1,33 @@
+@keyframes attendants-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes attendants-card-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+::view-transition-group(attendants-card) {
+  animation-duration: 500ms;
+}
+
+::view-transition-old(attendants-card) {
+  animation: attendants-card-exit 300ms ease-in-out both;
+}
+
+::view-transition-new(attendants-card) {
+  animation: attendants-card-enter 300ms ease-in-out 200ms both;
+}
