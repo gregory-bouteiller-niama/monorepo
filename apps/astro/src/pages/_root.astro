@@ -1,5 +1,5 @@
 ---
-import "@niama/ui/globals.css";
+import "@niama/ui/styles/globals.css";
 import { Font } from "astro:assets";
 import { Toaster } from "@niama/ui/astro/toast";
 import { themeScript } from "@niama/ui/shared/theme";
@@ -11,7 +11,10 @@ import { themeScript } from "@niama/ui/shared/theme";
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>níama | l'équilibre invisible devenu tangible</title>
-    <meta content="Une constellation d'accompagnants rassemblés autour d'une philosophie commune : vous guider sur le chemin de votre alignement intérieur." name="description">
+    <meta
+      content="Une constellation d'accompagnants rassemblés autour d'une philosophie commune : vous guider sur le chemin de votre alignement intérieur."
+      name="description"
+    >
     <meta content="accompagnants, équilibre, alignement" name="keywords">
     <meta content="index, follow" name="robots">
     <link href="/logo.svg" rel="icon">
@@ -28,8 +31,8 @@ import { themeScript } from "@niama/ui/shared/theme";
 
 <script>
   import { initialize } from "@niama/ui/shared/root-layout";
-    import { applyTheme } from "@niama/ui/shared/theme";
+  import { applyTheme } from "@niama/ui/shared/theme";
 
-    initialize();
-    document.addEventListener("astro:after-swap", () => applyTheme());
+  initialize();
+  document.addEventListener("astro:after-swap", () => applyTheme());
 </script>

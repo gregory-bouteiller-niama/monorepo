@@ -13,8 +13,8 @@
     "@niama/domain": "workspace:*",
     "@tabler/icons-react": "^3.41.1",
     "@tanstack/react-form": "^1.29.0",
-    "@tanstack/store": "^0.10.0",
-    "astro": "^6.1.7",
+    "@tanstack/store": "^0.11.0",
+    "astro": "^6.1.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel": "^8.6.0",
@@ -40,12 +40,11 @@
     "typescript": "^6.0.3"
   },
   "exports": {
-    "./globals.css": "./src/styles/globals.css",
     "./lib/*": "./src/lib/*.ts",
     "./astro/*": "./src/components/astro/*",
     "./react/*": "./src/components/react/*.tsx",
     "./shared/*": "./src/components/shared/*.ts",
     "./hooks/*": "./src/hooks/*.ts",
-    "./styles/*": "./src/styles/*.ts"
+    "./styles/*": "./src/styles/*"
   }
 }

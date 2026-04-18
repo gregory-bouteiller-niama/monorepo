@@ -1,4 +1,4 @@
-import { headerStore, selectStainStyle, setActive, setHovered, setNavLinkStyle } from "@niama/ui/lib/stores/header";
+import { headerStore, selectStainStyle } from "@niama/ui/lib/stores/header";
 import { cva } from "class-variance-authority";
 import { toggleThemeWithTransition } from "./theme";
 
@@ -36,11 +36,11 @@ export const THE_HEADER = {
 };
 
 // UTILS -----------------------------------------------------------------------------------------------------------------------------------
-export const clearHovered = () => setHovered();
+export const clearHovered = () => headerStore.actions.setHovered();
 
 export const observeNavLink = (hash: string, link: HTMLElement) => {
-  setNavLinkStyle(hash, link);
-  const observer = new ResizeObserver(() => setNavLinkStyle(hash, link));
+  headerStore.actions.setNavLinkStyle(hash, link);
+  const observer = new ResizeObserver(() => headerStore.actions.setNavLinkStyle(hash, link));
   observer.observe(link);
   return () => observer.disconnect();
 };
@@ -64,7 +64,7 @@ const initializeHeaderNav = () => {
       if (link.getAttribute("href") === window.location.pathname + window.location.hash) link.setAttribute("aria-current", "page");
       else link.removeAttribute("aria-current");
     }
-    setActive(hash === "top" ? undefined : hash);
+    headerStore.actions.setActive(hash === "top" ? undefined : hash);
   };
   window.addEventListener("hashchange", handleHashChange);
   cleaners = [...cleaners, () => window.removeEventListener("hashchange", handleHashChange)];
@@ -75,7 +75,7 @@ const initializeHeaderNav = () => {
   for (const link of links) {
     const hash = link.dataset.navLink;
     if (!hash) continue;
-    const handleOnMouseEnter = () => setHovered(hash);
+    const handleOnMouseEnter = () => headerStore.actions.setHovered(hash);
     link.addEventListener("mouseenter", handleOnMouseEnter);
     cleaners = [...cleaners, observeNavLink(hash, link), () => link.removeEventListener("mouseenter", handleOnMouseEnter)];
   }
