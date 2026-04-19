@@ -14,7 +14,7 @@ const STYLES = tv({
       },
       true: {
         base: "cursor-wait",
-        icon: "icon-[lucide--loader2] animate-pulse",
+        icon: "icon-[lucide--loader-2] animate-pulse",
       },
     },
   },

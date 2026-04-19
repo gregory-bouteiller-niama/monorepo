@@ -5,6 +5,7 @@
     "ultracite/biome/vitest",
     "ultracite/biome/react",
     "ultracite/biome/astro",
+    "ultracite/biome/svelte",
     "ultracite/biome/remix"
   ],
   "formatter": { "lineWidth": 140 },
