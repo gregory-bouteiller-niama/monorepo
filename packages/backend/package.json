@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@niama/domain": "workspace:*",
-    "convex": "^1.35.1",
-    "convex-helpers": "^0.1.114"
+    "convex": "^1.36.0",
+    "convex-helpers": "^0.1.115"
   },
   "exports": {
     "./api": "./convex/_generated/api.js",

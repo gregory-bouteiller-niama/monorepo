@@ -1,9 +1,9 @@
 ---
 import type { Disciplines } from "@niama/domain/functions/disciplines";
-import { CarouselContent, CarouselItem, Carousel as CarouselNative, CarouselNext, CarouselPrevious } from "@niama/ui/astro/carousel";
-import { ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@niama/ui/astro/item";
+import { CarouselContent, CarouselItem, Carousel as CarouselNative, CarouselNext, CarouselPrevious } from "@niama/ui/astro/carousel.ts";
+import { ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@niama/ui/astro/item.ts";
 import { Logo } from "@niama/ui/react/logo";
-import { DISCIPLINES_CAROUSEL } from "@niama/ui/shared/disciplines/carousel";
+import { DISCIPLINE, DISCIPLINES } from "@niama/ui/shared/disciplines/carousel";
 import Glow from "@/components/glow.astro";
 
 // BASE ------------------------------------------------------------------------------------------------------------------------------------
@@ -13,19 +13,19 @@ const { items } = Astro.props;
 type Props = { items: Disciplines["Entity"][] };
 ---
 
-<div class={DISCIPLINES_CAROUSEL.base()}>
-  <CarouselNative class={DISCIPLINES_CAROUSEL.carousel()} opts={{ loop: true }}>
+<div class={DISCIPLINES.base()}>
+  <CarouselNative class={DISCIPLINES.carousel()} opts={{ loop: true }}>
     <CarouselContent>
       {items.map((item) => (
-				<CarouselItem class={DISCIPLINES_CAROUSEL.carouselItem()}>
-					<Glow class={DISCIPLINES_CAROUSEL.item()} data-discipline={item.slug} kind="item" variant="outline">
-						<ItemMedia class={DISCIPLINES_CAROUSEL.itemMedia()}>
-							<Logo className={DISCIPLINES_CAROUSEL.logo()} discipline={item} />
+				<CarouselItem class={DISCIPLINES.item()}>
+					<Glow class={DISCIPLINE.base()} data-discipline={item.slug} kind="item" variant="outline">
+						<ItemMedia class={DISCIPLINE.media()}>
+							<Logo className={DISCIPLINE.logo()} discipline={item} />
 						</ItemMedia>
-						<ItemContent class={DISCIPLINES_CAROUSEL.itemContent()}>
-							<ItemTitle class={DISCIPLINES_CAROUSEL.itemTitle()}>{item.title}</ItemTitle>
+						<ItemContent class={DISCIPLINE.content()}>
+							<ItemTitle class={DISCIPLINE.title()}>{item.title}</ItemTitle>
 							{item.description.map((sentence) => (
-								<ItemDescription class={DISCIPLINES_CAROUSEL.itemDescription()}>
+								<ItemDescription class={DISCIPLINE.description()}>
 									{sentence}
 								</ItemDescription>
 							))}
@@ -34,15 +34,15 @@ type Props = { items: Disciplines["Entity"][] };
 				</CarouselItem>
 			))}
     </CarouselContent>
-    <aside class={DISCIPLINES_CAROUSEL.controls()}>
-      <CarouselPrevious class={DISCIPLINES_CAROUSEL.control()} />
-      <CarouselNext class={DISCIPLINES_CAROUSEL.control()} />
+    <aside class={DISCIPLINES.controls()}>
+      <CarouselPrevious class={DISCIPLINES.control()} />
+      <CarouselNext class={DISCIPLINES.control()} />
     </aside>
   </CarouselNative>
 </div>
 
 <script>
-  import { initCarousel } from "@niama/ui/astro/carousel";
+  import { initCarousel } from "@niama/ui/astro/carousel.ts";
   import Autoplay from "embla-carousel-autoplay";
 
   function initAutoplayCarousel() {

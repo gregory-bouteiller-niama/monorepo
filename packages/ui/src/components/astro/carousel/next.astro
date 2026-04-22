@@ -10,7 +10,7 @@ const { class: className = "", variant = "outline", size = "icon", ...rest } = A
 export type Props = ComponentProps<typeof Button>;
 ---
 
-<Button variant={variant} size={size} class:list={[CAROUSEL.next(), className]} aria-label="Next slide" {...rest} data-slot="carousel-next">
+<Button variant={variant} size={size} class:list={[CAROUSEL.next(), className]} aria-label="Suivant" {...rest} data-slot="carousel-next">
   <slot name="icon"> <span class="icon-[tabler--chevron-right]" /> </slot>
-  <slot> <span class="sr-only">Next slide</span> </slot>
+  <slot> <span class="sr-only">Suivant</span> </slot>
 </Button>

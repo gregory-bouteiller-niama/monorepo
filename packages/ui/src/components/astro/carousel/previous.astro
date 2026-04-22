@@ -15,10 +15,10 @@ export type Props = ComponentProps<typeof Button>;
   variant={variant}
   size={size}
   class={cn(CAROUSEL.previous(), className)}
-  aria-label="Previous slide"
+  aria-label="Précédent"
   {...rest}
   data-slot="carousel-previous"
 >
   <slot name="icon"> <span class="icon-[tabler--chevron-left]" /> </slot>
-  <slot> <span class="sr-only">Previous slide</span> </slot>
+  <slot> <span class="sr-only">Précédent</span> </slot>
 </Button>

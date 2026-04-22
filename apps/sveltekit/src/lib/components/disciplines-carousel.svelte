@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Disciplines } from "@niama/domain/functions/disciplines";
   import { cn } from "@niama/ui/lib/utils";
-  import { DISCIPLINES_CAROUSEL } from "@niama/ui/shared/disciplines/carousel";
+  import { DISCIPLINE, DISCIPLINES } from "@niama/ui/shared/disciplines/carousel";
   import { GLOW } from "@niama/ui/shared/glow";
   import { Button } from "@niama/ui/svelte/button";
   import { Card } from "@niama/ui/svelte/card";
@@ -31,18 +31,18 @@
   };
 </script>
 
-<div class={DISCIPLINES_CAROUSEL.base()}>
-  <div class={DISCIPLINES_CAROUSEL.carousel()}>
+<div class={DISCIPLINES.base()}>
+  <div class={DISCIPLINES.carousel()}>
     <div class="overflow-hidden" onemblainit={handleEmblaInit} use:useEmblaCarousel={{ options, plugins }}>
       <div class="flex touch-pan-y pinch-zoom">
         {#each items as item (item.slug)}
-          <div class={cn("min-w-0 shrink-0 grow-0 basis-full", DISCIPLINES_CAROUSEL.carouselItem())}>
-            <Card class={cn(GLOW(), DISCIPLINES_CAROUSEL.item())} data-discipline={item.slug} data-glow>
-              <div class={DISCIPLINES_CAROUSEL.itemMedia()}><Logo class={DISCIPLINES_CAROUSEL.logo()} discipline={item} /></div>
-              <div class={DISCIPLINES_CAROUSEL.itemContent()}>
-                <h3 class={DISCIPLINES_CAROUSEL.itemTitle()}>{item.title}</h3>
+          <div class={cn("min-w-0 shrink-0 grow-0 basis-full", DISCIPLINES.item())}>
+            <Card class={cn(GLOW(), DISCIPLINE.base())} data-discipline={item.slug} data-glow>
+              <div class={DISCIPLINE.media()}><Logo class={DISCIPLINE.logo()} discipline={item} /></div>
+              <div class={DISCIPLINE.content()}>
+                <h3 class={DISCIPLINE.title()}>{item.title}</h3>
                 {#each item.description as sentence (sentence)}
-                  <p class={DISCIPLINES_CAROUSEL.itemDescription()}>{sentence}</p>
+                  <p class={DISCIPLINE.description()}>{sentence}</p>
                 {/each}
               </div>
             </Card>
@@ -50,10 +50,10 @@
         {/each}
       </div>
     </div>
-    <aside class={DISCIPLINES_CAROUSEL.controls()}>
+    <aside class={DISCIPLINES.controls()}>
       <Button
         aria-label="Voie précédente"
-        class={DISCIPLINES_CAROUSEL.control()}
+        class={DISCIPLINES.control()}
         disabled={!canControl}
         onclick={scrollPrev}
         size="icon-sm"
@@ -63,7 +63,7 @@
       </Button>
       <Button
         aria-label="Voie suivante"
-        class={DISCIPLINES_CAROUSEL.control()}
+        class={DISCIPLINES.control()}
         disabled={!canControl}
         onclick={scrollNext}
         size="icon-sm"

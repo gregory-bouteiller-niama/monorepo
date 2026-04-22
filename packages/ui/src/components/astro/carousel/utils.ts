@@ -57,39 +57,39 @@ export function initCarousel(carouselElement: HTMLElement, options: CarouselOpti
 
   // Update button states
   const updateButtons = () => {
-    const canScrollPrev = emblaApi.canScrollPrev();
-    const canScrollNext = emblaApi.canScrollNext();
+    const canGoToPrev = emblaApi.canGoToPrev();
+    const canGoToNext = emblaApi.canGoToNext();
 
     if (prevButton) {
-      prevButton.disabled = !canScrollPrev;
-      prevButton.setAttribute("aria-disabled", (!canScrollPrev).toString());
+      prevButton.disabled = !canGoToPrev;
+      prevButton.setAttribute("aria-disabled", (!canGoToPrev).toString());
     }
 
     if (nextButton) {
-      nextButton.disabled = !canScrollNext;
-      nextButton.setAttribute("aria-disabled", (!canScrollNext).toString());
+      nextButton.disabled = !canGoToNext;
+      nextButton.setAttribute("aria-disabled", (!canGoToNext).toString());
     }
   };
 
   // Event handlers for cleanup
-  const prevClickHandler = () => emblaApi.scrollPrev();
-  const nextClickHandler = () => emblaApi.scrollNext();
+  const prevClickHandler = () => emblaApi.goToPrev();
+  const nextClickHandler = () => emblaApi.goToNext();
   const keydownHandler = (event: KeyboardEvent) => {
     if (axis === "y") {
       // Vertical axis: ArrowUp = previous, ArrowDown = next
       if (event.key === "ArrowUp") {
         event.preventDefault();
-        emblaApi.scrollPrev();
+        emblaApi.goToPrev();
       } else if (event.key === "ArrowDown") {
         event.preventDefault();
-        emblaApi.scrollNext();
+        emblaApi.goToNext();
       }
     } else if (event.key === "ArrowLeft") {
       event.preventDefault();
-      emblaApi.scrollPrev();
+      emblaApi.goToPrev();
     } else if (event.key === "ArrowRight") {
       event.preventDefault();
-      emblaApi.scrollNext();
+      emblaApi.goToNext();
     }
   };
 
@@ -115,20 +115,17 @@ export function initCarousel(carouselElement: HTMLElement, options: CarouselOpti
 
   // Setup internal event listeners
   emblaApi.on("select", updateButtons);
-  emblaApi.on("init", () => {
-    updateButtons();
-  });
-  emblaApi.on("reInit", () => {
+  emblaApi.on("reinit", () => {
     updateButtons();
   });
 
   // Return manager interface
   return {
     api: emblaApi,
-    scrollPrev: () => emblaApi.scrollPrev(),
-    scrollNext: () => emblaApi.scrollNext(),
-    canScrollPrev: () => emblaApi.canScrollPrev(),
-    canScrollNext: () => emblaApi.canScrollNext(),
+    goToPrev: () => emblaApi.goToPrev(),
+    goToNext: () => emblaApi.goToNext(),
+    canGoToPrev: () => emblaApi.canGoToPrev(),
+    canGoToNext: () => emblaApi.canGoToNext(),
     destroy: () => {
       // Remove event listeners to prevent memory leaks
       if (prevButton) prevButton.removeEventListener("click", prevClickHandler);
@@ -153,9 +150,9 @@ export type CarouselOptions = {
 
 export type CarouselManager = {
   api: CarouselApi;
-  canScrollNext: () => boolean;
-  canScrollPrev: () => boolean;
+  canGoToNext: () => boolean;
+  canGoToPrev: () => boolean;
   destroy: () => void;
-  scrollNext: () => void;
-  scrollPrev: () => void;
+  goToNext: () => void;
+  goToPrev: () => void;
 };

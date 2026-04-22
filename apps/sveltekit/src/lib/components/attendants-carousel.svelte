@@ -1,7 +1,8 @@
 <script lang="ts">
   import type { Attendants } from "@niama/domain/functions/attendants";
-  import { ATTENDANTS, AUTOPLAY, getAttendantsHeroRotation } from "@niama/ui/shared/attendants/carousel";
-  import type { EmblaCarouselType } from "embla-carousel";
+  import { ATTENDANT, ATTENDANTS, AUTOPLAY, ROTATIONS } from "@niama/ui/shared/attendants/carousel";
+  import { Button } from "@niama/ui/svelte/button";
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui/svelte/card";
   import Autoplay from "embla-carousel-autoplay";
   import DisciplinesBadge from "$lib/components/disciplines-badge.svelte";
   import Carousel from "$lib/components/ui/carousel/carousel.svelte";
@@ -11,107 +12,82 @@
   import CarouselPrevious from "$lib/components/ui/carousel/carousel-previous.svelte";
 
   let { autoplay = AUTOPLAY / 1000, items }: { autoplay?: number; items: Attendants["Entity"][] } = $props();
-  let emblaApi = $state<EmblaCarouselType | null>(null);
-  let flippedIndex = $state<number | null>(null);
-  let selectedIndex = $state(0);
+  let flippedItems = $state<Record<string, boolean>>({});
 
   const plugins = $derived.by(() => {
     if (!Number.isFinite(autoplay) || autoplay <= 0) return [];
     return [Autoplay({ delay: autoplay * 1000, stopOnInteraction: false })];
   });
-
-  $effect(() => {
-    if (!emblaApi) {
-      return;
-    }
-
-    const currentApi = emblaApi;
-
-    const syncSelectedIndex = () => {
-      selectedIndex = currentApi.selectedScrollSnap();
-    };
-
-    syncSelectedIndex();
-    currentApi.on("reInit", syncSelectedIndex);
-    currentApi.on("select", syncSelectedIndex);
-
-    return () => {
-      currentApi.off("reInit", syncSelectedIndex);
-      currentApi.off("select", syncSelectedIndex);
-    };
-  });
 </script>
 
 {#if items.length > 0}
   <section class={ATTENDANTS.base()}>
-    <Carousel bind:api={emblaApi} class={ATTENDANTS.carousel()} opts={{ align: "center", containScroll: false, loop: true }} {plugins}>
-      <CarouselContent class="-ml-4" viewportClass={ATTENDANTS.heroViewport()}>
-        {#each items as item, index (item.image.alt)}
-          <CarouselItem class={ATTENDANTS.heroItem()}>
+    <Carousel class={ATTENDANTS.carousel()} opts={{ loop: true }} {plugins}>
+      <CarouselContent viewportClass={ATTENDANTS.viewport()}>
+        {#each items as item, index (item.name)}
+          <CarouselItem class={ATTENDANTS.item()}>
             <button
               aria-label={`Afficher la fiche de ${item.name}`}
-              aria-pressed={flippedIndex === index}
-              class={ATTENDANTS.heroCard()}
-              data-flipped={flippedIndex === index}
+              aria-pressed={flippedItems[item.name] === true}
+              class={ATTENDANT.base({ className: ROTATIONS[index] })}
+              data-flipped={flippedItems[item.name] === true}
               onclick={() => {
-                flippedIndex = flippedIndex === index ? null : index;
+                flippedItems[item.name] = !(flippedItems[item.name] === true);
               }}
               type="button"
             >
-              <div
-                class={ATTENDANTS.heroInner()}
-                style={`--attendants-rotation:${selectedIndex === index ? 0 : getAttendantsHeroRotation(item.name)}deg;--attendants-y-rotation:${flippedIndex === index ? "180deg" : "0deg"};`}
-              >
-                <article class={`${ATTENDANTS.heroFigure()} ${ATTENDANTS.heroFace()}`}>
+              <Card class={ATTENDANT.card()}>
+                <CardHeader>
+                  <CardTitle class={ATTENDANT.title()}>{item.name}</CardTitle>
+                  <CardDescription class={ATTENDANT.badges()}>
+                    {#each item.disciplines as discipline (discipline.slug)}
+                      <DisciplinesBadge slug={discipline.slug} />
+                    {/each}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent class={ATTENDANT.image()}>
+                  <div class={ATTENDANT.overlay()}>
+                    <Button variant="secondary">
+                      En savoir plus
+                      <span class={ATTENDANT.icon()}></span>
+                    </Button>
+                  </div>
                   <img
                     alt={item.image.alt}
-                    class={ATTENDANTS.heroImage()}
                     decoding="async"
                     fetchpriority="high"
                     height={item.image.height}
                     loading="eager"
+                    sizes="(min-width: 640px) 420px, 100vw"
                     src={item.image.src}
                     style:background={item.image.background}
                     width={item.image.width}
                   >
-                  <div class={ATTENDANTS.heroOverlay()}></div>
-                  <div class={ATTENDANTS.heroHoverOverlay()}></div>
-                  <div class={ATTENDANTS.heroHoverIcon()}>En savoir plus...</div>
-                  <div class={ATTENDANTS.heroContent()}>
-                    <h3 class={ATTENDANTS.heroName()}>{item.name}</h3>
-                    <div class={ATTENDANTS.heroDisciplines()}>
-                      {#each item.disciplines as discipline (discipline.slug)}
-                        <DisciplinesBadge class={ATTENDANTS.heroBadge()} slug={discipline.slug} />
-                      {/each}
-                    </div>
-                  </div>
-                </article>
-                <div class={ATTENDANTS.heroBackFace()}>
-                  <div class={ATTENDANTS.heroBackBody()}>
-                    <div class={ATTENDANTS.heroDescription()}>
-                      {#each item.description as paragraph (paragraph)}
-                        <p>{paragraph}</p>
-                      {/each}
-                    </div>
-                  </div>
-                  <div class={ATTENDANTS.heroBackFooter()}>
-                    <h3 class={ATTENDANTS.heroName()}>{item.name}</h3>
-                    <div class={ATTENDANTS.heroDisciplines()}>
-                      {#each item.disciplines as discipline (discipline.slug)}
-                        <DisciplinesBadge class={ATTENDANTS.heroBadge()} slug={discipline.slug} />
-                      {/each}
-                    </div>
-                  </div>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
+              <Card class={ATTENDANT.card()} data-back>
+                <CardHeader>
+                  <CardTitle class={ATTENDANT.title()}>{item.name}</CardTitle>
+                  <CardDescription class={ATTENDANT.badges()}>
+                    {#each item.disciplines as discipline (discipline.slug)}
+                      <DisciplinesBadge slug={discipline.slug} />
+                    {/each}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent class={ATTENDANT.description()}>
+                  {#each item.description as paragraph (paragraph)}
+                    <p>{paragraph}</p>
+                  {/each}
+                </CardContent>
+              </Card>
             </button>
           </CarouselItem>
         {/each}
       </CarouselContent>
-      <div class={ATTENDANTS.actions()}>
-        <CarouselPrevious aria-label="Participant précédent" class={ATTENDANTS.control()} size="icon-sm" />
-        <CarouselNext aria-label="Participant suivant" class={ATTENDANTS.control()} size="icon-sm" />
-      </div>
+      <aside class={ATTENDANTS.controls()}>
+        <CarouselPrevious aria-label="Participant précédent" class={ATTENDANTS.control()} />
+        <CarouselNext aria-label="Participant suivant" class={ATTENDANTS.control()} />
+      </aside>
     </Carousel>
   </section>
 {/if}

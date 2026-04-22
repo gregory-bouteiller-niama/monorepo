@@ -1,4 +1,5 @@
 ---
+import { cn } from "@niama/ui/lib/utils";
 import type { HTMLAttributes } from "astro/types";
 import { CARD, type CardStyles } from "../card";
 
@@ -9,4 +10,4 @@ const { class: className, size, ...rest } = Astro.props;
 export type Props = HTMLAttributes<"div"> & CardStyles;
 ---
 
-<div class:list={[CARD.base({ size }), className]} data-size={size ?? "default"} {...rest} data-slot="card"><slot /></div>
+<div class={cn(CARD.base({ size }), className)} data-size={size ?? "default"} {...rest} data-slot="card"><slot /></div>

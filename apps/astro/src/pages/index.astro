@@ -1,7 +1,7 @@
 ---
 import { actions } from "astro:actions";
 import { readIndexPage } from "@niama/domain/functions/pages";
-import { toast } from "@niama/ui/astro/toast";
+import { toast } from "@niama/ui/astro/toast.ts";
 import { ContactForm } from "@niama/ui/react/contact-form";
 import { Section } from "@niama/ui/react/section";
 import { Separator } from "@niama/ui/react/separator";
@@ -14,35 +14,31 @@ const { attendants, contact, disciplines, hero } = readIndexPage();
 ---
 
 <PublicLayout>
-	<div class={INDEX_PAGE.base()}>
-		<Section className={INDEX_PAGE.hero()} id="top-3">
-			<div class={INDEX_PAGE.heroContent()}>
-				<h1 class={INDEX_PAGE.heroTitle()}>{hero.title}</h1>
-				<p class={INDEX_PAGE.heroDescription()}>{hero.description}</p>
-			</div>
-		</Section>
-		<Section id="les-voies" {...disciplines} withSeparator>
-			<DisciplinesCarousel {...disciplines} />
-		</Section>
-		<Section id="les-accompagnants" {...attendants} withSeparator>
-			<AttendantsCarousel {...attendants} autoplay={10} />
-		</Section>
-		<Section id="contact" {...contact} withSeparator>
-			<ContactForm
-				client:visible
-				onSubmit={async (value) => {
+  <div class={INDEX_PAGE.base()}>
+    <Section className={INDEX_PAGE.hero()} id="top-3">
+      <div class={INDEX_PAGE.heroContent()}>
+        <h1 class={INDEX_PAGE.heroTitle()}>{hero.title}</h1>
+        <p class={INDEX_PAGE.heroDescription()}>{hero.description}</p>
+      </div>
+    </Section>
+    <Section id="les-voies" {...disciplines} withSeparator> <DisciplinesCarousel {...disciplines} /> </Section>
+    <Section id="les-accompagnants" {...attendants} withSeparator> <AttendantsCarousel {...attendants} /> </Section>
+    <Section id="contact" {...contact} withSeparator>
+      <ContactForm
+        client:visible
+        onSubmit={async (value) => {
 					const { error } = await actions.contact.create(value);
 					if (error) throw error;
 				}}
-				onSuccess={() => toast.success("Succès", { description: "Merci de votre intérêt ! Nous reviendrons vers vous très bientôt." })}
-			/>
-			<Separator className="self-center! mb-34 h-24" orientation="vertical" />
-		</Section>
-	</div>
+        onSuccess={() => toast.success("Succès", { description: "Merci de votre intérêt ! Nous reviendrons vers vous très bientôt." })}
+      />
+      <Separator className="self-center! mb-34 h-24" orientation="vertical" />
+    </Section>
+  </div>
 </PublicLayout>
 
 <script>
-	import { nativeHashUpdater, updateHash } from "@niama/ui/shared/index-page";
+  import { nativeHashUpdater, updateHash } from "@niama/ui/shared/index-page";
 
-	updateHash(nativeHashUpdater);
+  updateHash(nativeHashUpdater);
 </script>

@@ -1,11 +1,13 @@
 ---
 import { Image } from "astro:assets";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui/astro/carousel";
-import { ATTENDANTS, AUTOPLAY, getAttendantsHeroRotation } from "@niama/ui/shared/attendants/carousel";
+import { Button } from "@niama/ui/astro/button.ts";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui/astro/card.ts";
+import { CarouselContent, CarouselItem, Carousel as CarouselNative, CarouselNext, CarouselPrevious } from "@niama/ui/astro/carousel.ts";
+import { ATTENDANT, ATTENDANTS, AUTOPLAY, ROTATIONS } from "@niama/ui/shared/attendants/carousel";
 import DisciplinesBadge from "@/components/disciplines/badge.astro";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
-const { autoplay = AUTOPLAY / 1000, class: className = "", items } = Astro.props;
+const { class: className = "", items } = Astro.props;
 
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------
 type AttendantDiscipline = {
@@ -33,81 +35,72 @@ type Props = {
 };
 ---
 
-<section class:list={[ATTENDANTS.base(), className]} data-attendants-autoplay={autoplay} data-attendants-carousel>
-  <Carousel
-    autoInit={false}
-    class={ATTENDANTS.carousel()}
-    data-attendants-images
-    opts={{ align: "center", containScroll: false, loop: true }}
-  >
-    <CarouselContent class="-ml-4" viewportClassName={ATTENDANTS.heroViewport()}>
+<section class:list={[ATTENDANTS.base(), className]}>
+  <CarouselNative class={ATTENDANTS.carousel()}>
+    <CarouselContent>
       {items.map((attendant, index) => (
-        <CarouselItem class={ATTENDANTS.heroItem()}>
+        <CarouselItem class={ATTENDANTS.item()}>
           <button
             aria-label={`Afficher la fiche de ${attendant.name}`}
             aria-pressed="false"
-            class={ATTENDANTS.heroCard()}
             data-attendants-card
             data-flipped="false"
+            class:list={[ATTENDANT.base(), ROTATIONS[index]]}
             type="button"
           >
-            <div
-              class={ATTENDANTS.heroInner()}
-              data-attendants-card-inner
-              data-attendants-rotation={getAttendantsHeroRotation(attendant.name)}
-              style={`--attendants-rotation:${index === 0 ? 0 : getAttendantsHeroRotation(attendant.name)}deg;--attendants-y-rotation:0deg;`}
-            >
-              <article class:list={[ATTENDANTS.heroFigure(), ATTENDANTS.heroFace()]}>
+            <Card class={ATTENDANT.card()}>
+              <CardHeader>
+                <CardTitle class={ATTENDANT.title()}>{attendant.name}</CardTitle>
+                <CardDescription class={ATTENDANT.badges()}>
+                  {attendant.disciplines.map((discipline) => (
+                    <DisciplinesBadge slug={discipline.slug} />
+                  ))}
+                </CardDescription>
+              </CardHeader>
+              <CardContent class={ATTENDANT.image()}>
+                <div class={ATTENDANT.overlay()}>
+                  {/* <Button variant="secondary">
+                    En savoir plus
+                    <span class={ATTENDANT.icon()} />
+                  </Button> */}
+                </div>
                 <Image
                   {...attendant.image}
-                  class={ATTENDANTS.heroImage()}
+                  class="absolute inset-0 aspect-square w-[420px] object-cover"
                   format="avif"
-                  sizes="(min-width: 1280px) 896px, (min-width: 1024px) 768px, (min-width: 768px) 704px, (min-width: 640px) 576px, 100vw"
-                  widths={[896, 1152, 1408, 1792]}
+                  sizes="(min-width: 640px) 420px, 100vw"
+                  widths={[420, 840]}
                 />
-                <div class={ATTENDANTS.heroOverlay()} />
-                <div class={ATTENDANTS.heroHoverOverlay()} />
-                <div class={ATTENDANTS.heroHoverIcon()}>En savoir plus...</div>
-                <div class={ATTENDANTS.heroContent()}>
-                  <h3 class={ATTENDANTS.heroName()}>{attendant.name}</h3>
-                  <div class={ATTENDANTS.heroDisciplines()}>
-                    {attendant.disciplines.map((discipline) => (
-                      <DisciplinesBadge class={ATTENDANTS.heroBadge()} slug={discipline.slug} />
-                    ))}
-                  </div>
-                </div>
-              </article>
-              <div class={ATTENDANTS.heroBackFace()}>
-                <div class={ATTENDANTS.heroBackBody()}>
-                  <div class={ATTENDANTS.heroDescription()}>
-                    {attendant.description.map((paragraph) => (
-                      <p>{paragraph}</p>
-                    ))}
-                  </div>
-                </div>
-                <div class={ATTENDANTS.heroBackFooter()}>
-                  <h3 class={ATTENDANTS.heroName()}>{attendant.name}</h3>
-                  <div class={ATTENDANTS.heroDisciplines()}>
-                    {attendant.disciplines.map((discipline) => (
-                      <DisciplinesBadge class={ATTENDANTS.heroBadge()} slug={discipline.slug} />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
+            <Card class={ATTENDANT.card()} data-back>
+              <CardHeader>
+                <CardTitle class={ATTENDANT.title()}>{attendant.name}</CardTitle>
+                <CardDescription class={ATTENDANT.badges()}>
+                  {attendant.disciplines.map((discipline) => (
+                    <DisciplinesBadge slug={discipline.slug} />
+                  ))}
+                </CardDescription>
+              </CardHeader>
+              <CardContent class={ATTENDANT.description()}>
+                {attendant.description.map((paragraph) => (
+                  <p>{paragraph}</p>
+                ))}
+              </CardContent>
+            </Card>
           </button>
         </CarouselItem>
       ))}
     </CarouselContent>
-    <div class={ATTENDANTS.actions()}>
-      <CarouselPrevious aria-label="Participant precedent" class={ATTENDANTS.control()} disabled={items.length < 2} size="icon-sm" />
-      <CarouselNext aria-label="Participant suivant" class={ATTENDANTS.control()} disabled={items.length < 2} size="icon-sm" />
-    </div>
-  </Carousel>
+    <aside class={ATTENDANTS.controls()}>
+      <CarouselPrevious class={ATTENDANTS.control()} />
+      <CarouselNext class={ATTENDANTS.control()} />
+    </aside>
+  </CarouselNative>
 </section>
 
 <script>
-  import { initCarousel } from "@niama/ui/astro/carousel";
+  import { initCarousel } from "@niama/ui/astro/carousel.ts";
   import Autoplay from "embla-carousel-autoplay";
 
   const carouselCleanups = new WeakMap<HTMLElement, () => void>();
@@ -139,46 +132,20 @@ type Props = {
         Number.isFinite(autoplaySeconds) && autoplaySeconds > 0
           ? [Autoplay({ delay: autoplaySeconds * 1000, stopOnInteraction: false })]
           : undefined;
-      const manager = initCarousel(carouselElement, { opts: { align: "center", containScroll: false, loop: true }, plugins });
+      const manager = initCarousel(carouselElement, { opts: { loop: true }, plugins });
 
       if (!manager) {
         continue;
       }
 
-      const syncActiveCards = () => {
-        const selectedIndex = manager.api.selectedScrollSnap();
-        const cardInners = carousel.querySelectorAll("[data-attendants-card-inner]") as NodeListOf<HTMLElement>;
-
-        for (const [index, inner] of Array.from(cardInners).entries()) {
-          const baseRotation = Number(inner.dataset.attendantsRotation ?? 0);
-          inner.style.setProperty("--attendants-rotation", `${index === selectedIndex ? 0 : baseRotation}deg`);
-        }
-      };
-
-      syncActiveCards();
-      manager.api.on("reInit", syncActiveCards);
-      manager.api.on("select", syncActiveCards);
-
       const cards = carousel.querySelectorAll("[data-attendants-card]") as NodeListOf<HTMLButtonElement>;
       const cardClickHandlers = Array.from(cards, (card) => {
         const handleCardClick = () => {
           const isFlipped = card.dataset.flipped === "true";
+          const nextFlipped = (!isFlipped).toString();
 
-          for (const otherCard of cards) {
-            otherCard.dataset.flipped = "false";
-            otherCard.setAttribute("aria-pressed", "false");
-            const inner = otherCard.querySelector("[data-attendants-card-inner]") as HTMLElement | null;
-            inner?.style.setProperty("--attendants-y-rotation", "0deg");
-          }
-
-          if (isFlipped) {
-            return;
-          }
-
-          card.dataset.flipped = "true";
-          card.setAttribute("aria-pressed", "true");
-          const inner = card.querySelector("[data-attendants-card-inner]") as HTMLElement | null;
-          inner?.style.setProperty("--attendants-y-rotation", "180deg");
+          card.dataset.flipped = nextFlipped;
+          card.setAttribute("aria-pressed", nextFlipped);
         };
 
         card.addEventListener("click", handleCardClick);
@@ -186,11 +153,10 @@ type Props = {
       });
 
       carouselCleanups.set(carousel, () => {
-        manager.api.off("reInit", syncActiveCards);
-        manager.api.off("select", syncActiveCards);
         for (const { card, handleCardClick } of cardClickHandlers) {
           card.removeEventListener("click", handleCardClick);
         }
+
         manager.destroy();
         carouselCleanups.delete(carousel);
       });
