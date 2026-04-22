@@ -3,7 +3,7 @@ import { cn } from "@niama/ui/lib/utils";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui/react/carousel";
 import { Item, ItemContent, ItemDescription, ItemMedia, type ItemProps, ItemTitle } from "@niama/ui/react/item";
 import { Logo } from "@niama/ui/react/logo";
-import { DISCIPLINES_CAROUSEL } from "@niama/ui/shared/disciplines/carousel";
+import { DISCIPLINE, DISCIPLINES } from "@niama/ui/shared/disciplines/carousel";
 import { GLOW } from "@niama/ui/shared/glow";
 import Autoplay from "embla-carousel-autoplay";
 import { useGlow } from "../use-glow";
@@ -11,44 +11,43 @@ import { useGlow } from "../use-glow";
 // BASE ------------------------------------------------------------------------------------------------------------------------------------
 export function DisciplinesCarousel({ items }: DisciplinesCarouselProps) {
   return (
-    <div className={DISCIPLINES_CAROUSEL.base()}>
-      <Carousel className={DISCIPLINES_CAROUSEL.carousel()} opts={{ loop: true }} plugins={[Autoplay({ delay: 10_000 })]}>
+    <section className={DISCIPLINES.base()}>
+      <Carousel className={DISCIPLINES.carousel()} opts={{ loop: true }} plugins={[Autoplay({ delay: 10_000 })]}>
         <CarouselContent>
           {items.map((item) => (
-            <CarouselItem className={DISCIPLINES_CAROUSEL.carouselItem()} key={item.slug}>
-              <DisciplineGlowItem className={DISCIPLINES_CAROUSEL.item()} discipline={item} variant="outline">
-                <ItemMedia className={DISCIPLINES_CAROUSEL.itemMedia()}>
-                  <Logo className={DISCIPLINES_CAROUSEL.logo()} discipline={item} />
-                </ItemMedia>
-                <ItemContent className={DISCIPLINES_CAROUSEL.itemContent()}>
-                  <ItemTitle className={DISCIPLINES_CAROUSEL.itemTitle()}>{item.title}</ItemTitle>
-                  {item.description.map((sentence) => (
-                    <ItemDescription className={DISCIPLINES_CAROUSEL.itemDescription()} key={sentence}>
-                      {sentence}
-                    </ItemDescription>
-                  ))}
-                </ItemContent>
-              </DisciplineGlowItem>
+            <CarouselItem className={DISCIPLINES.item()} key={item.slug}>
+              <DisciplineItem item={item} />
             </CarouselItem>
           ))}
         </CarouselContent>
-        <aside className={DISCIPLINES_CAROUSEL.controls()}>
-          <CarouselPrevious className={DISCIPLINES_CAROUSEL.control()} />
-          <CarouselNext className={DISCIPLINES_CAROUSEL.control()} />
+        <aside className={DISCIPLINES.controls()}>
+          <CarouselPrevious className={DISCIPLINES.control()} />
+          <CarouselNext className={DISCIPLINES.control()} />
         </aside>
       </Carousel>
-    </div>
+    </section>
   );
 }
 export type DisciplinesCarouselProps = { items: Disciplines["Entity"][] };
 
-function DisciplineGlowItem({ children, className, discipline, ...r }: DisciplineGlowItemProps) {
+// ITEM ------------------------------------------------------------------------------------------------------------------------------------
+function DisciplineItem({ className, item, ...r }: DisciplineItemProps) {
   const { props, ref } = useGlow();
 
   return (
-    <Item className={cn(GLOW(), className)} data-discipline={discipline.slug} ref={ref} {...r} {...props}>
-      {children}
+    <Item className={cn(DISCIPLINE.base(), GLOW(), className)} data-discipline={item.slug} ref={ref} variant="outline" {...r} {...props}>
+      <ItemMedia className={DISCIPLINE.media()}>
+        <Logo className={DISCIPLINE.logo()} discipline={item} />
+      </ItemMedia>
+      <ItemContent className={DISCIPLINE.content()}>
+        <ItemTitle className={DISCIPLINE.title()}>{item.title}</ItemTitle>
+        {item.description.map((sentence) => (
+          <ItemDescription className={DISCIPLINE.description()} key={sentence}>
+            {sentence}
+          </ItemDescription>
+        ))}
+      </ItemContent>
     </Item>
   );
 }
-type DisciplineGlowItemProps = ItemProps & { discipline: Disciplines["Entity"] };
+type DisciplineItemProps = ItemProps & { item: Disciplines["Entity"] };

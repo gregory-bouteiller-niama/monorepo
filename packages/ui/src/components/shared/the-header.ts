@@ -5,7 +5,7 @@ import { toggleThemeWithTransition } from "./theme";
 // STYLES ----------------------------------------------------------------------------------------------------------------------------------
 export const THE_HEADER = {
   actions: cva("flex gap-1"),
-  base: cva(`container mx-auto flex h-14.5 items-center justify-between self-center rounded-full border border-transparent px-2
+  base: cva(`mx-auto flex h-14.5 items-center justify-between self-center rounded-full border border-transparent px-2
 		group-data-scrolled/body:border-muted group-data-scrolled/body:shadow-lg group-data-scrolled/body:backdrop-blur-xl`),
   burger: cva(`cursor-pointer scale-0 
 		group-data-scrolled/body:scale-100

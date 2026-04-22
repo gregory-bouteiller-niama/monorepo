@@ -1,21 +1,15 @@
 ---
-// import type { DisciplineTone } from "@niama/domain/functions/disciplines";
 import { Image } from "astro:assets";
-import { Button } from "@niama/ui/astro/button";
-import { CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui/astro/card";
-import { ATTENDANTS } from "@niama/ui/shared/attendants/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui/astro/carousel";
+import { ATTENDANTS, AUTOPLAY, getAttendantsHeroRotation } from "@niama/ui/shared/attendants/carousel";
 import DisciplinesBadge from "@/components/disciplines/badge.astro";
-import Glow from "@/components/glow.astro";
-
-import "@niama/ui/styles/attendants/carousel.css";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
-const { autoplay = Number.NaN, class: className = "", items } = Astro.props;
+const { autoplay = AUTOPLAY / 1000, class: className = "", items } = Astro.props;
 
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------
 type AttendantDiscipline = {
-  key: DisciplineTone;
-  label: string;
+  slug: string;
 };
 
 type AttendantImage = {
@@ -37,179 +31,169 @@ type Props = {
   class?: string;
   items: AttendantItem[];
 };
-
-const getImageStatus = (index: number) => {
-  if (index === 0) return ATTENDANTS.imageCurrent();
-  if (index === 1) return ATTENDANTS.imageNext();
-  if (index === items.length - 1) return ATTENDANTS.imagePrev();
-  return ATTENDANTS.imageOther();
-};
 ---
 
-<div class:list={[ATTENDANTS.base(), className]} data-attendants-autoplay={autoplay} data-attendants-carousel data-size={items.length}>
-  <aside class={ATTENDANTS.aside()}>
-    {items.map((attendant, index) => (
-      <Image
-        {...attendant.image}
-        data-index={index}
-        data-slot="attendant-image"
-        format="avif"
-        class:list={[ATTENDANTS.image(), getImageStatus(index)]}
-        sizes="(min-width: 1280px) 536px, (min-width: 1024px) 440px, (min-width: 768px) 704px, (min-width: 640px) 576px, 100vw" 
-        widths={[536, 710, 1074, 1420]}
-      />
-    ))}
-  </aside>
-  <main class={ATTENDANTS.main()}>
-    <div class={ATTENDANTS.panelContainer()}>
+<section class:list={[ATTENDANTS.base(), className]} data-attendants-autoplay={autoplay} data-attendants-carousel>
+  <Carousel
+    autoInit={false}
+    class={ATTENDANTS.carousel()}
+    data-attendants-images
+    opts={{ align: "center", containScroll: false, loop: true }}
+  >
+    <CarouselContent class="-ml-4" viewportClassName={ATTENDANTS.heroViewport()}>
       {items.map((attendant, index) => (
-        <div class={ATTENDANTS.cardPanel()} data-index={index} data-slot="attendant-panel" data-state={index === 0 ? "active" : "inactive"}>
-          <Glow class={ATTENDANTS.card()} kind="card">
-            <CardHeader>
-              <CardTitle class={ATTENDANTS.name()}>{attendant.name}</CardTitle>
-              <CardDescription class={ATTENDANTS.disciplines()}>
-                {attendant.disciplines.map((discipline) => (
-                  <DisciplinesBadge class={ATTENDANTS.badge()} slug={discipline.slug} />
-                ))}
-              </CardDescription>
-            </CardHeader>
-            <CardContent class={ATTENDANTS.description()}>
-              {attendant.description.map((paragraph) => (
-                <p>{paragraph}</p>
-              ))}
-            </CardContent>
-          </Glow>
-        </div>
+        <CarouselItem class={ATTENDANTS.heroItem()}>
+          <button
+            aria-label={`Afficher la fiche de ${attendant.name}`}
+            aria-pressed="false"
+            class={ATTENDANTS.heroCard()}
+            data-attendants-card
+            data-flipped="false"
+            type="button"
+          >
+            <div
+              class={ATTENDANTS.heroInner()}
+              data-attendants-card-inner
+              data-attendants-rotation={getAttendantsHeroRotation(attendant.name)}
+              style={`--attendants-rotation:${index === 0 ? 0 : getAttendantsHeroRotation(attendant.name)}deg;--attendants-y-rotation:0deg;`}
+            >
+              <article class:list={[ATTENDANTS.heroFigure(), ATTENDANTS.heroFace()]}>
+                <Image
+                  {...attendant.image}
+                  class={ATTENDANTS.heroImage()}
+                  format="avif"
+                  sizes="(min-width: 1280px) 896px, (min-width: 1024px) 768px, (min-width: 768px) 704px, (min-width: 640px) 576px, 100vw"
+                  widths={[896, 1152, 1408, 1792]}
+                />
+                <div class={ATTENDANTS.heroOverlay()} />
+                <div class={ATTENDANTS.heroHoverOverlay()} />
+                <div class={ATTENDANTS.heroHoverIcon()}>En savoir plus...</div>
+                <div class={ATTENDANTS.heroContent()}>
+                  <h3 class={ATTENDANTS.heroName()}>{attendant.name}</h3>
+                  <div class={ATTENDANTS.heroDisciplines()}>
+                    {attendant.disciplines.map((discipline) => (
+                      <DisciplinesBadge class={ATTENDANTS.heroBadge()} slug={discipline.slug} />
+                    ))}
+                  </div>
+                </div>
+              </article>
+              <div class={ATTENDANTS.heroBackFace()}>
+                <div class={ATTENDANTS.heroBackBody()}>
+                  <div class={ATTENDANTS.heroDescription()}>
+                    {attendant.description.map((paragraph) => (
+                      <p>{paragraph}</p>
+                    ))}
+                  </div>
+                </div>
+                <div class={ATTENDANTS.heroBackFooter()}>
+                  <h3 class={ATTENDANTS.heroName()}>{attendant.name}</h3>
+                  <div class={ATTENDANTS.heroDisciplines()}>
+                    {attendant.disciplines.map((discipline) => (
+                      <DisciplinesBadge class={ATTENDANTS.heroBadge()} slug={discipline.slug} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </button>
+        </CarouselItem>
       ))}
-    </div>
+    </CarouselContent>
     <div class={ATTENDANTS.actions()}>
-      <Button aria-label="Participant precedent" class="cursor-pointer" data-attendants-prev size="icon-sm" variant="outline">
-        <span class="icon-[lucide--chevron-left]"></span>
-      </Button>
-      <Button aria-label="Participant suivant" class="cursor-pointer" data-attendants-next size="icon-sm" variant="outline">
-        <span class="icon-[lucide--chevron-right]"></span>
-      </Button>
+      <CarouselPrevious aria-label="Participant precedent" class={ATTENDANTS.control()} disabled={items.length < 2} size="icon-sm" />
+      <CarouselNext aria-label="Participant suivant" class={ATTENDANTS.control()} disabled={items.length < 2} size="icon-sm" />
     </div>
-  </main>
-</div>
+  </Carousel>
+</section>
 
 <script>
+  import { initCarousel } from "@niama/ui/astro/carousel";
+  import Autoplay from "embla-carousel-autoplay";
+
+  const carouselCleanups = new WeakMap<HTMLElement, () => void>();
+
+  const destroyAttendantsCarousels = () => {
+    const carousels = document.querySelectorAll("[data-attendants-carousel]") as NodeListOf<HTMLElement>;
+
+    for (const carousel of carousels) {
+      carouselCleanups.get(carousel)?.();
+    }
+  };
+
   const initializeAttendantsCarousels = () => {
     const carousels = document.querySelectorAll("[data-attendants-carousel]") as NodeListOf<HTMLElement>;
 
     for (const carousel of carousels) {
-      if (carousel.dataset.initialized === "true") {
+      if (carouselCleanups.has(carousel)) {
         continue;
       }
 
-      const previousButton = carousel.querySelector("[data-attendants-prev]");
-      const nextButton = carousel.querySelector("[data-attendants-next]");
-      const images = carousel.querySelectorAll("[data-slot='attendant-image']") as NodeListOf<HTMLElement>;
-      const panels = carousel.querySelectorAll("[data-slot='attendant-panel']") as NodeListOf<HTMLElement>;
-      const size = Number(carousel.dataset.size ?? "0");
+      const carouselElement = carousel.querySelector("[data-attendants-images]");
 
-      if (!(previousButton instanceof HTMLElement && nextButton instanceof HTMLElement) || size === 0) {
+      if (!(carouselElement instanceof HTMLElement)) {
         continue;
       }
 
-      carousel.dataset.initialized = "true";
-
-      let activeIndex = 0;
-      let autoplayId = 0;
       const autoplaySeconds = Number(carousel.dataset.attendantsAutoplay ?? Number.NaN);
+      const plugins =
+        Number.isFinite(autoplaySeconds) && autoplaySeconds > 0
+          ? [Autoplay({ delay: autoplaySeconds * 1000, stopOnInteraction: false })]
+          : undefined;
+      const manager = initCarousel(carouselElement, { opts: { align: "center", containScroll: false, loop: true }, plugins });
 
-      const getStatus = (index: number) => {
-        if (index === activeIndex) return "current";
-        if ((activeIndex - 1 + size) % size === index) return "prev";
-        if ((activeIndex + 1) % size === index) return "next";
-        return "other";
-      };
+      if (!manager) {
+        continue;
+      }
 
-      const updateView = () => {
-        for (const image of images) {
-          const index = Number(image.dataset.index ?? "-1");
-          image.dataset.status = getStatus(index);
+      const syncActiveCards = () => {
+        const selectedIndex = manager.api.selectedScrollSnap();
+        const cardInners = carousel.querySelectorAll("[data-attendants-card-inner]") as NodeListOf<HTMLElement>;
 
-          image.classList.toggle("translate-x-0", image.dataset.status === "current");
-          image.classList.toggle("translate-y-0", image.dataset.status === "current");
-          image.classList.toggle("rotate-y-0", image.dataset.status === "current");
-          image.classList.toggle("scale-100", image.dataset.status === "current");
-          image.classList.toggle("opacity-100", image.dataset.status !== "other");
-          image.classList.toggle("z-40", image.dataset.status === "current");
-          image.classList.toggle("pointer-events-auto", image.dataset.status !== "other");
-
-          image.classList.toggle("translate-x-15", image.dataset.status === "next");
-          image.classList.toggle("-translate-y-12", image.dataset.status === "next" || image.dataset.status === "prev");
-          image.classList.toggle("-rotate-y-15", image.dataset.status === "next");
-          image.classList.toggle("scale-85", image.dataset.status === "next" || image.dataset.status === "prev");
-          image.classList.toggle("z-30", image.dataset.status === "next");
-
-          image.classList.toggle("-translate-x-15", image.dataset.status === "prev");
-          image.classList.toggle("rotate-y-15", image.dataset.status === "prev");
-          image.classList.toggle("z-20", image.dataset.status === "prev");
-
-          image.classList.toggle("pointer-events-none", image.dataset.status === "other");
-          image.classList.toggle("opacity-0", image.dataset.status === "other");
-          image.classList.toggle("z-10", image.dataset.status === "other");
-        }
-
-        for (const panel of panels) {
-          const index = Number(panel.dataset.index ?? "-1");
-          panel.dataset.state = index === activeIndex ? "active" : "inactive";
-          panel.style.viewTransitionName = index === activeIndex ? "attendants-card" : "none";
+        for (const [index, inner] of Array.from(cardInners).entries()) {
+          const baseRotation = Number(inner.dataset.attendantsRotation ?? 0);
+          inner.style.setProperty("--attendants-rotation", `${index === selectedIndex ? 0 : baseRotation}deg`);
         }
       };
 
-      const stopAutoplay = () => {
-        if (autoplayId) {
-          window.clearInterval(autoplayId);
-          autoplayId = 0;
-        }
-      };
+      syncActiveCards();
+      manager.api.on("reInit", syncActiveCards);
+      manager.api.on("select", syncActiveCards);
 
-      const goTo = (index: number, fromUser = false) => {
-        activeIndex = (index + size) % size;
+      const cards = carousel.querySelectorAll("[data-attendants-card]") as NodeListOf<HTMLButtonElement>;
+      const cardClickHandlers = Array.from(cards, (card) => {
+        const handleCardClick = () => {
+          const isFlipped = card.dataset.flipped === "true";
 
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !document.startViewTransition) {
-          updateView();
-        } else {
-          document.startViewTransition(() => {
-            updateView();
-          });
-        }
+          for (const otherCard of cards) {
+            otherCard.dataset.flipped = "false";
+            otherCard.setAttribute("aria-pressed", "false");
+            const inner = otherCard.querySelector("[data-attendants-card-inner]") as HTMLElement | null;
+            inner?.style.setProperty("--attendants-y-rotation", "0deg");
+          }
 
-        if (fromUser) {
-          stopAutoplay();
-        }
-      };
+          if (isFlipped) {
+            return;
+          }
 
-      const handleNext = () => {
-        goTo(activeIndex + 1, true);
-      };
+          card.dataset.flipped = "true";
+          card.setAttribute("aria-pressed", "true");
+          const inner = card.querySelector("[data-attendants-card-inner]") as HTMLElement | null;
+          inner?.style.setProperty("--attendants-y-rotation", "180deg");
+        };
 
-      const handlePrev = () => {
-        goTo(activeIndex - 1, true);
-      };
-
-      previousButton.addEventListener("click", handlePrev);
-      nextButton.addEventListener("click", handleNext);
-
-      window.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowLeft") {
-          handlePrev();
-        }
-        if (event.key === "ArrowRight") {
-          handleNext();
-        }
+        card.addEventListener("click", handleCardClick);
+        return { card, handleCardClick };
       });
 
-      if (!Number.isNaN(autoplaySeconds)) {
-        autoplayId = window.setInterval(() => {
-          goTo(activeIndex + 1);
-        }, autoplaySeconds * 1000);
-      }
-
-      updateView();
+      carouselCleanups.set(carousel, () => {
+        manager.api.off("reInit", syncActiveCards);
+        manager.api.off("select", syncActiveCards);
+        for (const { card, handleCardClick } of cardClickHandlers) {
+          card.removeEventListener("click", handleCardClick);
+        }
+        manager.destroy();
+        carouselCleanups.delete(carousel);
+      });
     }
   };
 
@@ -220,4 +204,5 @@ const getImageStatus = (index: number) => {
   }
 
   document.addEventListener("astro:after-swap", initializeAttendantsCarousels);
+  document.addEventListener("astro:before-swap", destroyAttendantsCarousels);
 </script>
