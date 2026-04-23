@@ -1,0 +1,39 @@
+<script lang="ts">
+  import { Button, type ButtonProps } from "@niama/ui/components/svelte/button";
+  import { cn } from "@niama/ui/lib/utils";
+  import { IconChevronRight } from "@tabler/icons-svelte";
+  import type { WithoutChildren } from "bits-ui";
+  import { getEmblaContext } from "./context";
+
+  let {
+    ref = $bindable(null),
+    class: className,
+    variant = "outline",
+    size = "icon-sm",
+    ...restProps
+  }: WithoutChildren<ButtonProps> = $props();
+
+  const emblaCtx = getEmblaContext("<Carousel.Next/>");
+</script>
+
+<Button
+  data-slot="carousel-next"
+  {variant}
+  {size}
+  aria-disabled={!emblaCtx.canScrollNext}
+  disabled={!emblaCtx.canScrollNext}
+  class={cn(
+		"absolute touch-manipulation rounded-full",
+		emblaCtx.orientation === "horizontal"
+			? "-end-12 top-1/2 -translate-y-1/2"
+			: "start-1/2 -bottom-12 -translate-x-1/2 rotate-90",
+		className
+	)}
+  onclick={emblaCtx.scrollNext}
+  onkeydown={emblaCtx.handleKeyDown}
+  bind:ref
+  {...restProps}
+>
+  <IconChevronRight />
+  <span class="sr-only">Next slide</span>
+</Button>

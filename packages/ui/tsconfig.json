@@ -11,7 +11,8 @@
     "paths": {
       "@niama/ui/*": ["./src/*"],
       "@niama/ui/astro/*": ["./src/components/astro/*"],
-      "@niama/ui/react/*": ["./src/components/react/*"]
+      "@niama/ui/react/*": ["./src/components/react/*"],
+      "@niama/ui/svelte/*": ["./src/components/svelte/*"]
     }
   },
   "include": ["."],

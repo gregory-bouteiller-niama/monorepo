@@ -6,7 +6,7 @@ export const allImages = [
     blurhash: "UAGH;w^PM^~C009[0i9u-4NM%LDjyE=]^N-:",
     height: 2731,
     slug: "eliana-corre",
-    src: "https://images.niama.fr/attendants/corre-eliana.png",
+    src: "https://ik.imagekit.io/niamafr/eliana-corre.png",
     width: 2731,
   },
   {
@@ -14,7 +14,7 @@ export const allImages = [
     blurhash: "U5DR+p4:00~UQ-58x[Rk=r%fS5IV0hWU=wxa",
     height: 2169,
     slug: "gregory-bouteiller",
-    src: "https://images.niama.fr/attendants/bouteiller-gregory.png",
+    src: "https://ik.imagekit.io/niamafr/gregory-bouteiller.png",
     width: 2168,
   },
   {
@@ -22,7 +22,7 @@ export const allImages = [
     blurhash: "UAGH;w^PM^~C009[0i9u-4NM%LDjyE=]^N-:",
     height: 2731,
     slug: "laura-hoareau",
-    src: "https://images.niama.fr/attendants/corre-eliana.png",
+    src: "https://ik.imagekit.io/niamafr/eliana-corre.png",
     width: 2731,
   },
 ] as const;

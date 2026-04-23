@@ -1,5 +1,4 @@
 import type { Attendants } from "@niama/domain/functions/attendants";
-import { Button } from "@niama/ui/react/button";
 import { Card, CardContent, CardDescription, CardHeader, type CardProps, CardTitle } from "@niama/ui/react/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui/react/carousel";
 import { ATTENDANT, ATTENDANTS, AUTOPLAY, ROTATIONS } from "@niama/ui/shared/attendants/carousel";
@@ -13,7 +12,7 @@ import { DisciplinesBadge } from "../disciplines/badge";
 export function AttendantsCarousel({ items }: AttendantsCarouselProps) {
   return (
     <section className={ATTENDANTS.base()}>
-      <Carousel className={ATTENDANTS.carousel()} opts={{ loop: true }} plugins={[Autoplay({ delay: AUTOPLAY }), Ssr({})]}>
+      <Carousel className={ATTENDANTS.carousel()} opts={{ loop: true }} plugins={[Autoplay({ delay: AUTOPLAY }), Ssr()]}>
         <CarouselContent viewportClassName={ATTENDANTS.viewport()}>
           {items.map((item, renderIndex) => (
             <CarouselItem className={ATTENDANTS.item()} key={item.name}>
@@ -49,10 +48,7 @@ function AttendantItem({ index, item }: { index: number; item: Attendants["Entit
       <AttendantItemCard item={item}>
         <CardContent className={ATTENDANT.image()}>
           <div className={ATTENDANT.overlay()}>
-            <Button variant="secondary">
-              En savoir plus
-              <span className={ATTENDANT.icon()} />
-            </Button>
+            <span className={ATTENDANT.icon()} />
           </div>
           <Image {...item.image} sizes="(min-width: 640px) 420px, 100vw" />
         </CardContent>

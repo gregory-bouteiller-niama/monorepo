@@ -19,7 +19,7 @@ export const ATTENDANT = {
     data-[back=true]:absolute data-[back=true]:inset-0 data-[back=true]:rotate-y-180 
     data-[back=true]:group-data-[flipped=true]/flip:rotate-y-0`),
   description: cva("mx-3 flex aspect-square w-[420px] flex-1 flex-col justify-center gap-2 bg-card text-center font-light text-base"),
-  icon: cva("icon-[svg-spinners--3-dots-bounce] mt-1.5"),
+  icon: cva("icon-[lucide--plus-circle] size-12"),
   image: cva("relative mx-3 aspect-square w-[420px] px-0"),
   overlay: cva(
     "absolute inset-0 flex items-center justify-center opacity-0 backdrop-blur-2xl transition-opacity duration-500 group-hover/flip:opacity-100"

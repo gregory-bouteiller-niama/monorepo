@@ -1,8 +1,8 @@
 <script lang="ts">
   import { type Contacts, defaultContactCreateValues, zContactCreateValues } from "@niama/domain/functions/contacts";
+  import { Button } from "@niama/ui/components/svelte/button";
   import { createForm } from "@tanstack/svelte-form";
   import { cva } from "class-variance-authority";
-  import { Button } from "./button";
   import { Card, CardContent } from "./card";
   import { Input } from "./input";
   import { Label } from "./label";
