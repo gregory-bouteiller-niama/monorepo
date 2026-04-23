@@ -1,7 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 import type { EmblaOptionsType } from "embla-carousel";
-import { CAROUSEL } from "../carousel";
+import { CAROUSEL } from "./styles";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className, orientation = "horizontal", opts = {}, autoInit = true, ...rest } = Astro.props;
@@ -24,7 +24,7 @@ export type Props = HTMLAttributes<"div"> & { autoInit?: boolean; opts?: EmblaOp
 </div>
 
 <script>
-  import { initCarousel } from "../carousel";
+  import { initCarousel } from "./utils";
 
   const setupCarousels = () => {
     const carousels = document.querySelectorAll(".starwind-carousel") as NodeListOf<HTMLElement>;
