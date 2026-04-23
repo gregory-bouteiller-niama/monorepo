@@ -50,7 +50,7 @@ function AttendantItem({ index, item }: { index: number; item: Attendants["Entit
           <div className={ATTENDANT.overlay()}>
             <span className={ATTENDANT.icon()} />
           </div>
-          <Image {...item.image} sizes="(min-width: 640px) 420px, 100vw" />
+          <Image {...item.image} operations={{ imagekit: { f: "avif" } }} sizes="(min-width: 640px) 420px, 100vw" />
         </CardContent>
       </AttendantItemCard>
       <AttendantItemCard data-back item={item}>
