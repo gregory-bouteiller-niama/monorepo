@@ -1,7 +1,7 @@
 ---
-import { Separator as SeparatorNative } from "@niama/ui/astro/separator";
+import SeparatorNative from "../separator/separator.astro";
 import type { ComponentProps } from "astro/types";
-import { ITEM } from "../item";
+import { ITEM } from "./styles";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className, orientation = "horizontal", ...rest } = Astro.props;
