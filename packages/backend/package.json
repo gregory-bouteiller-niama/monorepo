@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@niama/domain": "workspace:*",
-    "convex": "^1.36.0",
+    "convex": "^1.36.1",
     "convex-helpers": "^0.1.115"
   },
   "exports": {
