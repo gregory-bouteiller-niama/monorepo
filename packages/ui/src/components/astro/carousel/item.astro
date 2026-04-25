@@ -1,12 +1,15 @@
 ---
+import { cn } from "@niama/ui/lib/utils";
 import type { HTMLAttributes } from "astro/types";
-import { CAROUSEL } from "./styles";
+import { CAROUSEL } from "../../shared/carousel";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
-const { class: className = "", ...rest } = Astro.props;
+const { class: className = "", ...props } = Astro.props;
 
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------
-export type Props = HTMLAttributes<"div">;
+export type Props = HTMLAttributes<"section">;
 ---
 
-<div role="group" aria-roledescription="slide" class:list={[CAROUSEL.item(), className]} {...rest} data-slot="carousel-item"><slot /></div>
+<section aria-roledescription="slide" class={cn(CAROUSEL.item(), className)} data-slot="carousel-item" role="group" {...props}>
+  <slot />
+</section>

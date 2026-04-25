@@ -1,6 +1,5 @@
 /** biome-ignore-all lint/performance/noBarrelFile: flat Astro entrypoint exporting the component API and local styles. */
-export { CAROUSEL } from "./carousel/styles";
-
+export { CAROUSEL } from "../shared/carousel";
 export { default as Carousel, type Props as CarouselProps } from "./carousel/carousel.astro";
 export { default as CarouselContent, type Props as CarouselContentProps } from "./carousel/content.astro";
 export { default as CarouselItem, type Props as CarouselItemProps } from "./carousel/item.astro";

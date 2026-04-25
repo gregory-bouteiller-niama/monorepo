@@ -36,8 +36,8 @@ type Props = {
 ---
 
 <section class:list={[ATTENDANTS.base(), className]}>
-  <CarouselNative class={ATTENDANTS.carousel()}>
-    <CarouselContent>
+  <CarouselNative id="attendants-carousel" class={ATTENDANTS.carousel()}>
+    <CarouselContent viewportClass={ATTENDANTS.viewport()}>
       {items.map((attendant, index) => (
         <CarouselItem class={ATTENDANTS.item()}>
           <button
@@ -103,72 +103,51 @@ type Props = {
   import { initCarousel } from "@niama/ui/astro/carousel.ts";
   import Autoplay from "embla-carousel-autoplay";
 
-  const carouselCleanups = new WeakMap<HTMLElement, () => void>();
+  const carousel = document.getElementById("attendants-carousel");
+  const cards = carousel?.querySelectorAll("[data-attendants-card]") as NodeListOf<HTMLButtonElement>;
 
-  const destroyAttendantsCarousels = () => {
-    const carousels = document.querySelectorAll("[data-attendants-carousel]") as NodeListOf<HTMLElement>;
+  const init = () => {
+    const manager = initCarousel(carousel, { loop: true }, [Autoplay({ delay: 10_000 })]);
+    manager?.api.plugins().autoplay?.play();
 
-    for (const carousel of carousels) {
-      carouselCleanups.get(carousel)?.();
-    }
-  };
-
-  const initializeAttendantsCarousels = () => {
-    const carousels = document.querySelectorAll("[data-attendants-carousel]") as NodeListOf<HTMLElement>;
-
-    for (const carousel of carousels) {
-      if (carouselCleanups.has(carousel)) {
-        continue;
-      }
-
-      const carouselElement = carousel.querySelector("[data-attendants-images]");
-
-      if (!(carouselElement instanceof HTMLElement)) {
-        continue;
-      }
-
-      const autoplaySeconds = Number(carousel.dataset.attendantsAutoplay ?? Number.NaN);
-      const plugins =
-        Number.isFinite(autoplaySeconds) && autoplaySeconds > 0
-          ? [Autoplay({ delay: autoplaySeconds * 1000, stopOnInteraction: false })]
-          : undefined;
-      const manager = initCarousel(carouselElement, { opts: { loop: true }, plugins });
-
-      if (!manager) {
-        continue;
-      }
-
-      const cards = carousel.querySelectorAll("[data-attendants-card]") as NodeListOf<HTMLButtonElement>;
-      const cardClickHandlers = Array.from(cards, (card) => {
-        const handleCardClick = () => {
-          const isFlipped = card.dataset.flipped === "true";
-          const nextFlipped = (!isFlipped).toString();
-
-          card.dataset.flipped = nextFlipped;
-          card.setAttribute("aria-pressed", nextFlipped);
-        };
-
-        card.addEventListener("click", handleCardClick);
-        return { card, handleCardClick };
-      });
-
-      carouselCleanups.set(carousel, () => {
-        for (const { card, handleCardClick } of cardClickHandlers) {
-          card.removeEventListener("click", handleCardClick);
-        }
-
-        manager.destroy();
-        carouselCleanups.delete(carousel);
+    for (const card of cards) {
+      card.addEventListener("click", () => {
+        const isFlipped = card.dataset.flipped === "true";
+        card.dataset.flipped = (!isFlipped).toString();
+        card.setAttribute("aria-pressed", (!isFlipped).toString());
       });
     }
+
+    return () => {
+      manager?.destroy();
+      manager?.api.plugins().autoplay?.destroy();
+    };
   };
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initializeAttendantsCarousels, { once: true });
-  } else {
-    initializeAttendantsCarousels();
-  }
+  const destroy = init();
+  document.addEventListener("astro:before-swap", destroy);
+  document.addEventListener("astro:after-swap", init);
 
-  document.addEventListener("astro:after-swap", initializeAttendantsCarousels);
-  document.addEventListener("astro:before-swap", destroyAttendantsCarousels);
+  // const cards = carousel.querySelectorAll("[data-attendants-card]") as NodeListOf<HTMLButtonElement>;
+  // const cardClickHandlers = Array.from(cards, (card) => {
+  //   const handleCardClick = () => {
+  //     const isFlipped = card.dataset.flipped === "true";
+  //     const nextFlipped = (!isFlipped).toString();
+
+  //     card.dataset.flipped = nextFlipped;
+  //     card.setAttribute("aria-pressed", nextFlipped);
+  //   };
+
+  //   card.addEventListener("click", handleCardClick);
+  //   return { card, handleCardClick };
+  // });
+
+  // carouselCleanups.set(carousel, () => {
+  //   for (const { card, handleCardClick } of cardClickHandlers) {
+  //     card.removeEventListener("click", handleCardClick);
+  //   }
+
+  //   manager.destroy();
+  //   carouselCleanups.delete(carousel);
+  // });
 </script>

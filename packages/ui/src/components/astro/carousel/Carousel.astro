@@ -1,41 +1,15 @@
 ---
+import { cn } from "@niama/ui/lib/utils";
 import type { HTMLAttributes } from "astro/types";
-import type { EmblaOptionsType } from "embla-carousel";
-import { CAROUSEL } from "./styles";
+import { CAROUSEL } from "../../shared/carousel";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
-const { class: className, orientation = "horizontal", opts = {}, autoInit = true, ...rest } = Astro.props;
+const { class: className, ...rest } = Astro.props;
 
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------
-export type Props = HTMLAttributes<"div"> & { autoInit?: boolean; opts?: EmblaOptionsType; orientation?: "horizontal" | "vertical" };
+export type Props = HTMLAttributes<"section">;
 ---
 
-<div
-  class:list={[CAROUSEL.base(), className]}
-  role="region"
-  aria-roledescription="carousel"
-  data-axis={orientation === "horizontal" ? "x" : "y"}
-  data-opts={JSON.stringify(opts)}
-  data-auto-init={autoInit}
-  {...rest}
-  data-slot="carousel"
->
+<section aria-roledescription="carousel" class={cn(CAROUSEL.base(), className)} data-slot="carousel" role="region" {...rest}>
   <slot />
-</div>
-
-<script>
-  import { initCarousel } from "./utils";
-
-  const setupCarousels = () => {
-    const carousels = document.querySelectorAll(".starwind-carousel") as NodeListOf<HTMLElement>;
-    for (const carousel of carousels) {
-      if (carousel.dataset.autoInit === "false") continue;
-      initCarousel(carousel);
-    }
-  };
-
-  document.addEventListener("DOMContentLoaded", setupCarousels);
-
-  // Re-initialize after Astro page transitions
-  document.addEventListener("astro:after-swap", setupCarousels);
-</script>
+</section>

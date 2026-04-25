@@ -1,24 +1,26 @@
 ---
 import { cn } from "@niama/ui/lib/utils";
 import type { ComponentProps } from "astro/types";
+import { CAROUSEL } from "../../shared/carousel";
 import Button from "../button/button.astro";
-import { CAROUSEL } from "./styles";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
-const { class: className = "", variant = "outline", size = "icon", ...rest } = Astro.props;
+const { class: className = "", variant = "outline", size = "icon-sm", disabled = true, ...props } = Astro.props;
 
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------
 export type Props = ComponentProps<typeof Button>;
 ---
 
 <Button
-  variant={variant}
-  size={size}
-  class={cn(CAROUSEL.previous(), className)}
+  aria-disabled={disabled ? "true" : undefined}
   aria-label="Précédent"
-  {...rest}
+  class={cn(CAROUSEL.previous(), className)}
   data-slot="carousel-previous"
+  disabled={disabled}
+  size={size}
+  variant={variant}
+  {...props}
 >
-  <slot name="icon"> <span class="icon-[tabler--chevron-left]" /> </slot>
-  <slot> <span class="sr-only">Précédent</span> </slot>
+  <span class="icon-[tabler--chevron-left]" />
+  <span class="sr-only">Précédent</span>
 </Button>

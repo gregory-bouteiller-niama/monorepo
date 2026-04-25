@@ -1,158 +1,65 @@
-import EmblaCarousel, { type EmblaCarouselType, type EmblaOptionsType, type EmblaPluginType } from "embla-carousel";
+import EmblaCarousel, { type EmblaOptionsType, type EmblaPluginType } from "embla-carousel";
+import { getHandleClickNext, getHandleClickPrev, getHandleKeydown, updateOpts } from "../../shared/carousel";
 
-export function initCarousel(carouselElement: HTMLElement, options: CarouselOptions = {}): CarouselManager | null {
-  // don't re-initialize if already initialized
-  if (carouselElement.dataset.initialized === "true") return null;
-  carouselElement.dataset.initialized = "true";
-
-  if (!carouselElement) {
+export function initCarousel(el: HTMLElement | null, opts: EmblaOptionsType = {}, plugins: EmblaPluginType[] = []) {
+  if (!el) {
     console.warn("Carousel element not found");
     return null;
   }
+  if (el.dataset.initialized === "true") return null;
 
-  // Find content element - Embla expects the viewport element, not the container
-  const viewportElement = carouselElement.querySelector('[data-slot="carousel-content"]') as HTMLElement;
-  if (!viewportElement) {
+  const viewportEl = el.querySelector<HTMLElement>('[data-slot="carousel-content"]');
+  if (!viewportEl) {
     console.warn("Carousel content element not found");
     return null;
   }
 
-  // Get configuration from data attributes
-  const axisData = carouselElement.dataset.axis;
-  const axis: EmblaOptionsType["axis"] = axisData === "y" ? "y" : "x";
+  el.dataset.initialized = "true";
+  el.dataset.axis = opts.axis ?? "x";
 
-  // Safely parse data options
-  let dataOpts = {};
-  try {
-    const optsString = carouselElement.dataset.opts;
-    if (optsString && optsString !== "undefined" && optsString !== "null") dataOpts = JSON.parse(optsString);
-  } catch (e) {
-    console.warn("Failed to parse carousel opts:", e);
-    dataOpts = {};
-  }
+  const api = EmblaCarousel(viewportEl, opts, plugins);
+  let currentOpts = opts;
 
-  // Ensure dataOpts is a valid object
-  if (!dataOpts || typeof dataOpts !== "object") dataOpts = {};
+  const prevEl = el.querySelector<HTMLButtonElement>('[data-slot="carousel-previous"]');
+  const nextEl = el.querySelector<HTMLButtonElement>('[data-slot="carousel-next"]');
 
-  // Merge options - ensure we always have a valid object
-  const emblaOptions: EmblaOptionsType = {
-    axis,
-    ...dataOpts,
-    ...(options.opts || {}),
+  const handleClickPrev = getHandleClickPrev(api);
+  const handleClickNext = getHandleClickNext(api);
+  const handleKeydown = getHandleKeydown(api, opts);
+
+  const updateControls = () => {
+    const isPrevDisabled = !api.canGoToPrev();
+    const isNextDisabled = !api.canGoToNext();
+    prevEl?.toggleAttribute("disabled", isPrevDisabled);
+    prevEl?.setAttribute("aria-disabled", isPrevDisabled.toString());
+    nextEl?.toggleAttribute("disabled", isNextDisabled);
+    nextEl?.setAttribute("aria-disabled", isNextDisabled.toString());
   };
 
-  // Handle plugins - EmblaCarousel expects undefined when no plugins, not empty array
-  const plugins = options.plugins && options.plugins.length > 0 ? options.plugins : undefined;
-
-  // console.log("ID:", carouselElement.id);
-  // console.log("Plugins:", plugins);
-  // console.log("Options:", emblaOptions);
-
-  // Find navigation buttons
-  const prevButton = carouselElement.querySelector(".starwind-carousel-previous") as HTMLButtonElement;
-  const nextButton = carouselElement.querySelector(".starwind-carousel-next") as HTMLButtonElement;
-
-  // Initialize Embla
-  const emblaApi: EmblaCarouselType = EmblaCarousel(viewportElement, emblaOptions, plugins);
-
-  // Update button states
-  const updateButtons = () => {
-    const canGoToPrev = emblaApi.canGoToPrev();
-    const canGoToNext = emblaApi.canGoToNext();
-
-    if (prevButton) {
-      prevButton.disabled = !canGoToPrev;
-      prevButton.setAttribute("aria-disabled", (!canGoToPrev).toString());
-    }
-
-    if (nextButton) {
-      nextButton.disabled = !canGoToNext;
-      nextButton.setAttribute("aria-disabled", (!canGoToNext).toString());
-    }
+  const update = () => {
+    const prevOpts = currentOpts;
+    currentOpts = updateOpts(api)(prevOpts);
+    if (JSON.stringify(currentOpts) !== JSON.stringify(prevOpts)) api.reInit(currentOpts, plugins);
+    updateControls();
   };
 
-  // Event handlers for cleanup
-  const prevClickHandler = () => emblaApi.goToPrev();
-  const nextClickHandler = () => emblaApi.goToNext();
-  const keydownHandler = (event: KeyboardEvent) => {
-    if (axis === "y") {
-      // Vertical axis: ArrowUp = previous, ArrowDown = next
-      if (event.key === "ArrowUp") {
-        event.preventDefault();
-        emblaApi.goToPrev();
-      } else if (event.key === "ArrowDown") {
-        event.preventDefault();
-        emblaApi.goToNext();
-      }
-    } else if (event.key === "ArrowLeft") {
-      event.preventDefault();
-      emblaApi.goToPrev();
-    } else if (event.key === "ArrowRight") {
-      event.preventDefault();
-      emblaApi.goToNext();
-    }
-  };
+  prevEl?.addEventListener("click", handleClickPrev);
+  nextEl?.addEventListener("click", handleClickNext);
+  el.addEventListener("keydown", handleKeydown);
 
-  // Setup event listeners
-  const setupEventListeners = () => {
-    // Navigation button listeners
-    prevButton?.addEventListener("click", prevClickHandler);
-    nextButton?.addEventListener("click", nextClickHandler);
+  update();
 
-    // Keyboard navigation
-    carouselElement.addEventListener("keydown", keydownHandler);
-  };
+  api.on("select", updateControls);
+  api.on("reinit", update);
 
-  // Setup user API callback
-  const setupUserCallbacks = () => {
-    if (options.setApi) options.setApi(emblaApi);
-  };
-
-  // Initialize everything
-  updateButtons();
-  setupEventListeners();
-  setupUserCallbacks();
-
-  // Setup internal event listeners
-  emblaApi.on("select", updateButtons);
-  emblaApi.on("reinit", () => {
-    updateButtons();
-  });
-
-  // Return manager interface
   return {
-    api: emblaApi,
-    goToPrev: () => emblaApi.goToPrev(),
-    goToNext: () => emblaApi.goToNext(),
-    canGoToPrev: () => emblaApi.canGoToPrev(),
-    canGoToNext: () => emblaApi.canGoToNext(),
+    api,
     destroy: () => {
-      // Remove event listeners to prevent memory leaks
-      if (prevButton) prevButton.removeEventListener("click", prevClickHandler);
-      if (nextButton) nextButton.removeEventListener("click", nextClickHandler);
-
-      carouselElement.removeEventListener("keydown", keydownHandler);
-
-      // Destroy the Embla instance
-      emblaApi.destroy();
+      prevEl?.removeEventListener("click", handleClickPrev);
+      nextEl?.removeEventListener("click", handleClickNext);
+      el.removeEventListener("keydown", handleKeydown);
+      delete el.dataset.initialized;
+      api.destroy();
     },
   };
 }
-
-// TYPES -----------------------------------------------------------------------------------------------------------------------------------
-export type CarouselApi = EmblaCarouselType;
-
-export type CarouselOptions = {
-  opts?: EmblaOptionsType;
-  plugins?: EmblaPluginType[];
-  setApi?: (api: CarouselApi) => void;
-};
-
-export type CarouselManager = {
-  api: CarouselApi;
-  canGoToNext: () => boolean;
-  canGoToPrev: () => boolean;
-  destroy: () => void;
-  goToNext: () => void;
-  goToPrev: () => void;
-};

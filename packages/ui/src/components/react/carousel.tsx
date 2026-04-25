@@ -1,30 +1,9 @@
-import { cva } from "class-variance-authority";
 import type { EmblaCarouselType, EmblaOptionsType, EmblaPluginType } from "embla-carousel";
 import useEmblaCarousel, { type EmblaRootNodeRefType } from "embla-carousel-react";
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { cn } from "../../lib/utils";
+import { CAROUSEL, getHandleClickNext, getHandleClickPrev, getHandleKeydown, updateOpts } from "../shared/carousel";
 import { Button } from "./button";
-
-// STYLES ----------------------------------------------------------------------------------------------------------------------------------
-export const CAROUSEL = {
-  base: cva("group/carousel relative"),
-  content: cva(`flex 
-    group-data-[orientation=vertical]/carousel:-mt-4 group-data-[orientation=horizontal]/carousel:-ml-4 
-    group-data-[orientation=vertical]/carousel:flex-col`),
-  item: cva(`min-w-0 shrink-0 grow-0 basis-full 
-    group-data-[orientation=vertical]/carousel:pt-4 group-data-[orientation=horizontal]/carousel:pl-4`),
-  next: cva(`absolute touch-manipulation rounded-full 
-    group-data-[orientation=horizontal]/carousel:top-1/2 group-data-[orientation=horizontal]/carousel:-right-12 
-    group-data-[orientation=horizontal]/carousel:-translate-y-1/2 group-data-[orientation=vertical]/carousel:-bottom-12 
-    group-data-[orientation=vertical]/carousel:left-1/2 group-data-[orientation=vertical]/carousel:-translate-x-1/2 
-    group-data-[orientation=vertical]/carousel:rotate-90`),
-  previous: cva(`absolute touch-manipulation rounded-full 
-    group-data-[orientation=horizontal]/carousel:top-1/2 group-data-[orientation=horizontal]/carousel:-left-12 
-    group-data-[orientation=horizontal]/carousel:-translate-y-1/2 group-data-[orientation=vertical]/carousel:-top-12 
-    group-data-[orientation=vertical]/carousel:left-1/2 group-data-[orientation=vertical]/carousel:-translate-x-1/2 
-    group-data-[orientation=vertical]/carousel:rotate-90`),
-  viewport: cva("overflow-hidden"),
-};
 
 // CONTEXT ---------------------------------------------------------------------------------------------------------------------------------
 const CarouselContext = createContext<CarouselContextProps | null>(null);
@@ -36,96 +15,31 @@ export function useCarousel() {
 }
 
 // BASE ------------------------------------------------------------------------------------------------------------------------------------
-export function Carousel(props: CarouselProps & React.ComponentProps<"section">) {
-  const { orientation = "horizontal", opts, setApi, plugins, className, children, ...rest } = props;
-  const [options, setOptions] = useState(opts);
-  const [carouselRef, api] = useEmblaCarousel({ ...options, axis: orientation === "horizontal" ? "x" : "y" }, plugins);
-  const [canGoToNext, setCanGoToNext] = useState(false);
-  const [canGoToPrev, setCanGoToPrev] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [slideCount, setSlideCount] = useState(0);
+export function Carousel({ opts: inputOpts = {}, setApi, plugins, className, children, ...rest }: CarouselProps) {
+  const [opts, setOpts] = useState(inputOpts);
+  const [carouselRef, api] = useEmblaCarousel(opts, plugins);
 
-  const onReinit = useCallback((nextApi: EmblaCarouselType) => {
-    if (!nextApi) return;
-    const { containerRect, slideRects } = nextApi.internalEngine();
-    const lastSlideRect = [...slideRects].pop();
-    const slidesLessThanViewport = containerRect.right > (lastSlideRect?.right ?? 0);
-    const newOptions = slidesLessThanViewport
-      ? ({ containScroll: false, slidesToScroll: "auto" } as const)
-      : ({ containScroll: "trimSnaps", slidesToScroll: 1 } as const);
+  const handleReinit = useCallback((api: EmblaCarouselType) => setOpts(updateOpts(api)), []);
 
-    setOptions((currentOptions) => ({ ...currentOptions, ...newOptions }));
-  }, []);
-
-  const onSelect = useCallback((nextApi: EmblaCarouselType) => {
-    if (!nextApi) return;
-    setCanGoToPrev(nextApi.canGoToPrev());
-    setCanGoToNext(nextApi.canGoToNext());
-    setSelectedIndex(nextApi.selectedSnap());
-    setSlideCount(nextApi.snapList().length);
-  }, []);
-
-  const goTo = useCallback((index: number) => api?.goTo(index), [api]);
-  const goToPrev = useCallback(() => api?.goToPrev(), [api]);
-  const goToNext = useCallback(() => api?.goToNext(), [api]);
-
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLElement>) => {
-      if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        goToPrev();
-      } else if (event.key === "ArrowRight") {
-        event.preventDefault();
-        goToNext();
-      }
-    },
-    [goToNext, goToPrev]
-  );
-
-  useEffect(() => {
-    if (!(api && setApi)) return;
-    setApi(api);
-  }, [api, setApi]);
+  useEffect(() => (api && setApi ? setApi(api) : undefined), [api, setApi]);
 
   useEffect(() => {
     if (!api) return;
-
-    onSelect(api);
-    onReinit(api);
-
-    api.on("reinit", onReinit);
-    api.on("reinit", onSelect);
-    api.on("select", onSelect);
-
+    handleReinit(api);
+    api.on("reinit", handleReinit);
     return () => {
-      api.off("reinit", onReinit);
-      api.off("reinit", onSelect);
-      api.off("select", onSelect);
+      api.off("reinit", handleReinit);
     };
-  }, [api, onReinit, onSelect]);
+  }, [api, handleReinit]);
 
   return (
-    <CarouselContext.Provider
-      value={{
-        carouselRef,
-        api,
-        opts,
-        orientation: orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
-        goToPrev,
-        goToNext,
-        goTo,
-        canGoToPrev,
-        canGoToNext,
-        selectedIndex,
-        slideCount,
-      }}
-    >
+    <CarouselContext.Provider value={{ api, carouselRef, opts }}>
       <section
         aria-roledescription="carousel"
         className={cn(CAROUSEL.base(), className)}
-        data-orientation={orientation ?? (opts?.axis === "y" ? "vertical" : "horizontal")}
+        data-axis={opts?.axis}
         data-slot="carousel"
-        onKeyDownCapture={handleKeyDown}
+        onKeyDownCapture={getHandleKeydown(api, opts)}
         role="region"
         {...rest}
       >
@@ -134,8 +48,11 @@ export function Carousel(props: CarouselProps & React.ComponentProps<"section">)
     </CarouselContext.Provider>
   );
 }
-
-export type CarouselPropsType = CarouselProps;
+export type CarouselProps = React.ComponentProps<"section"> & {
+  opts?: EmblaOptionsType;
+  plugins?: EmblaPluginType[];
+  setApi?: (api: EmblaCarouselType) => void;
+};
 
 // CONTENT ---------------------------------------------------------------------------------------------------------------------------------
 export function CarouselContent({ className, viewportClassName, ...props }: CarouselContentProps) {
@@ -157,14 +74,14 @@ export type CarouselItemProps = React.ComponentProps<"section">;
 
 // NEXT ------------------------------------------------------------------------------------------------------------------------------------
 export function CarouselNext({ className, variant = "outline", size = "icon-sm", ...props }: CarouselNextProps) {
-  const { goToNext, canGoToNext } = useCarousel();
+  const { api } = useCarousel();
 
   return (
     <Button
       className={cn(CAROUSEL.next(), className)}
       data-slot="carousel-next"
-      disabled={!canGoToNext}
-      onClick={goToNext}
+      disabled={!api?.canGoToNext}
+      onClick={getHandleClickNext(api)}
       size={size}
       variant={variant}
       {...props}
@@ -178,14 +95,14 @@ export type CarouselNextProps = Omit<React.ComponentProps<typeof Button>, "class
 
 // PREVIOUS --------------------------------------------------------------------------------------------------------------------------------
 export function CarouselPrevious({ className, variant = "outline", size = "icon-sm", ...props }: CarouselPreviousProps) {
-  const { goToPrev, canGoToPrev } = useCarousel();
+  const { api } = useCarousel();
 
   return (
     <Button
       className={cn(CAROUSEL.previous(), className)}
       data-slot="carousel-previous"
-      disabled={!canGoToPrev}
-      onClick={goToPrev}
+      disabled={!api?.canGoToPrev}
+      onClick={getHandleClickPrev(api)}
       size={size}
       variant={variant}
       {...props}
@@ -198,21 +115,4 @@ export function CarouselPrevious({ className, variant = "outline", size = "icon-
 export type CarouselPreviousProps = Omit<React.ComponentProps<typeof Button>, "className"> & { className?: string };
 
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------
-type CarouselContextProps = {
-  api: EmblaCarouselType | undefined;
-  canGoToPrev: boolean;
-  canGoToNext: boolean;
-  carouselRef: EmblaRootNodeRefType;
-  goTo: (index: number) => void;
-  goToNext: () => void;
-  goToPrev: () => void;
-  selectedIndex: number;
-  slideCount: number;
-} & CarouselProps;
-
-type CarouselProps = {
-  opts?: EmblaOptionsType;
-  plugins?: EmblaPluginType[];
-  orientation?: "horizontal" | "vertical";
-  setApi?: (api: EmblaCarouselType) => void;
-};
+type CarouselContextProps = { api: EmblaCarouselType | undefined; carouselRef: EmblaRootNodeRefType } & Pick<CarouselProps, "opts">;

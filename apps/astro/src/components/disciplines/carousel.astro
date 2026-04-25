@@ -14,7 +14,7 @@ type Props = { items: Disciplines["Entity"][] };
 ---
 
 <div class={DISCIPLINES.base()}>
-  <CarouselNative class={DISCIPLINES.carousel()} opts={{ loop: true }}>
+  <CarouselNative id="disciplines-carousel" class={DISCIPLINES.carousel()}>
     <CarouselContent>
       {items.map((item) => (
 				<CarouselItem class={DISCIPLINES.item()}>
@@ -45,15 +45,16 @@ type Props = { items: Disciplines["Entity"][] };
   import { initCarousel } from "@niama/ui/astro/carousel.ts";
   import Autoplay from "embla-carousel-autoplay";
 
-  function initAutoplayCarousel() {
-    const carouselElement = document.getElementById("disciplines-carousel");
-    if (!carouselElement) return;
-    initCarousel(carouselElement, {
-      opts: { loop: true },
-      plugins: [Autoplay({ delay: 10_000 })],
-    });
-  }
+  const init = () => {
+    const manager = initCarousel(document.getElementById("disciplines-carousel"), { loop: true }, [Autoplay({ delay: 10_000 })]);
+    manager?.api.plugins().autoplay?.play();
+    return () => {
+      manager?.destroy();
+      manager?.api.plugins().autoplay?.destroy();
+    };
+  };
 
-  initAutoplayCarousel();
-  document.addEventListener("astro:after-swap", initAutoplayCarousel);
+  const destroy = init();
+  document.addEventListener("astro:before-swap", destroy);
+  document.addEventListener("astro:after-swap", init);
 </script>
