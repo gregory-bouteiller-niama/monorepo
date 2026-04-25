@@ -19,3 +19,5 @@ export const DISCIPLINE = {
   title: cva("mb-3 @lg:self-start self-center font-bold font-heading text-3xl"),
   logo: cva("w-32"),
 };
+
+export const AUTOPLAY = 10_000;
