@@ -3,7 +3,7 @@ import { cn } from "@niama/ui/lib/utils";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui/react/carousel";
 import { Item, ItemContent, ItemDescription, ItemMedia, type ItemProps, ItemTitle } from "@niama/ui/react/item";
 import { Logo } from "@niama/ui/react/logo";
-import { DISCIPLINE, DISCIPLINES } from "@niama/ui/shared/disciplines/carousel";
+import { AUTOPLAY, DISCIPLINE, DISCIPLINES } from "@niama/ui/shared/disciplines/carousel";
 import { GLOW } from "@niama/ui/shared/glow";
 import Autoplay from "embla-carousel-autoplay";
 import Ssr from "embla-carousel-ssr";
@@ -13,7 +13,7 @@ import { useGlow } from "../use-glow";
 export function DisciplinesCarousel({ items }: DisciplinesCarouselProps) {
   return (
     <section className={DISCIPLINES.base()}>
-      <Carousel className={DISCIPLINES.carousel()} opts={{ loop: true }} plugins={[Autoplay({ delay: 10_000 }), Ssr()]}>
+      <Carousel className={DISCIPLINES.carousel()} opts={{ loop: true }} plugins={[Autoplay({ delay: AUTOPLAY }), Ssr()]}>
         <CarouselContent>
           {items.map((item) => (
             <CarouselItem className={DISCIPLINES.item()} key={item.slug}>

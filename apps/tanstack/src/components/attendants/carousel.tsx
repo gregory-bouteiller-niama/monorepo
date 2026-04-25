@@ -38,7 +38,7 @@ function AttendantItem({ index, item }: { index: number; item: Attendants["Entit
     <button
       aria-label={`Afficher la fiche de ${item.name}`}
       aria-pressed={isFlipped}
-      className={ATTENDANT.base({ className: ROTATIONS[index] })}
+      className={ATTENDANT.base({ className: ROTATIONS[index % ROTATIONS.length] })}
       data-flipped={isFlipped}
       onClick={() => {
         setIsFlipped((currentValue) => !currentValue);
