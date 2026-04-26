@@ -145,6 +145,7 @@
         "@niama/domain": "workspace:*",
         "@tabler/icons-react": "^3.41.1",
         "@tanstack/react-form": "^1.29.1",
+        "@tanstack/react-store": "^0.11.0",
         "@tanstack/store": "^0.11.0",
         "@tanstack/svelte-form": "^1.29.1",
         "@tanstack/svelte-store": "^0.12.0",
