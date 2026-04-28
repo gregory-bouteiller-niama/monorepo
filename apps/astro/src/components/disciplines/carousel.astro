@@ -17,22 +17,22 @@ type Props = { items: Disciplines["Entity"][] };
   <CarouselNative class={DISCIPLINES.carousel()}>
     <CarouselContent>
       {items.map((item) => (
-          <CarouselItem class={DISCIPLINES.item()}>
-            <Glow class={DISCIPLINE.base()} data-discipline={item.slug} kind="item" variant="outline">
-              <ItemMedia class={DISCIPLINE.media()}>
-                <Logo className={DISCIPLINE.logo()} discipline={item} />
-              </ItemMedia>
-              <ItemContent class={DISCIPLINE.content()}>
-                <ItemTitle class={DISCIPLINE.title()}>{item.title}</ItemTitle>
-                {item.description.map((sentence) => (
-                  <ItemDescription class={DISCIPLINE.description()}>
-                    {sentence}
-                  </ItemDescription>
-                ))}
-              </ItemContent>
-            </Glow>
-          </CarouselItem>
-        ))}
+        <CarouselItem class={DISCIPLINES.item()}>
+          <Glow class={DISCIPLINE.base()} data-discipline={item.slug} kind="item" variant="outline">
+            <ItemMedia class={DISCIPLINE.media()}>
+              <Logo className={DISCIPLINE.logo()} discipline={item} />
+            </ItemMedia>
+            <ItemContent class={DISCIPLINE.content()}>
+              <ItemTitle class={DISCIPLINE.title()}>{item.title}</ItemTitle>
+              {item.description.map((sentence) => (
+                <ItemDescription class={DISCIPLINE.description()}>
+                  {sentence}
+                </ItemDescription>
+              ))}
+            </ItemContent>
+          </Glow>
+        </CarouselItem>
+      ))}
     </CarouselContent>
     <aside class={DISCIPLINES.controls()}>
       <CarouselPrevious class={DISCIPLINES.control()} />
@@ -43,11 +43,17 @@ type Props = { items: Disciplines["Entity"][] };
 
 <script>
   import { defineCarousel, initCarousel } from "@niama/ui/astro/carousel.ts";
+  import { createCarouselStore } from "@niama/ui/shared/carousel";
   import { AUTOPLAY } from "@niama/ui/shared/disciplines/carousel";
   import Autoplay from "embla-carousel-autoplay";
 
   defineCarousel({
     name: "disciplines-carousel",
-    setup: (el) => initCarousel(el, { loop: true }, [Autoplay({ delay: AUTOPLAY })]),
+    setup: (el) => {
+      const store = createCarouselStore({ loop: true }, [Autoplay({ delay: AUTOPLAY })]);
+      const destroy = initCarousel(el, store);
+      store.state.api?.plugins().autoplay?.play();
+      return destroy;
+    },
   });
 </script>

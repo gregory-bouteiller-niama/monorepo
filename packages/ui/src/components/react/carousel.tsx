@@ -1,19 +1,19 @@
-import { createStoreContext, useSelector } from "@tanstack/react-store";
-import type { EmblaOptionsType, EmblaPluginType } from "embla-carousel";
+import { createStoreContext, type Store, useSelector } from "@tanstack/react-store";
 import useEmblaCarousel, { type EmblaRootNodeRefType } from "embla-carousel-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { cn } from "../../lib/utils";
-import { CAROUSEL, createCarouselStore } from "../shared/carousel";
+import { CAROUSEL, type CarouselActions, type CarouselState } from "../shared/carousel";
 import { Button } from "./button";
 
 // CONTEXT ---------------------------------------------------------------------------------------------------------------------------------
 const { StoreProvider: CarouselProvider, useStoreContext: useCarousel } = createStoreContext<CarouselContextProps>();
-type CarouselContextProps = { ref: EmblaRootNodeRefType; store: ReturnType<typeof createCarouselStore> };
+
+type CarouselContextProps = { ref: EmblaRootNodeRefType; store: Store<CarouselState, CarouselActions> };
 
 // BASE ------------------------------------------------------------------------------------------------------------------------------------
-export function Carousel({ opts: inputOpts = {}, plugins, className, children, ...rest }: CarouselProps) {
-  const [store] = useState(() => createCarouselStore(inputOpts));
+export function Carousel({ store, className, children, ...rest }: CarouselProps) {
   const opts = useSelector(store, (state) => state.opts);
+  const plugins = useSelector(store, (state) => state.plugins);
   const [ref, api] = useEmblaCarousel(opts, plugins);
 
   useEffect(() => (api ? store.actions.bindApi(api) : undefined), [api, store]);
@@ -34,7 +34,7 @@ export function Carousel({ opts: inputOpts = {}, plugins, className, children, .
     </CarouselProvider>
   );
 }
-export type CarouselProps = React.ComponentProps<"section"> & { opts?: EmblaOptionsType; plugins?: EmblaPluginType[] };
+export type CarouselProps = React.ComponentProps<"section"> & Pick<CarouselContextProps, "store">;
 
 // CONTENT ---------------------------------------------------------------------------------------------------------------------------------
 export function CarouselContent({ className, viewportClassName, ...props }: CarouselContentProps) {
