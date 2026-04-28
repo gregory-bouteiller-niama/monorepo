@@ -3,21 +3,15 @@ import { Card, CardContent, CardDescription, CardHeader, type CardProps, CardTit
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui/react/carousel";
 import { ATTENDANT, ATTENDANTS, AUTOPLAY, ROTATIONS } from "@niama/ui/shared/attendants/carousel";
 import { createCarouselStore } from "@niama/ui/shared/carousel";
-import { useSelector } from "@tanstack/react-store";
 import { Image } from "@unpic/react";
 import Autoplay from "embla-carousel-autoplay";
 import Ssr from "embla-carousel-ssr";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DisciplinesBadge } from "../disciplines/badge";
 
 // MAIN ------------------------------------------------------------------------------------------------------------------------------------
 export function AttendantsCarousel({ items }: AttendantsCarouselProps) {
   const [store] = useState(() => createCarouselStore({ loop: true }, [Autoplay({ delay: AUTOPLAY }), Ssr()]));
-  const api = useSelector(store, (state) => state.api);
-
-  useEffect(() => {
-    api?.plugins().autoplay?.play();
-  }, [api]);
 
   return (
     <section className={ATTENDANTS.base()}>

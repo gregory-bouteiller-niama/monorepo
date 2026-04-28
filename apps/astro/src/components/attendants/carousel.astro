@@ -96,7 +96,6 @@ type Props = { class?: string; items: Attendants["Entity"][] };
         cardEl.setAttribute("aria-pressed", nextFlipped);
       };
 
-      store.state.api?.plugins().autoplay?.play();
       el.addEventListener("click", handleClick);
       return () => {
         destroyCarousel();

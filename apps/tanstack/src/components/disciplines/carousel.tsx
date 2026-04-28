@@ -6,20 +6,14 @@ import { Logo } from "@niama/ui/react/logo";
 import { createCarouselStore } from "@niama/ui/shared/carousel";
 import { AUTOPLAY, DISCIPLINE, DISCIPLINES } from "@niama/ui/shared/disciplines/carousel";
 import { GLOW } from "@niama/ui/shared/glow";
-import { useSelector } from "@tanstack/react-store";
 import Autoplay from "embla-carousel-autoplay";
 import Ssr from "embla-carousel-ssr";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useGlow } from "../use-glow";
 
 // BASE ------------------------------------------------------------------------------------------------------------------------------------
 export function DisciplinesCarousel({ items }: DisciplinesCarouselProps) {
   const [store] = useState(() => createCarouselStore({ loop: true }, [Autoplay({ delay: AUTOPLAY }), Ssr()]));
-  const api = useSelector(store, (state) => state.api);
-
-  useEffect(() => {
-    api?.plugins().autoplay?.play();
-  }, [api]);
 
   return (
     <section className={DISCIPLINES.base()}>

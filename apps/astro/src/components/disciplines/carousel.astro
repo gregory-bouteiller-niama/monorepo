@@ -51,9 +51,7 @@ type Props = { items: Disciplines["Entity"][] };
     name: "disciplines-carousel",
     setup: (el) => {
       const store = createCarouselStore({ loop: true }, [Autoplay({ delay: AUTOPLAY })]);
-      const destroy = initCarousel(el, store);
-      store.state.api?.plugins().autoplay?.play();
-      return destroy;
+      return initCarousel(el, store);
     },
   });
 </script>
