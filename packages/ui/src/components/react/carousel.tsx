@@ -1,8 +1,8 @@
 import { createStoreContext, type Store, useSelector } from "@tanstack/react-store";
 import useEmblaCarousel, { type EmblaRootNodeRefType } from "embla-carousel-react";
-import { useEffect } from "react";
+import { Children, cloneElement, isValidElement, useEffect } from "react";
 import { cn } from "../../lib/utils";
-import { CAROUSEL, type CarouselActions, type CarouselState } from "../shared/carousel";
+import { CAROUSEL, type CarouselActions, type CarouselState, CLONE_ATTRS } from "../shared/carousel";
 import { Button } from "./button";
 
 // CONTEXT ---------------------------------------------------------------------------------------------------------------------------------
@@ -37,12 +37,25 @@ export function Carousel({ store, className, children, ...rest }: CarouselProps)
 export type CarouselProps = React.ComponentProps<"section"> & Pick<CarouselContextProps, "store">;
 
 // CONTENT ---------------------------------------------------------------------------------------------------------------------------------
-export function CarouselContent({ className, viewportClassName, ...props }: CarouselContentProps) {
-  const { ref } = useCarousel();
+export function CarouselContent({ children, className, viewportClassName, ...props }: CarouselContentProps) {
+  const { ref, store } = useCarousel();
+  const shouldDuplicateSlides = useSelector(store, ({ shouldDuplicateSlides }) => shouldDuplicateSlides);
+
+  let slides = children;
+
+  if (shouldDuplicateSlides) {
+    const childArray = Children.toArray(children);
+    slides = [
+      ...childArray,
+      ...childArray.map((c) => (isValidElement(c) ? cloneElement(c, { ...CLONE_ATTRS, key: `${c.key ?? "slide"}:clone` }) : c)),
+    ];
+  }
 
   return (
     <div className={cn(CAROUSEL.viewport(), viewportClassName)} data-slot="carousel-content" ref={ref}>
-      <div className={cn(CAROUSEL.content(), className)} {...props} />
+      <div className={cn(CAROUSEL.content(), className)} data-slot="carousel-container" {...props}>
+        {slides}
+      </div>
     </div>
   );
 }
@@ -57,7 +70,8 @@ export type CarouselItemProps = React.ComponentProps<"section">;
 // NEXT ------------------------------------------------------------------------------------------------------------------------------------
 export function CarouselNext({ className, variant = "outline", size = "icon-sm", ...props }: CarouselNextProps) {
   const { store } = useCarousel();
-  const { api, canGoToNext } = useSelector(store, (state) => state);
+  const api = useSelector(store, (state) => state.api);
+  const canGoToNext = useSelector(store, (state) => state.canGoToNext);
 
   return (
     <Button
@@ -79,7 +93,8 @@ export type CarouselNextProps = Omit<React.ComponentProps<typeof Button>, "class
 // PREVIOUS --------------------------------------------------------------------------------------------------------------------------------
 export function CarouselPrevious({ className, variant = "outline", size = "icon-sm", ...props }: CarouselPreviousProps) {
   const { store } = useCarousel();
-  const { api, canGoToPrev } = useSelector(store, (state) => state);
+  const api = useSelector(store, (state) => state.api);
+  const canGoToPrev = useSelector(store, (state) => state.canGoToPrev);
 
   return (
     <Button
