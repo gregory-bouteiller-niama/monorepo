@@ -1,3 +1,4 @@
+import { createStore } from "@tanstack/store";
 import { cva } from "class-variance-authority";
 import type { EmblaCarouselType, EmblaOptionsType } from "embla-carousel";
 
@@ -26,37 +27,51 @@ export const CAROUSEL = {
 const ALL_SLIDES_SHOWN_OPTS = { containScroll: false, slidesToScroll: "auto" } as const;
 const DEFAULT_OPTS = { containScroll: "trimSnaps", slidesToScroll: 1 } as const;
 
-// FUNCTIONS -------------------------------------------------------------------------------------------------------------------------------
-export function getAdaptiveOpts(api: EmblaCarouselType) {
-  const { containerRect, slideRects } = api.internalEngine();
-  const canShowAllSlides = containerRect.right > (slideRects.at(-1)?.right ?? 0);
-  return canShowAllSlides ? ALL_SLIDES_SHOWN_OPTS : DEFAULT_OPTS;
-}
+// STORE -----------------------------------------------------------------------------------------------------------------------------------
+export const createCarouselStore = (opts: EmblaOptionsType = {}) =>
+  createStore<CarouselState, CarouselActions>({ api: undefined, canGoToNext: false, canGoToPrev: false, opts }, ({ get, setState }) => {
+    const syncFromApi = (api: EmblaCarouselType) => {
+      const { containerRect, slideRects } = api.internalEngine();
+      setState(({ opts }) => ({
+        api,
+        canGoToNext: api.canGoToNext(),
+        canGoToPrev: api.canGoToPrev(),
+        opts: { ...opts, ...(containerRect.right > (slideRects.at(-1)?.right ?? 0) ? ALL_SLIDES_SHOWN_OPTS : DEFAULT_OPTS) },
+      }));
+    };
 
-export function updateOpts(api: EmblaCarouselType) {
-  return (opts: Partial<EmblaOptionsType>) => ({ ...opts, ...getAdaptiveOpts(api) });
-}
+    const bindApi = (api: EmblaCarouselType) => {
+      syncFromApi(api);
+      api.on("select", syncFromApi);
+      api.on("reinit", syncFromApi);
 
-// EVENTS ----------------------------------------------------------------------------------------------------------------------------------
-export function getHandleClickPrev(api: EmblaCarouselType | undefined) {
-  return () => api?.goToPrev();
-}
+      return () => {
+        api.off("select", syncFromApi);
+        api.off("reinit", syncFromApi);
+        setState((prev) => (prev.api === api ? { ...prev, api: undefined, canGoToNext: false, canGoToPrev: false } : prev));
+      };
+    };
 
-export function getHandleClickNext(api: EmblaCarouselType | undefined) {
-  return () => api?.goToNext();
-}
+    const handleKeydown = (event: Pick<KeyboardEvent, "key" | "preventDefault">) => {
+      const axis = get().opts.axis;
+      const prevKey = axis === "y" ? "ArrowUp" : "ArrowLeft";
+      const nextKey = axis === "y" ? "ArrowDown" : "ArrowRight";
 
-export function getHandleKeydown(api: EmblaCarouselType | undefined, opts: EmblaOptionsType) {
-  return (event: Pick<KeyboardEvent, "key" | "preventDefault">) => {
-    const prevKey = opts.axis === "y" ? "ArrowUp" : "ArrowLeft";
-    const nextKey = opts.axis === "y" ? "ArrowDown" : "ArrowRight";
+      if (event.key === prevKey) {
+        event.preventDefault();
+        get().api?.goToPrev();
+      } else if (event.key === nextKey) {
+        event.preventDefault();
+        get().api?.goToNext();
+      }
+    };
 
-    if (event.key === prevKey) {
-      event.preventDefault();
-      api?.goToPrev();
-    } else if (event.key === nextKey) {
-      event.preventDefault();
-      api?.goToNext();
-    }
-  };
-}
+    return { bindApi, handleKeydown };
+  });
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+type CarouselActions = {
+  bindApi: (api: EmblaCarouselType) => () => void;
+  handleKeydown: (event: Pick<KeyboardEvent, "key" | "preventDefault">) => void;
+};
+type CarouselState = { api: EmblaCarouselType | undefined; canGoToNext: boolean; canGoToPrev: boolean; opts: EmblaOptionsType };

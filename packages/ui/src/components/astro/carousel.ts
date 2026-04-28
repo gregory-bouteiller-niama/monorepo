@@ -5,5 +5,4 @@ export { default as CarouselContent, type Props as CarouselContentProps } from "
 export { default as CarouselItem, type Props as CarouselItemProps } from "./carousel/item.astro";
 export { default as CarouselNext, type Props as CarouselNextProps } from "./carousel/next.astro";
 export { default as CarouselPrevious, type Props as CarouselPreviousProps } from "./carousel/previous.astro";
-export type { CarouselApi, CarouselManager, CarouselOptions } from "./carousel/utils";
-export { initCarousel } from "./carousel/utils";
+export { defineCarousel, initCarousel } from "./carousel/utils";

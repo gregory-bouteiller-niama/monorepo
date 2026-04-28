@@ -13,48 +13,41 @@ const { items } = Astro.props;
 type Props = { items: Disciplines["Entity"][] };
 ---
 
-<div class={DISCIPLINES.base()}>
-  <CarouselNative id="disciplines-carousel" class={DISCIPLINES.carousel()}>
+<disciplines-carousel class={DISCIPLINES.base()}>
+  <CarouselNative class={DISCIPLINES.carousel()}>
     <CarouselContent>
       {items.map((item) => (
-				<CarouselItem class={DISCIPLINES.item()}>
-					<Glow class={DISCIPLINE.base()} data-discipline={item.slug} kind="item" variant="outline">
-						<ItemMedia class={DISCIPLINE.media()}>
-							<Logo className={DISCIPLINE.logo()} discipline={item} />
-						</ItemMedia>
-						<ItemContent class={DISCIPLINE.content()}>
-							<ItemTitle class={DISCIPLINE.title()}>{item.title}</ItemTitle>
-							{item.description.map((sentence) => (
-								<ItemDescription class={DISCIPLINE.description()}>
-									{sentence}
-								</ItemDescription>
-							))}
-						</ItemContent>
-					</Glow>
-				</CarouselItem>
-			))}
+          <CarouselItem class={DISCIPLINES.item()}>
+            <Glow class={DISCIPLINE.base()} data-discipline={item.slug} kind="item" variant="outline">
+              <ItemMedia class={DISCIPLINE.media()}>
+                <Logo className={DISCIPLINE.logo()} discipline={item} />
+              </ItemMedia>
+              <ItemContent class={DISCIPLINE.content()}>
+                <ItemTitle class={DISCIPLINE.title()}>{item.title}</ItemTitle>
+                {item.description.map((sentence) => (
+                  <ItemDescription class={DISCIPLINE.description()}>
+                    {sentence}
+                  </ItemDescription>
+                ))}
+              </ItemContent>
+            </Glow>
+          </CarouselItem>
+        ))}
     </CarouselContent>
     <aside class={DISCIPLINES.controls()}>
       <CarouselPrevious class={DISCIPLINES.control()} />
       <CarouselNext class={DISCIPLINES.control()} />
     </aside>
   </CarouselNative>
-</div>
+</disciplines-carousel>
 
 <script>
-  import { initCarousel } from "@niama/ui/astro/carousel.ts";
+  import { defineCarousel, initCarousel } from "@niama/ui/astro/carousel.ts";
+  import { AUTOPLAY } from "@niama/ui/shared/disciplines/carousel";
   import Autoplay from "embla-carousel-autoplay";
 
-  const init = () => {
-    const manager = initCarousel(document.getElementById("disciplines-carousel"), { loop: true }, [Autoplay({ delay: 10_000 })]);
-    manager?.api.plugins().autoplay?.play();
-    return () => {
-      manager?.destroy();
-      manager?.api.plugins().autoplay?.destroy();
-    };
-  };
-
-  const destroy = init();
-  document.addEventListener("astro:before-swap", destroy);
-  document.addEventListener("astro:after-swap", init);
+  defineCarousel({
+    name: "disciplines-carousel",
+    setup: (el) => initCarousel(el, { loop: true }, [Autoplay({ delay: AUTOPLAY })]),
+  });
 </script>

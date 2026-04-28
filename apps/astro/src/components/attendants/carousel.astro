@@ -1,153 +1,104 @@
 ---
 import { Image } from "astro:assets";
-import { Button } from "@niama/ui/astro/button.ts";
+import type { Attendants } from "@niama/domain/functions/attendants";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui/astro/card.ts";
 import { CarouselContent, CarouselItem, Carousel as CarouselNative, CarouselNext, CarouselPrevious } from "@niama/ui/astro/carousel.ts";
-import { ATTENDANT, ATTENDANTS, AUTOPLAY, ROTATIONS } from "@niama/ui/shared/attendants/carousel";
+import { ATTENDANT, ATTENDANTS, ROTATIONS } from "@niama/ui/shared/attendants/carousel";
 import DisciplinesBadge from "@/components/disciplines/badge.astro";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className = "", items } = Astro.props;
 
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------
-type AttendantDiscipline = {
-  slug: string;
-};
-
-type AttendantImage = {
-  alt: string;
-  height: number;
-  src: string;
-  width: number;
-};
-
-type AttendantItem = {
-  description: string[];
-  disciplines: AttendantDiscipline[];
-  image: AttendantImage;
-  name: string;
-};
-
-type Props = {
-  autoplay?: number;
-  class?: string;
-  items: AttendantItem[];
-};
+type Props = { class?: string; items: Attendants["Entity"][] };
 ---
 
-<section class:list={[ATTENDANTS.base(), className]}>
-  <CarouselNative id="attendants-carousel" class={ATTENDANTS.carousel()}>
+<attendants-carousel class:list={[ATTENDANTS.base(), className]}>
+  <CarouselNative class={ATTENDANTS.carousel()}>
     <CarouselContent viewportClass={ATTENDANTS.viewport()}>
       {items.map((attendant, index) => (
-        <CarouselItem class={ATTENDANTS.item()}>
-          <button
-            aria-label={`Afficher la fiche de ${attendant.name}`}
-            aria-pressed="false"
-            data-attendants-card
-            data-flipped="false"
-            class:list={[ATTENDANT.base(), ROTATIONS[index]]}
-            type="button"
-          >
-            <Card class={ATTENDANT.card()}>
-              <CardHeader>
-                <CardTitle class={ATTENDANT.title()}>{attendant.name}</CardTitle>
-                <CardDescription class={ATTENDANT.badges()}>
-                  {attendant.disciplines.map((discipline) => (
-                    <DisciplinesBadge slug={discipline.slug} />
-                  ))}
-                </CardDescription>
-              </CardHeader>
-              <CardContent class={ATTENDANT.image()}>
-                <div class={ATTENDANT.overlay()}>
-                  {/* <Button variant="secondary">
-                    En savoir plus
+          <CarouselItem class={ATTENDANTS.item()}>
+            <button
+              aria-label={`Afficher la fiche de ${attendant.name}`}
+              aria-pressed="false"
+              data-attendant
+              data-flipped="false"
+              class:list={[ATTENDANT.base(), ROTATIONS[index % ROTATIONS.length]]}
+              type="button"
+            >
+              <Card class={ATTENDANT.card()}>
+                <CardHeader>
+                  <CardTitle class={ATTENDANT.title()}>{attendant.name}</CardTitle>
+                  <CardDescription class={ATTENDANT.badges()}>
+                    {attendant.disciplines.map((discipline) => (
+                      <DisciplinesBadge slug={discipline.slug} />
+                    ))}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent class={ATTENDANT.image()}>
+                  <div class={ATTENDANT.overlay()}>
                     <span class={ATTENDANT.icon()} />
-                  </Button> */}
-                </div>
-                <Image
-                  {...attendant.image}
-                  class="absolute inset-0 aspect-square w-[420px] object-cover"
-                  format="avif"
-                  sizes="(min-width: 640px) 420px, 100vw"
-                  widths={[420, 840]}
-                />
-              </CardContent>
-            </Card>
-            <Card class={ATTENDANT.card()} data-back>
-              <CardHeader>
-                <CardTitle class={ATTENDANT.title()}>{attendant.name}</CardTitle>
-                <CardDescription class={ATTENDANT.badges()}>
-                  {attendant.disciplines.map((discipline) => (
-                    <DisciplinesBadge slug={discipline.slug} />
+                  </div>
+                  <Image
+                    {...attendant.image}
+                    format="avif"
+                    sizes="(min-width: 640px) 420px, 100vw"
+                    widths={[420, 840]}
+                  />
+                </CardContent>
+              </Card>
+              <Card class={ATTENDANT.card()} data-back>
+                <CardHeader>
+                  <CardTitle class={ATTENDANT.title()}>{attendant.name}</CardTitle>
+                  <CardDescription class={ATTENDANT.badges()}>
+                    {attendant.disciplines.map((discipline) => (
+                      <DisciplinesBadge slug={discipline.slug} />
+                    ))}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent class={ATTENDANT.description()}>
+                  {attendant.description.map((paragraph) => (
+                    <p>{paragraph}</p>
                   ))}
-                </CardDescription>
-              </CardHeader>
-              <CardContent class={ATTENDANT.description()}>
-                {attendant.description.map((paragraph) => (
-                  <p>{paragraph}</p>
-                ))}
-              </CardContent>
-            </Card>
-          </button>
-        </CarouselItem>
-      ))}
+                </CardContent>
+              </Card>
+            </button>
+          </CarouselItem>
+        ))}
     </CarouselContent>
     <aside class={ATTENDANTS.controls()}>
       <CarouselPrevious class={ATTENDANTS.control()} />
       <CarouselNext class={ATTENDANTS.control()} />
     </aside>
   </CarouselNative>
-</section>
+</attendants-carousel>
 
 <script>
-  import { initCarousel } from "@niama/ui/astro/carousel.ts";
+  import { defineCarousel, initCarousel } from "@niama/ui/astro/carousel.ts";
+  import { AUTOPLAY } from "@niama/ui/shared/attendants/carousel";
   import Autoplay from "embla-carousel-autoplay";
 
-  const carousel = document.getElementById("attendants-carousel");
-  const cards = carousel?.querySelectorAll("[data-attendants-card]") as NodeListOf<HTMLButtonElement>;
+  defineCarousel({
+    name: "attendants-carousel",
+    setup: (el) => {
+      const destroyCarousel = initCarousel(el, { loop: true }, [Autoplay({ delay: AUTOPLAY })]);
+      const handleClick = (event: Event) => {
+        const el = event.target;
+        if (!(el instanceof Element)) return;
 
-  const init = () => {
-    const manager = initCarousel(carousel, { loop: true }, [Autoplay({ delay: 10_000 })]);
-    manager?.api.plugins().autoplay?.play();
+        const cardEl = el.closest<HTMLButtonElement>("[data-attendant]");
+        if (!(cardEl && el.contains(cardEl))) return;
 
-    for (const card of cards) {
-      card.addEventListener("click", () => {
-        const isFlipped = card.dataset.flipped === "true";
-        card.dataset.flipped = (!isFlipped).toString();
-        card.setAttribute("aria-pressed", (!isFlipped).toString());
-      });
-    }
+        const nextFlipped = (cardEl.dataset.flipped !== "true").toString();
+        cardEl.dataset.flipped = nextFlipped;
+        cardEl.setAttribute("aria-pressed", nextFlipped);
+      };
 
-    return () => {
-      manager?.destroy();
-      manager?.api.plugins().autoplay?.destroy();
-    };
-  };
-
-  const destroy = init();
-  document.addEventListener("astro:before-swap", destroy);
-  document.addEventListener("astro:after-swap", init);
-
-  // const cards = carousel.querySelectorAll("[data-attendants-card]") as NodeListOf<HTMLButtonElement>;
-  // const cardClickHandlers = Array.from(cards, (card) => {
-  //   const handleCardClick = () => {
-  //     const isFlipped = card.dataset.flipped === "true";
-  //     const nextFlipped = (!isFlipped).toString();
-
-  //     card.dataset.flipped = nextFlipped;
-  //     card.setAttribute("aria-pressed", nextFlipped);
-  //   };
-
-  //   card.addEventListener("click", handleCardClick);
-  //   return { card, handleCardClick };
-  // });
-
-  // carouselCleanups.set(carousel, () => {
-  //   for (const { card, handleCardClick } of cardClickHandlers) {
-  //     card.removeEventListener("click", handleCardClick);
-  //   }
-
-  //   manager.destroy();
-  //   carouselCleanups.delete(carousel);
-  // });
+      el.addEventListener("click", handleClick);
+      return () => {
+        destroyCarousel();
+        el.removeEventListener("click", handleClick);
+      };
+    },
+  });
 </script>

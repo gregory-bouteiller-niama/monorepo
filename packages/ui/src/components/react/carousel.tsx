@@ -1,65 +1,47 @@
-import type { EmblaCarouselType, EmblaOptionsType, EmblaPluginType } from "embla-carousel";
+import { createStoreContext, useSelector } from "@tanstack/react-store";
+import type { EmblaOptionsType, EmblaPluginType } from "embla-carousel";
 import useEmblaCarousel, { type EmblaRootNodeRefType } from "embla-carousel-react";
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "../../lib/utils";
-import { CAROUSEL, getHandleClickNext, getHandleClickPrev, getHandleKeydown, updateOpts } from "../shared/carousel";
+import { CAROUSEL, createCarouselStore } from "../shared/carousel";
 import { Button } from "./button";
 
 // CONTEXT ---------------------------------------------------------------------------------------------------------------------------------
-const CarouselContext = createContext<CarouselContextProps | null>(null);
-
-export function useCarousel() {
-  const context = useContext(CarouselContext);
-  if (!context) throw new Error("useCarousel must be used within a <Carousel />");
-  return context;
-}
+const { StoreProvider: CarouselProvider, useStoreContext: useCarousel } = createStoreContext<CarouselContextProps>();
+type CarouselContextProps = { ref: EmblaRootNodeRefType; store: ReturnType<typeof createCarouselStore> };
 
 // BASE ------------------------------------------------------------------------------------------------------------------------------------
-export function Carousel({ opts: inputOpts = {}, setApi, plugins, className, children, ...rest }: CarouselProps) {
-  const [opts, setOpts] = useState(inputOpts);
-  const [carouselRef, api] = useEmblaCarousel(opts, plugins);
+export function Carousel({ opts: inputOpts = {}, plugins, className, children, ...rest }: CarouselProps) {
+  const [store] = useState(() => createCarouselStore(inputOpts));
+  const opts = useSelector(store, (state) => state.opts);
+  const [ref, api] = useEmblaCarousel(opts, plugins);
 
-  const handleReinit = useCallback((api: EmblaCarouselType) => setOpts(updateOpts(api)), []);
-
-  useEffect(() => (api && setApi ? setApi(api) : undefined), [api, setApi]);
-
-  useEffect(() => {
-    if (!api) return;
-    handleReinit(api);
-    api.on("reinit", handleReinit);
-    return () => {
-      api.off("reinit", handleReinit);
-    };
-  }, [api, handleReinit]);
+  useEffect(() => (api ? store.actions.bindApi(api) : undefined), [api, store]);
 
   return (
-    <CarouselContext.Provider value={{ api, carouselRef, opts }}>
+    <CarouselProvider value={{ ref, store }}>
       <section
         aria-roledescription="carousel"
         className={cn(CAROUSEL.base(), className)}
-        data-axis={opts?.axis}
+        data-axis={opts.axis ?? "x"}
         data-slot="carousel"
-        onKeyDownCapture={getHandleKeydown(api, opts)}
+        onKeyDownCapture={store.actions.handleKeydown}
         role="region"
         {...rest}
       >
         {children}
       </section>
-    </CarouselContext.Provider>
+    </CarouselProvider>
   );
 }
-export type CarouselProps = React.ComponentProps<"section"> & {
-  opts?: EmblaOptionsType;
-  plugins?: EmblaPluginType[];
-  setApi?: (api: EmblaCarouselType) => void;
-};
+export type CarouselProps = React.ComponentProps<"section"> & { opts?: EmblaOptionsType; plugins?: EmblaPluginType[] };
 
 // CONTENT ---------------------------------------------------------------------------------------------------------------------------------
 export function CarouselContent({ className, viewportClassName, ...props }: CarouselContentProps) {
-  const { carouselRef } = useCarousel();
+  const { ref } = useCarousel();
 
   return (
-    <div className={cn(CAROUSEL.viewport(), viewportClassName)} data-slot="carousel-content" ref={carouselRef}>
+    <div className={cn(CAROUSEL.viewport(), viewportClassName)} data-slot="carousel-content" ref={ref}>
       <div className={cn(CAROUSEL.content(), className)} {...props} />
     </div>
   );
@@ -74,14 +56,15 @@ export type CarouselItemProps = React.ComponentProps<"section">;
 
 // NEXT ------------------------------------------------------------------------------------------------------------------------------------
 export function CarouselNext({ className, variant = "outline", size = "icon-sm", ...props }: CarouselNextProps) {
-  const { api } = useCarousel();
+  const { store } = useCarousel();
+  const { api, canGoToNext } = useSelector(store, (state) => state);
 
   return (
     <Button
       className={cn(CAROUSEL.next(), className)}
       data-slot="carousel-next"
-      disabled={!api?.canGoToNext}
-      onClick={getHandleClickNext(api)}
+      disabled={!canGoToNext}
+      onClick={() => api?.goToNext()}
       size={size}
       variant={variant}
       {...props}
@@ -95,14 +78,15 @@ export type CarouselNextProps = Omit<React.ComponentProps<typeof Button>, "class
 
 // PREVIOUS --------------------------------------------------------------------------------------------------------------------------------
 export function CarouselPrevious({ className, variant = "outline", size = "icon-sm", ...props }: CarouselPreviousProps) {
-  const { api } = useCarousel();
+  const { store } = useCarousel();
+  const { api, canGoToPrev } = useSelector(store, (state) => state);
 
   return (
     <Button
       className={cn(CAROUSEL.previous(), className)}
       data-slot="carousel-previous"
-      disabled={!api?.canGoToPrev}
-      onClick={getHandleClickPrev(api)}
+      disabled={!canGoToPrev}
+      onClick={() => api?.goToPrev()}
       size={size}
       variant={variant}
       {...props}
@@ -113,6 +97,3 @@ export function CarouselPrevious({ className, variant = "outline", size = "icon-
   );
 }
 export type CarouselPreviousProps = Omit<React.ComponentProps<typeof Button>, "className"> & { className?: string };
-
-// TYPES -----------------------------------------------------------------------------------------------------------------------------------
-type CarouselContextProps = { api: EmblaCarouselType | undefined; carouselRef: EmblaRootNodeRefType } & Pick<CarouselProps, "opts">;
