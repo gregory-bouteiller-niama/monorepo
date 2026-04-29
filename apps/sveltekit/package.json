@@ -24,7 +24,7 @@
     "embla-carousel": "^8.6.0",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-svelte": "^8.6.0",
-    "svelte-sonner": "^1.1.0"
+    "svelte-sonner": "^1.1.1"
   },
   "devDependencies": {
     "@sveltejs/adapter-cloudflare": "^7.2.8",
@@ -37,6 +37,6 @@
     "tailwindcss": "^4.2.4",
     "typescript": "^6.0.2",
     "vite": "^8.0.10",
-    "wrangler": "^4.85.0"
+    "wrangler": "^4.86.0"
   }
 }
