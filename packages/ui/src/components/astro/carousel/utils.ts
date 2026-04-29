@@ -1,13 +1,14 @@
 import EmblaCarousel from "embla-carousel";
-import type { createCarouselStore } from "../../shared/carousel";
+import { subscribeSelector } from "../../../lib/stores/selector";
+import { CLONE_ATTR, CLONE_ATTRS, type createCarouselStore, getOriginalSlideNodes } from "../../shared/carousel";
 
 // CONSTS ----------------------------------------------------------------------------------------------------------------------------------
-const carouselManagers = new Map<HTMLElement, () => void>();
+const cleanups = new Map<HTMLElement, () => void>();
 
 // INIT ------------------------------------------------------------------------------------------------------------------------------------
 export function initCarousel(el: HTMLElement, store: CarouselStore) {
-  const existingDestroy = carouselManagers.get(el);
-  if (existingDestroy) return existingDestroy;
+  const existingCleanup = cleanups.get(el);
+  if (existingCleanup) return existingCleanup;
 
   const viewportEl = el.querySelector<HTMLElement>('[data-slot="carousel-content"]');
   if (!viewportEl) throw new Error("Carousel content element not found");
@@ -15,48 +16,91 @@ export function initCarousel(el: HTMLElement, store: CarouselStore) {
   el.dataset.axis = store.state.opts.axis ?? "x";
 
   const api = EmblaCarousel(viewportEl, store.state.opts, store.state.plugins);
-  const prevEl = el.querySelector<HTMLButtonElement>('[data-slot="carousel-previous"]');
-  const nextEl = el.querySelector<HTMLButtonElement>('[data-slot="carousel-next"]');
-  let currentOptsJson = JSON.stringify(store.state.opts);
   const unbindApi = store.actions.bindApi(api);
-  const handleClickPrev = () => store.state.api?.goToPrev();
-  const handleClickNext = () => store.state.api?.goToNext();
+  const unbindLayout = bindLayout(store, api.containerNode());
+  const unbindControls = bindControls(store, el);
 
-  const applyState = () => {
-    const { canGoToNext, canGoToPrev, opts, plugins } = store.state;
-    const nextOptsJson = JSON.stringify(opts);
-
-    prevEl?.toggleAttribute("disabled", !canGoToPrev);
-    prevEl?.setAttribute("aria-disabled", (!canGoToPrev).toString());
-    nextEl?.toggleAttribute("disabled", !canGoToNext);
-    nextEl?.setAttribute("aria-disabled", (!canGoToNext).toString());
-
-    if (nextOptsJson !== currentOptsJson) {
-      currentOptsJson = nextOptsJson;
-      api.reInit(opts, plugins);
-    }
-  };
-
-  const { unsubscribe } = store.subscribe(() => applyState());
-
-  prevEl?.addEventListener("click", handleClickPrev);
-  nextEl?.addEventListener("click", handleClickNext);
-  el.addEventListener("keydown", store.actions.handleKeydown);
-
-  applyState();
-
-  const destroy = () => {
-    unsubscribe();
+  const cleanup = () => {
+    unbindControls();
+    unbindLayout();
     unbindApi();
-    prevEl?.removeEventListener("click", handleClickPrev);
-    nextEl?.removeEventListener("click", handleClickNext);
-    el.removeEventListener("keydown", store.actions.handleKeydown);
-    carouselManagers.delete(el);
+    cleanups.delete(el);
     api.destroy();
   };
 
-  carouselManagers.set(el, destroy);
-  return destroy;
+  cleanups.set(el, cleanup);
+  return cleanup;
+}
+
+// LAYOUT ----------------------------------------------------------------------------------------------------------------------------------
+function bindLayout(store: CarouselStore, containerEl: HTMLElement) {
+  const removeClones = () => {
+    for (const cloneEl of containerEl.querySelectorAll(`[${CLONE_ATTR}]`)) cloneEl.remove();
+  };
+
+  const addClones = () => {
+    for (const itemEl of getOriginalSlideNodes(store.state.api?.slideNodes() ?? [])) {
+      const cloneEl = itemEl.cloneNode(true);
+      if (!(cloneEl instanceof HTMLElement)) continue;
+      for (const [name, value] of Object.entries(CLONE_ATTRS)) cloneEl.setAttribute(name, `${value}`);
+      containerEl.append(cloneEl);
+    }
+  };
+
+  const { unsubscribe } = subscribeSelector(
+    store,
+    ({ allSlidesClipped, opts }) => ({ allSlidesClipped, jsonOpts: JSON.stringify(opts) }),
+    ({ allSlidesClipped }, prev) => {
+      if (allSlidesClipped !== prev.allSlidesClipped) {
+        removeClones();
+        if (allSlidesClipped) addClones();
+      }
+      store.state.api?.reInit(store.state.opts, store.state.plugins);
+    },
+    (a, b) => a.allSlidesClipped === b.allSlidesClipped && a.jsonOpts === b.jsonOpts
+  );
+
+  if (store.state.allSlidesClipped) addClones();
+  store.state.api?.reInit(store.state.opts, store.state.plugins);
+
+  return () => {
+    unsubscribe();
+    removeClones();
+  };
+}
+
+// CONTROLS --------------------------------------------------------------------------------------------------------------------------------
+function bindControls(store: CarouselStore, el: HTMLElement) {
+  const prevEl = el.querySelector<HTMLButtonElement>('[data-slot="carousel-previous"]');
+  const nextEl = el.querySelector<HTMLButtonElement>('[data-slot="carousel-next"]');
+
+  const handleClickPrev = () => store.state.api?.goToPrev();
+  const handleClickNext = () => store.state.api?.goToNext();
+
+  const updateControl = (el: HTMLButtonElement | null, disabled: boolean) => {
+    el?.toggleAttribute("disabled", disabled);
+    el?.setAttribute("aria-disabled", disabled.toString());
+  };
+
+  const sync = () => {
+    updateControl(prevEl, !store.state.canGoToPrev);
+    updateControl(nextEl, !store.state.canGoToNext);
+  };
+
+  el.addEventListener("keydown", store.actions.handleKeydown);
+  prevEl?.addEventListener("click", handleClickPrev);
+  nextEl?.addEventListener("click", handleClickNext);
+
+  const { unsubscribe } = subscribeSelector(store, ({ canGoToNext, canGoToPrev }) => `${canGoToNext}:${canGoToPrev}`, sync);
+
+  sync();
+
+  return () => {
+    unsubscribe();
+    el.removeEventListener("keydown", store.actions.handleKeydown);
+    prevEl?.removeEventListener("click", handleClickPrev);
+    nextEl?.removeEventListener("click", handleClickNext);
+  };
 }
 
 // DEFINE ----------------------------------------------------------------------------------------------------------------------------------

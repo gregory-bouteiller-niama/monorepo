@@ -44,11 +44,8 @@ export function CarouselContent({ children, className, viewportClassName, ...pro
   let slides = children;
 
   if (allSlidesClipped) {
-    const childArray = Children.toArray(children);
-    slides = [
-      ...childArray,
-      ...childArray.map((c) => (isValidElement(c) ? cloneElement(c, { ...CLONE_ATTRS, key: `${c.key ?? "slide"}:clone` }) : c)),
-    ];
+    const all = Children.toArray(children);
+    slides = [...all, ...all.map((c) => (isValidElement(c) ? cloneElement(c, { ...CLONE_ATTRS, key: `${c.key ?? "slide"}:clone` }) : c))];
   }
 
   return (
