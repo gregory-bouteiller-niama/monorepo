@@ -30,4 +30,13 @@ export const ATTENDANT = {
 
 // CONSTS ----------------------------------------------------------------------------------------------------------------------------------
 export const AUTOPLAY = 10_000;
-export const ROTATIONS = ["-rotate-7", "rotate-3", "-rotate-5", "rotate-2", "-rotate-3", "rotate-8", "-rotate-1", "rotate-6"];
+export const ROTATIONS = [
+  "md:-rotate-7",
+  "md:rotate-3",
+  "md:-rotate-5",
+  "md:rotate-2",
+  "md:-rotate-3",
+  "md:rotate-8",
+  "md:-rotate-1",
+  "md:rotate-6",
+];

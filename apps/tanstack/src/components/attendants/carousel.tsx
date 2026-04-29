@@ -12,6 +12,7 @@ import { DisciplinesBadge } from "../disciplines/badge";
 // MAIN ------------------------------------------------------------------------------------------------------------------------------------
 export function AttendantsCarousel({ items }: AttendantsCarouselProps) {
   const [store] = useState(() => createCarouselStore({ loop: true }, [Autoplay({ delay: AUTOPLAY }), Ssr()]));
+  const [flippedName, setFlippedName] = useState<string | undefined>();
 
   return (
     <section className={ATTENDANTS.base()}>
@@ -19,7 +20,14 @@ export function AttendantsCarousel({ items }: AttendantsCarouselProps) {
         <CarouselContent viewportClassName={ATTENDANTS.viewport()}>
           {items.map((item, renderIndex) => (
             <CarouselItem className={ATTENDANTS.item()} key={item.name}>
-              <AttendantItem index={renderIndex} item={item} />
+              <AttendantItem
+                index={renderIndex}
+                isFlipped={flippedName === item.name}
+                item={item}
+                onToggle={() => {
+                  setFlippedName((currentValue) => (currentValue === item.name ? undefined : item.name));
+                }}
+              />
             </CarouselItem>
           ))}
         </CarouselContent>
@@ -34,18 +42,14 @@ export function AttendantsCarousel({ items }: AttendantsCarouselProps) {
 export type AttendantsCarouselProps = { items: Attendants["Entity"][] };
 
 // ITEM ------------------------------------------------------------------------------------------------------------------------------------
-function AttendantItem({ index, item }: { index: number; item: Attendants["Entity"] }) {
-  const [isFlipped, setIsFlipped] = useState(false);
-
+function AttendantItem({ index, isFlipped, item, onToggle }: AttendantItemProps) {
   return (
     <button
       aria-label={`Afficher la fiche de ${item.name}`}
       aria-pressed={isFlipped}
       className={ATTENDANT.base({ className: ROTATIONS[index % ROTATIONS.length] })}
       data-flipped={isFlipped}
-      onClick={() => {
-        setIsFlipped((currentValue) => !currentValue);
-      }}
+      onClick={onToggle}
       type="button"
     >
       <AttendantItemCard item={item}>
@@ -66,6 +70,12 @@ function AttendantItem({ index, item }: { index: number; item: Attendants["Entit
     </button>
   );
 }
+type AttendantItemProps = {
+  index: number;
+  isFlipped: boolean;
+  item: Attendants["Entity"];
+  onToggle: () => void;
+};
 
 // CARD ------------------------------------------------------------------------------------------------------------------------------------
 function AttendantItemCard({ children, item, ...props }: AttendantItemCardProps) {

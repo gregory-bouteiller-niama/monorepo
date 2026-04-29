@@ -91,9 +91,15 @@ type Props = { class?: string; items: Attendants["Entity"][] };
         const cardEl = target.closest<HTMLButtonElement>("[data-attendant]");
         if (!(cardEl && el.contains(cardEl))) return;
 
-        const nextFlipped = (cardEl.dataset.flipped !== "true").toString();
-        cardEl.dataset.flipped = nextFlipped;
-        cardEl.setAttribute("aria-pressed", nextFlipped);
+        const nextFlipped = cardEl.dataset.flipped !== "true";
+        for (const activeCardEl of el.querySelectorAll<HTMLButtonElement>("[data-attendant][data-flipped=true]")) {
+          if (activeCardEl === cardEl) continue;
+          activeCardEl.dataset.flipped = "false";
+          activeCardEl.setAttribute("aria-pressed", "false");
+        }
+
+        cardEl.dataset.flipped = nextFlipped.toString();
+        cardEl.setAttribute("aria-pressed", nextFlipped.toString());
       };
 
       el.addEventListener("click", handleClick);
