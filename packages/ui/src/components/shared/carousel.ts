@@ -25,89 +25,92 @@ export const CAROUSEL = {
 } as const;
 
 // CONSTS ----------------------------------------------------------------------------------------------------------------------------------
-const ALL_SLIDES_SHOWN_OPTS = { containScroll: false, slidesToScroll: "auto" } as const;
-const DEFAULT_OPTS = { containScroll: "trimSnaps", slidesToScroll: 1 } as const;
 export const CLONE_ATTR = "data-carousel-clone";
 export const CLONE_ATTRS = { "aria-hidden": true, inert: true, [CLONE_ATTR]: "" } as const;
 
+const ALL_SLIDES_SHOWN_OPTS = { containScroll: false, slidesToScroll: "auto" } as const;
+const DEFAULT_OPTS = { containScroll: "trimSnaps", slidesToScroll: 1 } as const;
+const RUNTIME_STATE = { allSlidesClipped: false, api: undefined, canGoToNext: false, canGoToPrev: false };
+const TOLERANCE = 1;
+
 // HELPERS ---------------------------------------------------------------------------------------------------------------------------------
 export const getOriginalSlideNodes = <T extends Element>(nodes: T[]) => nodes.filter((node) => !node.hasAttribute(CLONE_ATTR));
-const getOffset = (axis: EmblaOptionsType["axis"], el: HTMLElement) => (axis === "y" ? el.offsetTop : el.offsetLeft);
-const getSize = (axis: EmblaOptionsType["axis"], el: HTMLElement) => (axis === "y" ? el.offsetHeight : el.offsetWidth);
+
+const getControls = (api: EmblaCarouselType) => ({ api, canGoToNext: api.canGoToNext(), canGoToPrev: api.canGoToPrev() });
+
+const getLayout = (api: EmblaCarouselType, opts: EmblaOptionsType) => {
+  const { axis = "x" } = opts;
+  const slides = getOriginalSlideNodes(api.slideNodes());
+  const viewportSize = getSize(axis, api.rootNode());
+  const firstStart = getOffset(axis, slides.at(0));
+  const lastStart = getOffset(axis, slides.at(-1));
+  const lastEnd = lastStart + getSize(axis, slides.at(-1));
+  const allSlidesVisible = firstStart >= -TOLERANCE && lastEnd <= viewportSize + TOLERANCE;
+
+  return {
+    allSlidesClipped: slides.length > 1 && !allSlidesVisible && lastStart < viewportSize - TOLERANCE,
+    opts: { ...opts, ...(allSlidesVisible ? ALL_SLIDES_SHOWN_OPTS : DEFAULT_OPTS) },
+  };
+};
+
+const getOffset = (axis: EmblaOptionsType["axis"], el: HTMLElement | undefined) => {
+  if (!el) return 0;
+  return axis === "y" ? el.offsetTop : el.offsetLeft;
+};
+
+const getSize = (axis: EmblaOptionsType["axis"], el: HTMLElement | undefined) => {
+  if (!el) return 0;
+  return axis === "y" ? el.offsetHeight : el.offsetWidth;
+};
 
 // STORE -----------------------------------------------------------------------------------------------------------------------------------
 export const createCarouselStore = (opts: EmblaOptionsType = {}, plugins: EmblaPluginType[] = []) => {
-  const store = createStore<CarouselState, CarouselActions>(
-    { api: undefined, canGoToNext: false, canGoToPrev: false, opts, plugins, shouldDuplicateSlides: false },
-    ({ get, setState }) => {
-      const syncControls = (api: EmblaCarouselType) => {
-        setState((prev) => ({ ...prev, api, canGoToNext: api.canGoToNext(), canGoToPrev: api.canGoToPrev() }));
+  const store = createStore<CarouselState, CarouselActions>({ ...RUNTIME_STATE, opts, plugins }, ({ get, setState }) => {
+    const syncState = (api: EmblaCarouselType, withLayout = false) =>
+      setState((prev) => ({ ...prev, ...getControls(api), ...(withLayout ? getLayout(api, get().opts) : {}) }));
+
+    const syncAutoplay = () => {
+      const { api, canGoToNext } = get();
+      const autoplay: AutoplayType | undefined = api?.plugins().autoplay;
+      if (canGoToNext) autoplay?.play();
+      else autoplay?.stop();
+    };
+
+    const syncControls = (api: EmblaCarouselType) => syncState(api);
+    const syncLayout = (api: EmblaCarouselType) => syncState(api, true);
+
+    const bindApi = (api: EmblaCarouselType) => {
+      const { unsubscribe } = store.subscribe(syncAutoplay);
+
+      syncLayout(api);
+      api.on("select", syncControls);
+      api.on("resize", syncLayout);
+      api.on("reinit", syncLayout);
+
+      return () => {
+        unsubscribe();
+        api.off("select", syncControls);
+        api.off("resize", syncLayout);
+        api.off("reinit", syncLayout);
+        setState((prev) => ({ ...prev, ...RUNTIME_STATE }));
       };
+    };
 
-      const syncLayout = (api: EmblaCarouselType) => {
-        const { opts } = get();
-        const { axis = "x" } = opts;
-        const rootNode = api.rootNode();
-        const slides = api.slideNodes().filter((slideNode) => !slideNode.hasAttribute(CLONE_ATTR));
-        const first = slides[0];
-        const last = slides.at(-1);
-        const viewportSize = getSize(axis, rootNode);
-        const firstSlideStart = first ? getOffset(axis, first) : 0;
-        const lastSlideStart = last ? getOffset(axis, last) : 0;
-        const lastSlideEnd = last ? lastSlideStart + getSize(axis, last) : 0;
-        const allSlidesShown = firstSlideStart >= -1 && lastSlideEnd <= viewportSize + 1;
-        const shouldDuplicateSlides = slides.length > 1 && !allSlidesShown && lastSlideStart < viewportSize - 1;
+    const handleKeydown = (event: Pick<KeyboardEvent, "key" | "preventDefault">) => {
+      const axis = get().opts.axis;
+      const prevKey = axis === "y" ? "ArrowUp" : "ArrowLeft";
+      const nextKey = axis === "y" ? "ArrowDown" : "ArrowRight";
 
-        setState(({ opts, plugins }) => ({
-          api,
-          canGoToNext: api.canGoToNext(),
-          canGoToPrev: api.canGoToPrev(),
-          plugins,
-          opts: { ...opts, ...(allSlidesShown ? ALL_SLIDES_SHOWN_OPTS : DEFAULT_OPTS) },
-          shouldDuplicateSlides,
-        }));
-      };
+      if (event.key === prevKey) {
+        event.preventDefault();
+        get().api?.goToPrev();
+      } else if (event.key === nextKey) {
+        event.preventDefault();
+        get().api?.goToNext();
+      }
+    };
 
-      const bindApi = (api: EmblaCarouselType) => {
-        syncControls(api);
-        syncLayout(api);
-        api.on("select", syncControls);
-        api.on("resize", syncLayout);
-        api.on("reinit", syncLayout);
-
-        return () => {
-          api.off("select", syncControls);
-          api.off("resize", syncLayout);
-          api.off("reinit", syncLayout);
-          setState((prev) =>
-            prev.api === api ? { ...prev, api: undefined, canGoToNext: false, canGoToPrev: false, shouldDuplicateSlides: false } : prev
-          );
-        };
-      };
-
-      const handleKeydown = (event: Pick<KeyboardEvent, "key" | "preventDefault">) => {
-        const axis = get().opts.axis;
-        const prevKey = axis === "y" ? "ArrowUp" : "ArrowLeft";
-        const nextKey = axis === "y" ? "ArrowDown" : "ArrowRight";
-
-        if (event.key === prevKey) {
-          event.preventDefault();
-          get().api?.goToPrev();
-        } else if (event.key === nextKey) {
-          event.preventDefault();
-          get().api?.goToNext();
-        }
-      };
-
-      return { bindApi, handleKeydown };
-    }
-  );
-
-  store.subscribe(() => {
-    const { api, canGoToNext } = store.state;
-    const autoplay: AutoplayType | undefined = api?.plugins().autoplay;
-    if (canGoToNext) autoplay?.play();
-    else autoplay?.stop();
+    return { bindApi, handleKeydown };
   });
 
   return store;
@@ -119,10 +122,10 @@ export type CarouselActions = {
 };
 
 export type CarouselState = {
+  allSlidesClipped: boolean;
   api: EmblaCarouselType | undefined;
   canGoToNext: boolean;
   canGoToPrev: boolean;
   opts: EmblaOptionsType;
   plugins: EmblaPluginType[];
-  shouldDuplicateSlides: boolean;
 };

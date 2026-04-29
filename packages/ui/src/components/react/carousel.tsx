@@ -39,11 +39,11 @@ export type CarouselProps = React.ComponentProps<"section"> & Pick<CarouselConte
 // CONTENT ---------------------------------------------------------------------------------------------------------------------------------
 export function CarouselContent({ children, className, viewportClassName, ...props }: CarouselContentProps) {
   const { ref, store } = useCarousel();
-  const shouldDuplicateSlides = useSelector(store, ({ shouldDuplicateSlides }) => shouldDuplicateSlides);
+  const allSlidesClipped = useSelector(store, ({ allSlidesClipped }) => allSlidesClipped);
 
   let slides = children;
 
-  if (shouldDuplicateSlides) {
+  if (allSlidesClipped) {
     const childArray = Children.toArray(children);
     slides = [
       ...childArray,
