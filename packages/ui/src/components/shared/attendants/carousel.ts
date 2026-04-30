@@ -19,7 +19,7 @@ export const ATTENDANT = {
     data-[back=true]:absolute data-[back=true]:inset-0 data-[back=true]:rotate-y-180 
     data-[back=true]:group-data-[flipped=true]/flip:rotate-y-0`),
   description: cva(
-    "mx-3 flex aspect-square w-full max-w-[420px] flex-1 flex-col justify-center gap-2 bg-card text-center font-light text-base"
+    "flex h-full w-full max-w-[420px] flex-1 flex-col justify-center gap-2 overflow-y-auto border-white border-x-12 border-t-12 bg-card text-center font-light text-base"
   ),
   icon: cva("icon-[lucide--plus-circle] size-12"),
   image: cva("relative w-full max-w-[420px] px-3"),

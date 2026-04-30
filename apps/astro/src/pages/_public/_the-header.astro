@@ -19,11 +19,6 @@ type Props = Pick<ReadPublicLayoutProps, "navs">;
     <a aria-label="Retour à l'accueil" class={THE_HEADER.logo()} href="/#top"> <Logo showTitle={false} /> </a>
 
     <div class={THE_HEADER.actions()}>
-      <Button class={THE_HEADER.themeSwitcher()} data-theme-switcher size="icon" type="button" variant="outline">
-        <span class={THE_HEADER.sun()} />
-        <span class={THE_HEADER.moon()} />
-        <span class="sr-only">Toggle theme</span>
-      </Button>
       <Dropdown>
         <DropdownTrigger asChild>
           <Button aria-label="Menu" class={THE_HEADER.burger()} size="icon" variant="outline">
@@ -38,6 +33,11 @@ type Props = Pick<ReadPublicLayoutProps, "navs">;
 						))}
         </DropdownContent>
       </Dropdown>
+      <Button class={THE_HEADER.themeSwitcher()} data-theme-switcher size="icon" type="button" variant="outline">
+        <span class={THE_HEADER.sun()} />
+        <span class={THE_HEADER.moon()} />
+        <span class="sr-only">Toggle theme</span>
+      </Button>
     </div>
   </header>
 </div>
