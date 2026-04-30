@@ -1,12 +1,9 @@
-import { tv } from "tailwind-variants";
+import { cva } from "class-variance-authority";
 
-const STYLES = tv({
-  base: "pointer-events-none fixed bottom-4 mx-auto flex w-full justify-between self-center rounded-full px-4 py-2",
-  slots: {
-    disclaimer: "pointer-events-auto backdrop-blur-xl",
-    social: "pointer-events-auto backdrop-blur-xl",
-    socials: "flex items-center gap-2",
-  },
-});
-
-export const THE_FOOTER = STYLES();
+// STYLES ----------------------------------------------------------------------------------------------------------------------------------
+export const THE_FOOTER = {
+  base: cva("container pointer-events-none fixed bottom-4 mx-auto flex w-full justify-between self-center rounded-full px-4 py-2"),
+  disclaimer: cva("pointer-events-auto backdrop-blur-xl"),
+  social: cva("pointer-events-auto backdrop-blur-xl"),
+  socials: cva("flex items-center gap-2"),
+};

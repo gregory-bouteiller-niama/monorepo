@@ -82,7 +82,8 @@ type Props = { class?: string; items: Attendants["Entity"][] };
   defineCarousel({
     name: "attendants-carousel",
     setup: (el) => {
-      const store = createCarouselStore({ loop: true }, [Autoplay({ delay: AUTOPLAY })]);
+      // const store = createCarouselStore({ loop: true }, [Autoplay({ delay: AUTOPLAY })]);
+      const store = createCarouselStore({ loop: true });
       const destroyCarousel = initCarousel(el, store);
       const handleClick = (event: Event) => {
         const target = event.target;
