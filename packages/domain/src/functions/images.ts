@@ -20,10 +20,10 @@ export const allImages = [
   {
     alt: "Laura Hoareau",
     blurhash: "UAGH;w^PM^~C009[0i9u-4NM%LDjyE=]^N-:",
-    height: 2731,
+    height: 2128,
     slug: "laura-hoareau",
-    src: "https://ik.imagekit.io/niamafr/eliana-corre.png",
-    width: 2731,
+    src: "https://ik.imagekit.io/niamafr/laura-hoareau.png",
+    width: 2128,
   },
 ] as const;
 
