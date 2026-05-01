@@ -6,12 +6,12 @@ import TheHeader from "./_public/_the-header.astro";
 import RootLayout from "./_root.astro";
 
 // DATA ------------------------------------------------------------------------------------------------------------------------------------
-const { navs, socials } = readPublicLayout()
+const { navs, socials } = readPublicLayout();
 ---
 
 <RootLayout>
-  <TheHeader navs={navs} />
+  <TheHeader {navs} />
   <Sky class="fixed inset-0" />
   <slot />
-  <TheFooter socials={socials} />
+  <TheFooter {socials} />
 </RootLayout>

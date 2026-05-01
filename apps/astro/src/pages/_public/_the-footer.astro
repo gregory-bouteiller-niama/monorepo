@@ -14,13 +14,12 @@ type Props = Pick<ReadPublicLayoutProps, "socials">;
 <footer class={THE_FOOTER.base()}>
   <Button class={THE_FOOTER.disclaimer()} href="/" variant="outline"> Mentions Légales </Button>
   <div class={THE_FOOTER.socials()}>
-    {socials.map(({ icon, label }) => (
+    {socials.map((social) => (
       <IconButton
         class={THE_FOOTER.social()}
-        icon={icon}
-        label={label}
         size="icon"
         variant="outline"
+        {...social}
       />
     ))}
   </div>

@@ -1,28 +1,7 @@
-import { tv, type VariantProps } from "tailwind-variants";
+import { cva } from "class-variance-authority";
 
 // STYLES ----------------------------------------------------------------------------------------------------------------------------------
-const STYLES = tv({
-  base: "",
-  slots: {
-    icon: "size-5",
-  },
-  variants: {
-    loading: {
-      false: {
-        base: "cursor-pointer",
-        icon: "",
-      },
-      true: {
-        base: "cursor-wait",
-        icon: "icon-[lucide--loader-2] animate-pulse",
-      },
-    },
-  },
-  defaultVariants: {
-    loading: false,
-  },
-});
-export const ICON_BUTTON = STYLES();
-
-// TYPES -----------------------------------------------------------------------------------------------------------------------------------
-export type IconButtonStyles = VariantProps<typeof STYLES>;
+export const ICON_BUTTON = {
+  base: cva("cursor-pointer"),
+  icon: cva("group-data-[loading=true]/button:icon-[lucide--loader-2] size-5 group-data-[loading=true]/button:animate-spin"),
+};

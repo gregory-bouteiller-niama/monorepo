@@ -10,7 +10,7 @@ export const THE_HEADER = {
   burger: cva(`cursor-pointer scale-0 
 		group-data-scrolled/body:scale-100
 		sm:hidden`),
-  burgerContent: cva("w-xs! rounded-3xl border bg-transparent p-4 shadow-lg backdrop-blur-xl"),
+  burgerContent: cva("max-w-3xs rounded-3xl border bg-transparent p-4 shadow-lg backdrop-blur-xl"),
   burgerIcon: cva("icon-[lucide--menu]"),
   burgerItem: cva("uppercase tracking-widest"),
   logo: cva(`duration-300 w-11 scale-0
