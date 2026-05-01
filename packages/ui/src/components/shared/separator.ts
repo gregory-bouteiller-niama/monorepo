@@ -1,9 +1,8 @@
-import { tv } from "tailwind-variants";
+import { cva } from "class-variance-authority";
 
 // STYLES ----------------------------------------------------------------------------------------------------------------------------------
-const STYLES = tv({
-	base: `shrink-0 bg-border 
+export const SEPARATOR = {
+  base: cva(`shrink-0 bg-border 
   data-horizontal:h-px data-horizontal:w-full 
-  data-vertical:w-px data-vertical:self-stretch`,
-});
-export const SEPARATOR = STYLES;
+  data-vertical:w-px data-vertical:self-stretch`),
+};
