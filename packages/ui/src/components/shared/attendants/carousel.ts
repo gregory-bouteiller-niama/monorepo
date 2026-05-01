@@ -21,7 +21,7 @@ export const ATTENDANT = {
   description: cva(
     "flex h-full w-full max-w-[420px] flex-1 flex-col justify-center gap-2 overflow-y-auto border-white border-x-12 border-t-12 bg-card text-center font-light text-base"
   ),
-  icon: cva("icon-[lucide--plus-circle] size-12"),
+  icon: cva("icon-[lucide--plus-circle] size-12 bg-white"),
   image: cva("relative w-full max-w-[420px] px-3"),
   overlay: cva(`absolute inset-x-3 inset-y-0 flex items-center justify-center opacity-0 backdrop-blur-2xl transition-opacity duration-500 
     group-hover/flip:opacity-100`),

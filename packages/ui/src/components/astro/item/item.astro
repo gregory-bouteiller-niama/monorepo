@@ -1,4 +1,5 @@
 ---
+import { cn } from "@niama/ui/lib/utils";
 import type { HTMLTag, Polymorphic } from "astro/types";
 import { ITEM, type ItemStyles } from "./styles";
 
@@ -9,4 +10,4 @@ const { variant = "default", size = "default", class: className, as: Tag = "div"
 export type Props<Tag extends HTMLTag = "div"> = Polymorphic<{ as: Tag }> & Pick<ItemStyles, "size" | "variant">;
 ---
 
-<Tag class:list={[ITEM.base({ variant, size }), className]} data-slot="item" {...rest}> <slot /> </Tag>
+<Tag class={cn(ITEM.base({ variant, size }), className)} data-slot="item" {...rest}> <slot /> </Tag>

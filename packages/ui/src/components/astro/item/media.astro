@@ -1,4 +1,5 @@
 ---
+import { cn } from "@niama/ui/lib/utils";
 import type { HTMLAttributes } from "astro/types";
 import { ITEM, type ItemMediaStyles } from "./styles";
 
@@ -9,4 +10,4 @@ const { variant = "default", class: className, ...rest } = Astro.props;
 export type Props = HTMLAttributes<"div"> & Pick<ItemMediaStyles, "variant">;
 ---
 
-<div class:list={[ITEM.media({ variant }), className]} data-variant={variant} {...rest} data-slot="item-media"><slot /></div>
+<div class={cn(ITEM.media({ variant }), className)} data-variant={variant} {...rest} data-slot="item-media"><slot /></div>
