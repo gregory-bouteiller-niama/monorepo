@@ -1,5 +1,6 @@
 ---
-import { BUTTON, type ButtonStyles } from "@niama/ui/styles/button";
+import { cn } from "@niama/ui/lib/utils";
+import { BUTTON, type ButtonStyles } from "@niama/ui/shared/button";
 import type { HTMLAttributes } from "astro/types";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
@@ -7,9 +8,7 @@ const { variant, size, class: className, ...rest } = Astro.props;
 const Tag = Astro.props.href ? "a" : "button";
 
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------
-export type Props = HTMLAttributes<"button"> & Omit<HTMLAttributes<"a">, "type"> & ButtonStyles
+export type Props = HTMLAttributes<"button"> & Omit<HTMLAttributes<"a">, "type"> & ButtonStyles;
 ---
 
-<Tag class={BUTTON({ variant, size, class: className })} data-slot="button" {...rest}>
-  <slot />
-</Tag>
+<Tag class={cn(BUTTON({ variant, size }), className)} data-slot="button" {...rest}><slot /></Tag>

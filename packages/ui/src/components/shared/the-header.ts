@@ -24,7 +24,7 @@ export const THE_HEADER = {
 		group-data-scrolled/body:hidden 
 		sm:flex-row
 		group-data-scrolled/body:sm:flex`),
-  navLink: cva(`relative cursor-pointer px-4 py-2 uppercase tracking-widest 
+  navLink: cva(`relative cursor-pointer px-4 py-2 uppercase tracking-widest text-base
 		sm:px-2 sm:py-1 sm:text-sm 
 		md:px-4 md:py-2 md:text-base`),
   stain: cva("absolute inset-0 rounded-full bg-accent opacity-0 transition-all"),
