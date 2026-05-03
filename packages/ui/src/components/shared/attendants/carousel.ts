@@ -24,7 +24,8 @@ export const ATTENDANT = {
     @sm:justify-center`),
   icon: cva("icon-[lucide--plus-circle] size-12 bg-white"),
   image: cva("relative aspect-square w-full px-3"),
-  overlay: cva(`absolute inset-x-3 inset-y-0 flex items-center justify-center opacity-0 backdrop-blur-2xl transition-opacity duration-500 
+  overlay:
+    cva(`absolute inset-x-3 top-0 bottom-6 flex items-center justify-center opacity-0 backdrop-blur-2xl transition-opacity duration-500 
     group-hover/flip:opacity-100`),
   title: cva("font-bold text-3xl text-black"),
   badges: cva("flex justify-center gap-1"),
