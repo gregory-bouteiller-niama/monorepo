@@ -1,5 +1,5 @@
 import { Separator } from "@niama/ui/react/separator";
-import { SECTION } from "@niama/ui/styles/section.ts";
+import { SECTION } from "@niama/ui/shared/section";
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 

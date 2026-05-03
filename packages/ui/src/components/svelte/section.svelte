@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
   import { cn, type WithElementRef } from "../../lib/utils";
-  import { SECTION } from "../../styles/section";
+  import { SECTION } from "../shared/section";
   import { Separator } from "./separator";
 
   let {
