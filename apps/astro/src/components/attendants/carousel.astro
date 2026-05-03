@@ -21,7 +21,7 @@ type Props = { class?: string; items: Attendants["Entity"][] };
           <button
             aria-label={`Afficher la fiche de ${attendant.name}`}
             aria-pressed="false"
-            data-attendant
+            data-attendant={index}
             data-flipped="false"
             class:list={[ATTENDANT.base(), ROTATIONS[index % ROTATIONS.length]]}
             type="button"
@@ -79,11 +79,15 @@ type Props = { class?: string; items: Attendants["Entity"][] };
   import { createCarouselStore } from "@niama/ui/shared/carousel";
   import Autoplay from "embla-carousel-autoplay";
 
+  const setFlipState = (el: HTMLButtonElement, isFlipped: string) => {
+    el.dataset.flipped = isFlipped;
+    el.setAttribute("aria-pressed", isFlipped);
+  };
+
   defineCarousel({
     name: "attendants-carousel",
     setup: (el) => {
-      // const store = createCarouselStore({ loop: true }, [Autoplay({ delay: AUTOPLAY })]);
-      const store = createCarouselStore({ loop: true });
+      const store = createCarouselStore({ loop: true }, [Autoplay({ delay: AUTOPLAY })]);
       const destroyCarousel = initCarousel(el, store);
       const handleClick = (event: Event) => {
         const target = event.target;
@@ -92,15 +96,12 @@ type Props = { class?: string; items: Attendants["Entity"][] };
         const cardEl = target.closest<HTMLButtonElement>("[data-attendant]");
         if (!(cardEl && el.contains(cardEl))) return;
 
-        const nextFlipped = cardEl.dataset.flipped !== "true";
-        for (const activeCardEl of el.querySelectorAll<HTMLButtonElement>("[data-attendant][data-flipped=true]")) {
-          if (activeCardEl === cardEl) continue;
-          activeCardEl.dataset.flipped = "false";
-          activeCardEl.setAttribute("aria-pressed", "false");
-        }
+        const index = cardEl.dataset.attendant;
+        if (!index) return;
 
-        cardEl.dataset.flipped = nextFlipped.toString();
-        cardEl.setAttribute("aria-pressed", nextFlipped.toString());
+        const nextFlipped = cardEl.dataset.flipped !== "true";
+        for (const e of el.querySelectorAll<HTMLButtonElement>("[data-attendant][data-flipped=true]")) setFlipState(e, "false");
+        for (const e of el.querySelectorAll<HTMLButtonElement>(`[data-attendant="${index}"]`)) setFlipState(e, nextFlipped.toString());
       };
 
       el.addEventListener("click", handleClick);
