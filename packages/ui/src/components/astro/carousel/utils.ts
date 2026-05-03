@@ -1,6 +1,6 @@
 import EmblaCarousel from "embla-carousel";
 import { subscribeSelector } from "../../../lib/stores/selector";
-import { CLONE_ATTR, CLONE_ATTRS, type createCarouselStore, getOriginalSlideNodes } from "../../shared/carousel";
+import { CLONE_ATTR, CLONE_ATTRS, type createCarouselStore, FOCUSABLE_SELECTOR, getOriginalSlideNodes } from "../../shared/carousel";
 
 // CONSTS ----------------------------------------------------------------------------------------------------------------------------------
 const cleanups = new Map<HTMLElement, () => void>();
@@ -39,12 +39,15 @@ function bindLayout(store: CarouselStore, containerEl: HTMLElement) {
   };
 
   const addClones = () => {
+    const fragment = document.createDocumentFragment();
     for (const itemEl of getOriginalSlideNodes(store.state.api?.slideNodes() ?? [])) {
       const cloneEl = itemEl.cloneNode(true);
       if (!(cloneEl instanceof HTMLElement)) continue;
       for (const [name, value] of Object.entries(CLONE_ATTRS)) cloneEl.setAttribute(name, `${value}`);
-      containerEl.append(cloneEl);
+      for (const focusableEl of cloneEl.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)) focusableEl.tabIndex = -1;
+      fragment.append(cloneEl);
     }
+    containerEl.append(fragment);
   };
 
   const { unsubscribe } = subscribeSelector(

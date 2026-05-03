@@ -26,10 +26,9 @@ export const CAROUSEL = {
 
 // CONSTS ----------------------------------------------------------------------------------------------------------------------------------
 export const CLONE_ATTR = "data-carousel-clone";
-export const CLONE_ATTRS = { "aria-hidden": true, inert: true, [CLONE_ATTR]: "" } as const;
+export const CLONE_ATTRS = { "aria-hidden": true, [CLONE_ATTR]: "" } as const;
+export const FOCUSABLE_SELECTOR = "a, button, input, select, textarea, [tabindex]";
 
-const ALL_SLIDES_SHOWN_OPTS = { containScroll: false, slidesToScroll: "auto" } as const;
-const DEFAULT_OPTS = { containScroll: "trimSnaps", slidesToScroll: 1 } as const;
 const RUNTIME_STATE = { allSlidesClipped: false, api: undefined, canGoToNext: false, canGoToPrev: false };
 const TOLERANCE = 1;
 
@@ -42,15 +41,14 @@ const getLayout = (api: EmblaCarouselType, opts: EmblaOptionsType) => {
   const { axis = "x" } = opts;
   const slides = getOriginalSlideNodes(api.slideNodes());
   const viewportSize = getSize(axis, api.rootNode());
-  const firstStart = getOffset(axis, slides.at(0));
-  const lastStart = getOffset(axis, slides.at(-1));
-  const lastEnd = lastStart + getSize(axis, slides.at(-1));
-  const allSlidesVisible = firstStart >= -TOLERANCE && lastEnd <= viewportSize + TOLERANCE;
+  const lastStart = getOffset(axis, slides.at(-1)) - getOffset(axis, slides.at(0));
+  const allSlidesVisible = lastStart + getSize(axis, slides.at(-1)) <= viewportSize + TOLERANCE;
+  const allSlidesClipped = slides.length > 1 && !allSlidesVisible && lastStart < viewportSize - TOLERANCE;
 
-  return {
-    allSlidesClipped: slides.length > 1 && !allSlidesVisible && lastStart < viewportSize - TOLERANCE,
-    opts: { ...opts, ...(allSlidesVisible ? ALL_SLIDES_SHOWN_OPTS : DEFAULT_OPTS) },
-  };
+  let nextOpts: Partial<EmblaOptionsType> = { containScroll: "trimSnaps", slidesToScroll: 1 };
+  if (allSlidesVisible) nextOpts = { containScroll: false, loop: false, slidesToScroll: "auto" };
+  if (allSlidesClipped) nextOpts = { containScroll: false, loop: true, slidesToScroll: 1 };
+  return { allSlidesClipped, opts: { ...opts, ...nextOpts } };
 };
 
 const getOffset = (axis: EmblaOptionsType["axis"], el: HTMLElement | undefined) => {
