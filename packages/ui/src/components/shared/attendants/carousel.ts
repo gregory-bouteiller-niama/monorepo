@@ -13,16 +13,17 @@ export const ATTENDANTS = {
 };
 
 export const ATTENDANT = {
-  base: cva("group/flip relative cursor-pointer transition-transform duration-500 ease-in-out hover:rotate-0"),
-  card: cva(`backface-hidden transform-3d flex-col-reverse gap-2 rounded-none bg-white py-3 shadow-2xl transition-transform duration-500 
+  base: cva("group/flip relative w-full cursor-pointer transition-transform duration-500 ease-in-out hover:rotate-0"),
+  card: cva(`@container backface-hidden transform-3d flex-col-reverse gap-2 rounded-none bg-white py-3 shadow-2xl 
+    transition-transform duration-500 min-h-0 w-full
     group-data-[flipped=true]/flip:rotate-y-180
     data-[back=true]:absolute data-[back=true]:inset-0 data-[back=true]:rotate-y-180 
     data-[back=true]:group-data-[flipped=true]/flip:rotate-y-0`),
-  description: cva(
-    "flex h-full w-full max-w-[420px] flex-1 flex-col justify-center gap-2 overflow-y-auto border-white border-x-12 border-t-12 bg-card text-center font-light text-base"
-  ),
+  description: cva(`flex h-full min-h-0 w-full flex-1 flex-col justify-start gap-2 overflow-y-auto border-white border-x-12 p-4
+    bg-card text-center font-light text-base 
+    @sm:justify-center`),
   icon: cva("icon-[lucide--plus-circle] size-12 bg-white"),
-  image: cva("relative w-full max-w-[420px] px-3"),
+  image: cva("relative aspect-square w-full px-3"),
   overlay: cva(`absolute inset-x-3 inset-y-0 flex items-center justify-center opacity-0 backdrop-blur-2xl transition-opacity duration-500 
     group-hover/flip:opacity-100`),
   title: cva("font-bold text-3xl text-black"),
