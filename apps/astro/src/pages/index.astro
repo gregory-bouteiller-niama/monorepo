@@ -1,12 +1,10 @@
 ---
-import { actions } from "astro:actions";
 import { readIndexPage } from "@niama/domain/functions/pages";
-import { toast } from "@niama/ui/astro/toast.ts";
-import { ContactForm } from "@niama/ui/react/contact-form";
 import { Section } from "@niama/ui/react/section";
 import { Separator } from "@niama/ui/react/separator";
 import { INDEX_PAGE } from "@niama/ui/shared/index-page";
 import AttendantsCarousel from "@/components/attendants/carousel.astro";
+import { ContactForm } from "@/components/contact-form";
 import DisciplinesCarousel from "@/components/disciplines/carousel.astro";
 import PublicLayout from "./_public.astro";
 
@@ -24,14 +22,7 @@ const { attendants, contact, disciplines, hero } = readIndexPage();
     <Section id="les-voies" {...disciplines} withSeparator> <DisciplinesCarousel {...disciplines} /> </Section>
     <Section id="les-accompagnants" {...attendants} withSeparator> <AttendantsCarousel {...attendants} /> </Section>
     <Section id="contact" {...contact} withSeparator>
-      <ContactForm
-        client:visible
-        onSubmit={async (value) => {
-					const { error } = await actions.contact.create(value);
-					if (error) throw error;
-				}}
-        onSuccess={() => toast.success("Succès", { description: "Merci de votre intérêt ! Nous reviendrons vers vous très bientôt." })}
-      />
+      <ContactForm client:visible />
       <Separator className="self-center! mb-34 h-24" orientation="vertical" />
     </Section>
   </div>
