@@ -1,6 +1,6 @@
 ---
 import { cn } from "@niama/ui/lib/utils";
-import { SKY } from "@niama/ui/shared/sky";
+import { SKY, SKY_ORBITS } from "@niama/ui/shared/sky";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className } = Astro.props;
@@ -9,168 +9,34 @@ const { class: className } = Astro.props;
 type Props = { class?: string };
 ---
 
-<div aria-hidden="true" class={cn(SKY.base(), className)}>
-  <div class={SKY.orbits()}>
-    <div class={SKY.orbit()}><span class={SKY.planet()}></span></div>
-    <div class={SKY.orbit()}><span class={SKY.planet()}></span></div>
-    <div class={SKY.orbit()}><span class={SKY.planet()}></span></div>
-    <div class={SKY.orbit()}><span class={SKY.planet()}></span></div>
+<the-sky>
+  <div aria-hidden="true" class={cn(SKY.base(), className)}>
+    <div class={SKY.orbits()}>
+      {SKY_ORBITS.map((orbit) => (
+        <div class={SKY.orbit()}>
+          <span class={SKY.planet()} data-orbit={orbit} />
+        </div>
+      ))}
+    </div>
+    <section class={SKY.stars()}><canvas class={SKY.canvas()} /></section>
   </div>
-  <div class={SKY.stars()} data-gravity-stars><canvas class={SKY.canvas()} data-gravity-stars-canvas></canvas></div>
-</div>
+</the-sky>
 
-<script is:inline>
-  (() => {
-    const container = document.querySelector("[data-gravity-stars]");
-    const canvas = document.querySelector("[data-gravity-stars-canvas]");
-    if (!(container instanceof HTMLElement && canvas instanceof HTMLCanvasElement)) return;
+<script>
+  import { initializeSky } from "@niama/ui/shared/sky";
 
-    const starsCount = 75;
-    const starsSize = 2;
-    const starsOpacity = 0.75;
-    const glowIntensity = 15;
-    const movementSpeed = 0.3;
-    const mouseInfluence = 100;
-    const gravityStrength = 75;
+  const Sky = class extends HTMLElement {
+    destroy!: () => void;
 
-    const state = {
-      animationId: 0,
-      dpr: 1,
-      mouse: { x: 0, y: 0 },
-      size: { width: 800, height: 600 },
-      stars: [],
-    };
+    connectedCallback() {
+      const container = this.querySelector("section");
+      if (!container) throw new Error("Sky root element not found");
+      this.destroy = initializeSky(container);
+    }
 
-    const readColor = () => getComputedStyle(container).color || "#ffffff";
-
-    const initStars = (width, height) => {
-      state.stars = Array.from({ length: starsCount }, () => {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = movementSpeed * (0.5 + Math.random() * 0.5);
-        return {
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          size: Math.random() * starsSize + 1,
-          opacity: starsOpacity,
-          baseOpacity: starsOpacity,
-          mass: Math.random() * 0.5 + 0.5,
-          glowMultiplier: 1,
-          glowVelocity: 0,
-        };
-      });
-    };
-
-    const resizeCanvas = () => {
-      const rect = container.getBoundingClientRect();
-      state.dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
-      canvas.width = Math.max(1, Math.floor(rect.width * state.dpr));
-      canvas.height = Math.max(1, Math.floor(rect.height * state.dpr));
-      canvas.style.width = `${rect.width}px`;
-      canvas.style.height = `${rect.height}px`;
-      state.size = { width: rect.width, height: rect.height };
-      initStars(rect.width, rect.height);
-    };
-
-    const updateStars = () => {
-      const { width, height } = state.size;
-
-      for (const star of state.stars) {
-        const dx = state.mouse.x - star.x;
-        const dy = state.mouse.y - star.y;
-        const distance = Math.hypot(dx, dy);
-
-        if (distance < mouseInfluence && distance > 0) {
-          const force = (mouseInfluence - distance) / mouseInfluence;
-          const nx = dx / distance;
-          const ny = dy / distance;
-          const gravity = force * (gravityStrength * 0.001);
-
-          star.vx += nx * gravity;
-          star.vy += ny * gravity;
-          star.opacity = Math.min(1, star.baseOpacity + force * 0.4);
-
-          const targetGlow = 1 + force * 2;
-          star.glowMultiplier += (targetGlow - star.glowMultiplier) * 0.15;
-        } else {
-          star.opacity = Math.max(star.baseOpacity * 0.3, star.opacity - 0.02);
-          star.glowMultiplier = Math.max(1, star.glowMultiplier + (1 - star.glowMultiplier) * 0.08);
-        }
-
-        star.x += star.vx;
-        star.y += star.vy;
-
-        star.vx += (Math.random() - 0.5) * 0.001;
-        star.vy += (Math.random() - 0.5) * 0.001;
-        star.vx *= 0.999;
-        star.vy *= 0.999;
-
-        if (star.x < 0) star.x = width;
-        if (star.x > width) star.x = 0;
-        if (star.y < 0) star.y = height;
-        if (star.y > height) star.y = 0;
-      }
-    };
-
-    const drawStars = () => {
-      const context = canvas.getContext("2d");
-      if (!context) return;
-
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      const color = readColor();
-
-      for (const star of state.stars) {
-        context.save();
-        context.shadowColor = color;
-        context.shadowBlur = glowIntensity * star.glowMultiplier * 2;
-        context.globalAlpha = star.opacity;
-        context.fillStyle = color;
-        context.beginPath();
-        context.arc(star.x * state.dpr, star.y * state.dpr, star.size * state.dpr, 0, Math.PI * 2);
-        context.fill();
-        context.restore();
-      }
-    };
-
-    const animate = () => {
-      updateStars();
-      drawStars();
-      state.animationId = window.requestAnimationFrame(animate);
-    };
-
-    const updateMouse = (clientX, clientY) => {
-      const rect = canvas.getBoundingClientRect();
-      state.mouse.x = clientX - rect.left;
-      state.mouse.y = clientY - rect.top;
-    };
-
-    const handleMouseMove = (event) => updateMouse(event.clientX, event.clientY);
-    const handleTouchMove = (event) => {
-      const touch = event.touches[0];
-      if (!touch) return;
-      updateMouse(touch.clientX, touch.clientY);
-    };
-
-    resizeCanvas();
-    state.animationId = window.requestAnimationFrame(animate);
-
-    const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(resizeCanvas);
-    resizeObserver?.observe(container);
-    window.addEventListener("resize", resizeCanvas);
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    window.addEventListener("touchmove", handleTouchMove, { passive: true });
-
-    window.addEventListener(
-      "beforeunload",
-      () => {
-        if (state.animationId) window.cancelAnimationFrame(state.animationId);
-        resizeObserver?.disconnect();
-        window.removeEventListener("resize", resizeCanvas);
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("touchmove", handleTouchMove);
-      },
-      { once: true }
-    );
-  })();
+    disconnectedCallback() {
+      this.destroy();
+    }
+  };
+  if (!customElements.get("the-sky")) customElements.define("the-sky", Sky);
 </script>
