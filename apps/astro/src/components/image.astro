@@ -1,0 +1,32 @@
+---
+import { transformBaseImageProps } from "@unpic/core/base";
+import { transform } from "unpic/providers/imagekit";
+
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
+const { alt, background, class: className, widths, ...props } = Astro.props;
+
+// DATA ------------------------------------------------------------------------------------------------------------------------------------
+const image = transformBaseImageProps({
+  ...props,
+  background,
+  breakpoints: widths,
+  layout: "constrained",
+  objectFit: "cover",
+  operations: { f: "avif", q: 80 },
+  transformer: transform,
+});
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+type Props = {
+  alt: string;
+  background: string;
+  class?: string;
+  height: number;
+  sizes: string;
+  src: string;
+  width: number;
+  widths: number[];
+};
+---
+
+<img {...image} alt={alt} class={className}>

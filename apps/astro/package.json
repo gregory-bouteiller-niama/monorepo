@@ -1,38 +1,40 @@
 {
-	"name": "@niama/astro",
-	"version": "0.0.1",
-	"type": "module",
-	"private": true,
-	"scripts": {
-		"dev": "wrangler types && astro dev",
-		"build": "astro build",
-		"preview": "wrangler types && astro preview",
-		"deploy": "astro build && wrangler deploy",
-		"astro": "astro"
-	},
-	"dependencies": {
-		"@astrojs/cloudflare": "^13.3.0",
-		"@astrojs/react": "^5.0.4",
-		"@astrojs/sitemap": "^3.7.2",
-		"@niama/backend": "workspace:*",
-		"@niama/domain": "workspace:*",
-		"@niama/ui": "workspace:*",
-		"@tabler/icons-react": "^3.41.1",
-		"@types/react": "^19.2.14",
-		"@types/react-dom": "^19.2.3",
-		"astro": "^6.2.1",
-		"class-variance-authority": "^0.7.1",
-		"convex": "^1.37.0",
-		"embla-carousel-autoplay": "^9.0.0-rc02",
-		"embla-carousel-ssr": "^9.0.0-rc02",
-		"react": "^19.2.5",
-		"react-dom": "^19.2.5"
-	},
-	"devDependencies": {
-		"@tailwindcss/vite": "^4.2.4",
-		"@types/node": "^25.6.0",
-		"globals": "^17.6.0",
-		"typescript": "^6.0.3",
-		"wrangler": "^4.87.0"
-	}
+  "name": "@niama/astro",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler types && astro dev",
+    "build": "astro build",
+    "preview": "wrangler types && astro preview",
+    "deploy": "astro build && wrangler deploy",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^13.3.1",
+    "@astrojs/react": "^5.0.4",
+    "@astrojs/sitemap": "^3.7.2",
+    "@niama/backend": "workspace:*",
+    "@niama/domain": "workspace:*",
+    "@niama/ui": "workspace:*",
+    "@tabler/icons-react": "^3.42.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@unpic/core": "^1.0.3",
+    "astro": "^6.2.2",
+    "class-variance-authority": "^0.7.1",
+    "convex": "^1.37.0",
+    "embla-carousel-autoplay": "^9.0.0-rc02",
+    "embla-carousel-ssr": "^9.0.0-rc02",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "unpic": "^4.2.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.4",
+    "@types/node": "^25.6.0",
+    "globals": "^17.6.0",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.87.0"
+  }
 }

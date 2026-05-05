@@ -1,10 +1,10 @@
 ---
-import { Image } from "astro:assets";
 import type { Attendants } from "@niama/domain/functions/attendants";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui/astro/card.ts";
 import { CarouselContent, CarouselItem, Carousel as CarouselNative, CarouselNext, CarouselPrevious } from "@niama/ui/astro/carousel.ts";
 import { ATTENDANT, ATTENDANTS, ROTATIONS } from "@niama/ui/shared/attendants/carousel";
 import DisciplinesBadge from "@/components/disciplines/badge.astro";
+import Image from "@/components/image.astro";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className = "", items } = Astro.props;
@@ -39,12 +39,7 @@ type Props = { class?: string; items: Attendants["Entity"][] };
                 <div class={ATTENDANT.overlay()}>
                   <span class={ATTENDANT.icon()} />
                 </div>
-                <Image
-                  {...attendant.image}
-                  format="avif"
-                  sizes="(min-width: 640px) 420px, 100vw"
-                  widths={[420, 840]}
-                />
+                <Image {...attendant.image} sizes="(min-width: 640px) 420px, 100vw" widths={[420, 840]} />
               </CardContent>
             </Card>
             <Card class={ATTENDANT.card()} data-back>
