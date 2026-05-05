@@ -1,6 +1,5 @@
 import { headerStore, selectStainStyle } from "@niama/ui/lib/stores/header";
 import { cva } from "class-variance-authority";
-import { toggleThemeWithTransition } from "./theme";
 
 // STYLES ----------------------------------------------------------------------------------------------------------------------------------
 export const THE_HEADER = {
@@ -18,8 +17,6 @@ export const THE_HEADER = {
   logoMain: cva("z-40 mt-12 mb-4 flex w-32 animate-float flex-col items-center self-center"),
   menu: cva(`sticky top-4 z-50 flex min-h-14.5 w-auto flex-col justify-center self-center border-y py-2
 		group-data-scrolled/body:border-transparent`),
-  moon: cva(`icon-[lucide--moon] absolute size-4 rotate-90 scale-0 transition-all 
-		dark:rotate-0 dark:scale-100`),
   nav: cva(`flex flex-col items-center 
 		group-data-scrolled/body:hidden 
 		sm:flex-row
@@ -29,9 +26,6 @@ export const THE_HEADER = {
 		md:px-4 md:py-2 md:text-base`),
   stain: cva("absolute inset-0 rounded-full bg-accent opacity-0 transition-all"),
   stainContent: cva("relative z-10"),
-  sun: cva(`icon-[lucide--sun] size-4 rotate-0 scale-100 transition-all 
-		dark:-rotate-90 dark:scale-0`),
-  themeSwitcher: cva("cursor-pointer"),
   wrapper: cva("fixed inset-x-4 top-4 z-50"),
 };
 
@@ -48,7 +42,6 @@ export const observeNavLink = (hash: string, link: HTMLElement) => {
 // ASTRO -----------------------------------------------------------------------------------------------------------------------------------
 export const initialize = () => {
   initializeHeaderNav();
-  initializeThemeSwitcher();
 };
 
 const initializeHeaderNav = () => {
@@ -68,6 +61,7 @@ const initializeHeaderNav = () => {
   };
   window.addEventListener("hashchange", handleHashChange);
   cleaners = [...cleaners, () => window.removeEventListener("hashchange", handleHashChange)];
+  handleHashChange();
 
   nav?.addEventListener("mouseleave", clearHovered);
   cleaners = [...cleaners, () => nav?.removeEventListener("mouseleave", clearHovered)];
@@ -86,14 +80,4 @@ const initializeHeaderNav = () => {
     unsubscribe();
     for (const cleaner of cleaners) cleaner();
   };
-};
-
-const initializeThemeSwitcher = () => {
-  const switcher = document.querySelector<HTMLElement>("[data-theme-switcher]");
-  if (!switcher) throw new Error("Theme switcher not found");
-
-  const handleClick = () => toggleThemeWithTransition(switcher);
-
-  switcher.addEventListener("click", handleClick);
-  return () => switcher.removeEventListener("click", handleClick);
 };

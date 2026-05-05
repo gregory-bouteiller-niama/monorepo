@@ -2,6 +2,7 @@
 import type { ReadPublicLayoutProps } from "@niama/domain/functions/layouts";
 import { Button } from "@niama/ui/astro/button.ts";
 import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "@niama/ui/astro/dropdown.ts";
+import { ThemeSwitcher } from "@niama/ui/astro/theme-switcher.ts";
 import { Logo } from "@niama/ui/react/logo";
 import { Section } from "@niama/ui/react/section";
 import { Separator } from "@niama/ui/react/separator";
@@ -21,7 +22,7 @@ type Props = Pick<ReadPublicLayoutProps, "navs">;
     <div class={THE_HEADER.actions()}>
       <Dropdown>
         <DropdownTrigger asChild>
-          <Button aria-label="Menu" class={THE_HEADER.burger()} size="icon" variant="outline">
+          <Button aria-label="Menu principal" class={THE_HEADER.burger()} size="icon" variant="outline">
             <span class={THE_HEADER.burgerIcon()}></span>
           </Button>
         </DropdownTrigger>
@@ -33,11 +34,7 @@ type Props = Pick<ReadPublicLayoutProps, "navs">;
 						))}
         </DropdownContent>
       </Dropdown>
-      <Button class={THE_HEADER.themeSwitcher()} data-theme-switcher size="icon" type="button" variant="outline">
-        <span class={THE_HEADER.sun()} />
-        <span class={THE_HEADER.moon()} />
-        <span class="sr-only">Toggle theme</span>
-      </Button>
+      <ThemeSwitcher />
     </div>
   </header>
 </div>
@@ -46,7 +43,7 @@ type Props = Pick<ReadPublicLayoutProps, "navs">;
 </Section>
 <Separator className="self-center! h-6" orientation="vertical" />
 <Section className={THE_HEADER.menu()} id="top-2">
-  <nav class={THE_HEADER.nav()} data-nav>
+  <nav aria-label="Navigation principale" class={THE_HEADER.nav()} data-nav>
     <div aria-hidden="true" class={THE_HEADER.stain()} data-nav-stain></div>
     {navs.map(({ hash, text, to }) => (
 				<Button class={THE_HEADER.navLink()} data-nav-link={hash} href={`${to}#${hash}`} variant="ghost">
