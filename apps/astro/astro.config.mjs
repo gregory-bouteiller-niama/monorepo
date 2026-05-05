@@ -1,6 +1,7 @@
 // @ts-check
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, fontProviders } from "astro/config";
 
@@ -8,6 +9,7 @@ import { defineConfig, fontProviders } from "astro/config";
 export default defineConfig({
   output: "server",
   adapter: cloudflare(),
+  site: "https://niama.fr",
   image: {
     remotePatterns: [{ protocol: "https", hostname: "ik.imagekit.io", pathname: "/niamafr/**" }],
   },
@@ -36,7 +38,10 @@ export default defineConfig({
     },
   ],
   vite: {
+    resolve: {
+      tsconfigPaths: true,
+    },
     plugins: [tailwindcss()],
   },
-  integrations: [react()],
+  integrations: [react(), sitemap()],
 });

@@ -3,13 +3,13 @@ import { Button } from "@niama/ui/react/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@niama/ui/react/dropdown-menu";
 import { Logo } from "@niama/ui/react/logo";
 import { Separator } from "@niama/ui/react/separator";
+import { ThemeSwitcher } from "@niama/ui/react/theme-switcher";
 import { clearHovered, observeNavLink, THE_HEADER } from "@niama/ui/shared/the-header";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useSelector } from "@tanstack/react-store";
 import { useEffect, useRef } from "react";
 import { Section } from "@/components/section";
 import type { ReadPublicLayoutProps } from "@/lib/layouts";
-import { HeaderThemeSwitcher } from "./-the-header.theme-switcher";
 
 // MAIN ------------------------------------------------------------------------------------------------------------------------------------
 export function TheHeader({ navs }: Pick<ReadPublicLayoutProps, "navs">) {
@@ -27,7 +27,7 @@ export function TheHeader({ navs }: Pick<ReadPublicLayoutProps, "navs">) {
           </Link>
 
           <div className={THE_HEADER.actions()}>
-            <HeaderThemeSwitcher />
+            <ThemeSwitcher />
             {/* <HeaderUser signInUrl={signInUrl} signUpUrl={signUpUrl} /> */}
             <HeaderBurger navs={navs} />
           </div>
@@ -40,6 +40,7 @@ export function TheHeader({ navs }: Pick<ReadPublicLayoutProps, "navs">) {
       </Section>
       <Separator className="self-center! h-6" orientation="vertical" />
       <Section className={THE_HEADER.menu()} id="top-2">
+        {/** biome-ignore lint/a11y/noNoninteractiveElementInteractions: false positive */}
         <nav className={THE_HEADER.nav()} onMouseLeave={clearHovered}>
           <div aria-hidden="true" className={THE_HEADER.stain()} style={stainStyle} />
           {navs.map((nav) => (

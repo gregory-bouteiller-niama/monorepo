@@ -13,6 +13,7 @@
 	"dependencies": {
 		"@astrojs/cloudflare": "^13.3.0",
 		"@astrojs/react": "^5.0.4",
+		"@astrojs/sitemap": "^3.7.2",
 		"@niama/backend": "workspace:*",
 		"@niama/domain": "workspace:*",
 		"@niama/ui": "workspace:*",

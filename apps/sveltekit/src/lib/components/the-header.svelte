@@ -2,11 +2,11 @@
   import type { ReadPublicLayoutProps } from "@niama/domain/functions/layouts";
   import { headerStore, selectStainStyle } from "@niama/ui/lib/stores/header";
   import { clearHovered, observeNavLink, THE_HEADER } from "@niama/ui/shared/the-header";
-  import { toggleThemeWithTransition } from "@niama/ui/shared/theme";
   import { Button } from "@niama/ui/svelte/button";
   import { Logo } from "@niama/ui/svelte/logo";
   import { Section } from "@niama/ui/svelte/section";
   import { Separator } from "@niama/ui/svelte/separator";
+  import { ThemeSwitcher } from "@niama/ui/svelte/theme-switcher";
   import { useStore as readStore } from "@tanstack/svelte-store";
   import { onMount } from "svelte";
 
@@ -14,7 +14,6 @@
 
   let currentHash = $state("");
   let isMenuOpen = $state(false);
-  let themeSwitcher = $state<HTMLElement | null>(null);
 
   const stainStyle = readStore(headerStore, selectStainStyle);
 
@@ -56,17 +55,7 @@
     <a aria-label="Retour à l'accueil" class={THE_HEADER.logo()} href="/#top"> <Logo showTitle={false} /> </a>
 
     <div class={THE_HEADER.actions()}>
-      <Button
-        bind:ref={themeSwitcher}
-        class={THE_HEADER.themeSwitcher()}
-        onclick={() => toggleThemeWithTransition(themeSwitcher)}
-        size="icon"
-        variant="outline"
-      >
-        <span class={THE_HEADER.sun()}></span>
-        <span class={THE_HEADER.moon()}></span>
-        <span class="sr-only">Changer le thème</span>
-      </Button>
+      <ThemeSwitcher />
       <Button
         aria-expanded={isMenuOpen}
         aria-label="Menu"

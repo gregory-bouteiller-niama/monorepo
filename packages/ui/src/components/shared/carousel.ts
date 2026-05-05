@@ -2,6 +2,7 @@ import { createStore } from "@tanstack/store";
 import { cva } from "class-variance-authority";
 import type { EmblaCarouselType, EmblaOptionsType, EmblaPluginType } from "embla-carousel";
 import type { AutoplayType } from "embla-carousel-autoplay";
+import { bindReducedMotion, prefersReducedMotion } from "./motion";
 
 // STYLES ----------------------------------------------------------------------------------------------------------------------------------
 export const CAROUSEL = {
@@ -70,8 +71,8 @@ export const createCarouselStore = (opts: EmblaOptionsType = {}, plugins: EmblaP
     const syncAutoplay = () => {
       const { api, canGoToNext } = get();
       const autoplay: AutoplayType | undefined = api?.plugins().autoplay;
-      if (canGoToNext) autoplay?.play();
-      else autoplay?.stop();
+      if (prefersReducedMotion() || !canGoToNext) autoplay?.stop();
+      else autoplay?.play();
     };
 
     const syncControls = (api: EmblaCarouselType) => syncState(api);
@@ -79,6 +80,7 @@ export const createCarouselStore = (opts: EmblaOptionsType = {}, plugins: EmblaP
 
     const bindApi = (api: EmblaCarouselType) => {
       const { unsubscribe } = store.subscribe(syncAutoplay);
+      const unbindReducedMotion = bindReducedMotion(syncAutoplay);
 
       syncLayout(api);
       api.on("select", syncControls);
@@ -90,6 +92,7 @@ export const createCarouselStore = (opts: EmblaOptionsType = {}, plugins: EmblaP
         api.off("select", syncControls);
         api.off("resize", syncLayout);
         api.off("reinit", syncLayout);
+        unbindReducedMotion();
         setState((prev) => ({ ...prev, ...RUNTIME_STATE }));
       };
     };
