@@ -14,7 +14,7 @@ export const ATTENDANTS = {
 
 export const ATTENDANT = {
   base: cva("group/flip relative w-full cursor-pointer transition-transform duration-500 ease-in-out hover:rotate-0"),
-  card: cva(`@container backface-hidden transform-3d flex-col-reverse gap-2 rounded-none bg-white py-3 shadow-2xl 
+  card: cva(`@container backface-hidden -z-10 transform-3d flex-col-reverse gap-2 rounded-none bg-white py-3 shadow-2xl 
     transition-transform duration-500 min-h-0 w-full
     group-data-[flipped=true]/flip:rotate-y-180
     data-[back=true]:absolute data-[back=true]:inset-0 data-[back=true]:rotate-y-180 
