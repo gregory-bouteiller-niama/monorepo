@@ -1,0 +1,41 @@
+---
+import type { ReadLegalPageProps } from "@niama/domain/functions/pages";
+import { Button } from "@niama/ui/astro/button.ts";
+import { Card, CardContent, CardHeader, CardTitle } from "@niama/ui/astro/card.ts";
+import { Section, type SectionProps } from "@niama/ui/react/section";
+
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
+const { section, withSeparator = true } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+type LegalSection = ReadLegalPageProps["legal"] | ReadLegalPageProps["privacy"];
+type Props = Omit<SectionProps, "id"> & { section: LegalSection };
+---
+
+<Section className="mx-auto max-w-7xl" {...section} {withSeparator}>
+  <div class="grid w-full gap-4 md:grid-cols-2">
+    {section.cards.map(({ content, title }) => (
+      <Card>
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+        </CardHeader>
+        <CardContent class="space-y-3 text-sm leading-7 md:text-base">
+          {
+            content.map((paragraph) =>
+              typeof paragraph === "string" ? (
+                <p>{paragraph}</p>
+              ) : (
+                <p>
+                  {paragraph.prefix}
+                  <Button class="text-base" href={`mailto:${paragraph.email}`} size="xs" variant="link">
+                    {paragraph.email}
+                  </Button>
+                </p>
+              )
+            )
+          }
+        </CardContent>
+      </Card>
+    ))}
+  </div>
+</Section>

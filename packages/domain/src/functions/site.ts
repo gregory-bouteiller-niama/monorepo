@@ -12,22 +12,35 @@ export const SEO = {
   url: "https://niama.fr",
 } as const;
 
+export const SITE_OWNER = {
+  email: SEO.email,
+  name: "Grégory Bouteiller",
+} as const;
+
+export const SITE_ADDRESS = {
+  country: "France",
+  locality: "La Rivière Saint-Louis",
+  postalCode: "97421",
+  region: "La Réunion",
+  street: "39 chemin des Longanis",
+} as const;
+
 const { socials } = readPublicLayout();
 
 const address = {
   "@type": "PostalAddress",
   addressCountry: "FR",
-  addressLocality: "La Rivière Saint-Louis",
-  addressRegion: "La Réunion",
-  postalCode: "97421",
-  streetAddress: "39 chemin des Longanis",
+  addressLocality: SITE_ADDRESS.locality,
+  addressRegion: SITE_ADDRESS.region,
+  postalCode: SITE_ADDRESS.postalCode,
+  streetAddress: SITE_ADDRESS.street,
 } as const;
 
 const contactPoint = {
   "@type": "ContactPoint",
   availableLanguage: ["fr"],
   contactType: "customer support",
-  email: SEO.email,
+  email: SITE_OWNER.email,
   url: `${SEO.url}/mentions-legales`,
 } as const;
 
@@ -38,11 +51,11 @@ export const createStructuredData = () => [
     "@type": "Organization",
     address,
     contactPoint,
-    email: SEO.email,
+    email: SITE_OWNER.email,
     founder: {
       "@type": "Person",
       address,
-      name: "Gregory Bouteiller",
+      name: SITE_OWNER.name,
     },
     name: SEO.name,
     sameAs: socials.map(({ href }) => href),

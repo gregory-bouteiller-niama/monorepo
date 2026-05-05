@@ -1,0 +1,17 @@
+---
+export const prerender = true;
+
+import { readLegalPage } from "@niama/domain/functions/pages";
+import { LEGAL_NOTICE_PAGE } from "@niama/ui/shared/page-mentions-legales";
+import LegalSection from "./_public/_legal-section.astro";
+import PublicLayout from "./_public.astro";
+
+const { description, legal, privacy, title } = readLegalPage();
+---
+
+<PublicLayout {description} {title}>
+  <div class={LEGAL_NOTICE_PAGE.base()}>
+    <LegalSection section={legal} withSeparator={false} />
+    <LegalSection section={privacy} />
+  </div>
+</PublicLayout>
