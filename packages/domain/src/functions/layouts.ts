@@ -6,7 +6,7 @@ export const readPublicLayout = () => ({
     { key: "contact", text: "Contact", to: "/", hash: "contact" },
   ],
   socials: [
-    { key: "youtube", icon: "icon-[line-md--youtube-filled]", href: "https://youtube.com/@niama-fr", label: "YouTube" },
+    // { key: "youtube", icon: "icon-[line-md--youtube-filled]", href: "https://youtube.com/@niama-fr", label: "YouTube" },
     { key: "instagram", icon: "icon-[line-md--instagram]", href: "https://www.instagram.com/niama.fr/", label: "Instagram" },
   ],
 });
