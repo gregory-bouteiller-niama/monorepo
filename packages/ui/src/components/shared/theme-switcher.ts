@@ -1,5 +1,5 @@
 import { cva } from "class-variance-authority";
-import { type AppTheme, themeStore, toggleThemeWithTransition } from "./theme";
+import type { AppTheme } from "./theme";
 
 // STYLES ----------------------------------------------------------------------------------------------------------------------------------
 export const THEME_SWITCHER = {
@@ -13,24 +13,3 @@ export const THEME_SWITCHER = {
 // LABELS ----------------------------------------------------------------------------------------------------------------------------------
 export const DEFAULT_THEME_SWITCHER_LABEL = "Changer le thème";
 export const getThemeSwitcherLabel = (theme: AppTheme) => (theme === "dark" ? "Activer le thème clair" : "Activer le thème sombre");
-
-// UTILS -----------------------------------------------------------------------------------------------------------------------------------
-export const initializeThemeSwitcher = (switcher: HTMLElement) => {
-  const syncThemeSwitcher = (theme: AppTheme) => {
-    const label = getThemeSwitcherLabel(theme);
-    switcher.setAttribute("aria-label", label);
-    switcher.setAttribute("aria-pressed", (theme === "dark").toString());
-    switcher.setAttribute("title", label);
-  };
-
-  syncThemeSwitcher(themeStore.get());
-  const { unsubscribe } = themeStore.subscribe(syncThemeSwitcher);
-
-  const handleClick = () => toggleThemeWithTransition(switcher);
-  switcher.addEventListener("click", handleClick);
-
-  return () => {
-    unsubscribe();
-    switcher.removeEventListener("click", handleClick);
-  };
-};
