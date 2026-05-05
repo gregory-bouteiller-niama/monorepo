@@ -1,4 +1,6 @@
 ---
+export const prerender = true;
+
 import { readIndexPage } from "@niama/domain/functions/pages";
 import { Section } from "@niama/ui/react/section";
 import { Separator } from "@niama/ui/react/separator";
@@ -11,7 +13,7 @@ import PublicLayout from "./_public.astro";
 const { attendants, contact, disciplines, hero } = readIndexPage();
 ---
 
-<PublicLayout>
+<PublicLayout skipTo="#les-voies">
   <div class={INDEX_PAGE.base()}>
     <Section className={INDEX_PAGE.hero()} id="top-3">
       <div class={INDEX_PAGE.heroContent()}>
@@ -19,7 +21,7 @@ const { attendants, contact, disciplines, hero } = readIndexPage();
         <p class={INDEX_PAGE.heroDescription()}>{hero.description}</p>
       </div>
     </Section>
-    <Section id="les-voies" {...disciplines} withSeparator> <DisciplinesCarousel {...disciplines} /> </Section>
+    <Section id="les-voies" tabIndex={-1} {...disciplines} withSeparator> <DisciplinesCarousel {...disciplines} /> </Section>
     <Section id="les-accompagnants" {...attendants} withSeparator> <AttendantsCarousel {...attendants} /> </Section>
     <Section id="contact" {...contact} withSeparator>
       <ContactForm client:visible />
