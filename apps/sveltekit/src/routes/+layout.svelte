@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { createStructuredData, SEO } from "@niama/domain/functions/site";
   import { bindGlows } from "@niama/ui/shared/glow";
   import { initialize } from "@niama/ui/shared/root-layout";
   import { themeScript } from "@niama/ui/shared/theme";
@@ -11,6 +12,7 @@
   import "./layout.css";
 
   let { children, data } = $props();
+  const structuredData = JSON.stringify(createStructuredData());
 
   onMount(() => {
     const cleanLayout = initialize();
@@ -24,14 +26,12 @@
 </script>
 
 <svelte:head>
-  <title>níama | l'équilibre invisible devenu tangible</title>
-  <meta
-    content="Une constellation d'accompagnants rassemblés autour d'une philosophie commune : vous guider sur le chemin de votre alignement intérieur."
-    name="description"
-  >
+  <title>{SEO.defaultTitle}</title>
+  <meta content={SEO.defaultDescription} name="description">
   <meta content="accompagnants, équilibre, alignement" name="keywords">
   <meta content="index, follow" name="robots">
   <link href={favicon} rel="icon">
+  <script type="application/ld+json">{structuredData}</script>
   {@html `<script>${themeScript}</script>`}
 </svelte:head>
 

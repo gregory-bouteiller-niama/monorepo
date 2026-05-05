@@ -3,9 +3,9 @@ import { SECTION } from "@niama/ui/shared/section";
 import { Separator } from "./separator";
 
 // MAIN ------------------------------------------------------------------------------------------------------------------------------------
-export function Section({ children, className, description, id, title, withSeparator }: SectionProps) {
+export function Section({ children, className, description, id, title, withSeparator, ...props }: SectionProps) {
   return (
-    <section className={cn(SECTION.base(), className)} data-section id={id}>
+    <section className={cn(SECTION.base(), className)} data-section id={id} {...props}>
       {withSeparator && <Separator className={SECTION.separator()} orientation="vertical" />}
       {title && <h2 className={SECTION.title()}>{title}</h2>}
       {description && <p className={SECTION.description()}>{description}</p>}

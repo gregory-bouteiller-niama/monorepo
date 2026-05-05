@@ -14,7 +14,7 @@ export const THE_HEADER = {
   burgerItem: cva("uppercase tracking-widest"),
   logo: cva(`duration-300 w-11 scale-0
 		group-data-scrolled/body:scale-100`),
-  logoMain: cva("z-40 mt-12 mb-4 flex w-32 animate-float flex-col items-center self-center"),
+  logoMain: cva("z-40 mt-12 mb-4 flex w-32 flex-col items-center self-center motion-safe:animate-float"),
   menu: cva(`sticky top-4 z-50 flex min-h-14.5 w-auto flex-col justify-center self-center border-y py-2
 		group-data-scrolled/body:border-transparent`),
   nav: cva(`flex flex-col items-center 
