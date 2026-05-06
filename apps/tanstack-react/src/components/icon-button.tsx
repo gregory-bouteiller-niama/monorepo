@@ -13,7 +13,8 @@ export function IconButton(props: IconButtonProps) {
         render={
           <Button
             aria-label={label}
-            className={ICON_BUTTON.base({ className, loading })}
+            className={ICON_BUTTON.base({ className })}
+            data-loading={loading}
             disabled={isDisabled}
             size={size}
             variant={variant}
@@ -21,7 +22,7 @@ export function IconButton(props: IconButtonProps) {
           />
         }
       >
-        <span className={ICON_BUTTON.icon({ loading, className: icon })} />
+        <span className={ICON_BUTTON.icon({ className: icon })} />
       </TooltipTrigger>
       <TooltipContent>{label}</TooltipContent>
     </Tooltip>
