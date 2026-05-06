@@ -1,5 +1,5 @@
 {
-  "name": "@niama/tanstack",
+  "name": "@niama/tanstack-react",
   "private": true,
   "type": "module",
   "imports": {
