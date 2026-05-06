@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Button, type ButtonProps } from "@niama/ui/components/svelte/button";
   import { cn } from "@niama/ui/lib/utils";
   import { IconChevronRight } from "@tabler/icons-svelte";
   import type { WithoutChildren } from "bits-ui";
+  import { Button, type ButtonProps } from "../button";
   import { getEmblaContext } from "./context";
 
   let {

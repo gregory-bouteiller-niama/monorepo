@@ -11,7 +11,7 @@
   "dependencies": {
     "@niama/domain": "workspace:*",
     "convex": "^1.37.0",
-    "convex-helpers": "^0.1.115"
+    "convex-helpers": "^0.1.116"
   },
   "exports": {
     "./api": "./convex/_generated/api.js",

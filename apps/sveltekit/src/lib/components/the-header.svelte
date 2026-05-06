@@ -7,13 +7,17 @@
   import { Section } from "@niama/ui/svelte/section";
   import { Separator } from "@niama/ui/svelte/separator";
   import { ThemeSwitcher } from "@niama/ui/svelte/theme-switcher";
-  import { useStore as readStore } from "@tanstack/svelte-store";
+  import { useSelector as readStore } from "@tanstack/svelte-store";
+
   import { onMount } from "svelte";
 
   let { navs }: Pick<ReadPublicLayoutProps, "navs"> = $props();
 
+  const mobileMenuId = "mobile-navigation";
+
   let currentHash = $state("");
   let isMenuOpen = $state(false);
+  let headerElement: HTMLElement | null = null;
 
   const stainStyle = readStore(headerStore, selectStainStyle);
 
@@ -42,23 +46,37 @@
 
     syncHash();
     window.addEventListener("hashchange", syncHash);
+    const handleDocumentKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") isMenuOpen = false;
+    };
+    const handleDocumentPointerDown = (event: PointerEvent) => {
+      if (!isMenuOpen) return;
+      if (headerElement?.contains(event.target as Node)) return;
+      isMenuOpen = false;
+    };
+    document.addEventListener("keydown", handleDocumentKeyDown);
+    document.addEventListener("pointerdown", handleDocumentPointerDown);
 
     return () => {
       window.removeEventListener("hashchange", syncHash);
+      document.removeEventListener("keydown", handleDocumentKeyDown);
+      document.removeEventListener("pointerdown", handleDocumentPointerDown);
       for (const clean of cleaners) clean();
     };
   });
 </script>
 
 <div class={THE_HEADER.wrapper()}>
-  <header class={THE_HEADER.base()}>
+  <header bind:this={headerElement} class={THE_HEADER.base()}>
     <a aria-label="Retour à l'accueil" class={THE_HEADER.logo()} href="/#top"> <Logo showTitle={false} /> </a>
 
     <div class={THE_HEADER.actions()}>
       <ThemeSwitcher />
       <Button
+        aria-controls={mobileMenuId}
         aria-expanded={isMenuOpen}
-        aria-label="Menu"
+        aria-haspopup="menu"
+        aria-label="Menu principal"
         class={THE_HEADER.burger()}
         onclick={() => {
 					isMenuOpen = !isMenuOpen;
@@ -70,9 +88,12 @@
       </Button>
     </div>
   </header>
-
   {#if isMenuOpen}
-    <nav class={`${THE_HEADER.burgerContent()} absolute top-full right-0 mt-2 flex flex-col gap-2 sm:hidden`}>
+    <nav
+      aria-label="Navigation principale"
+      class={`${THE_HEADER.burgerContent()} absolute top-full right-0 mt-2 flex flex-col gap-2 sm:hidden`}
+      id={mobileMenuId}
+    >
       {#each navs as nav (nav.key)}
         <Button class={THE_HEADER.burgerItem()} href={`${nav.to}#${nav.hash}`} onclick={() => (isMenuOpen = false)} variant="ghost">
           {nav.text}
@@ -87,7 +108,7 @@
 </Section>
 <Separator class="self-center! h-6" orientation="vertical" />
 <Section class={THE_HEADER.menu()} id="top-2">
-  <nav class={THE_HEADER.nav()} onmouseleave={clearHovered}>
+  <nav aria-label="Navigation principale" class={THE_HEADER.nav()} data-nav onmouseleave={clearHovered}>
     <div aria-hidden="true" class={THE_HEADER.stain()} data-nav-stain style={stainInlineStyle}></div>
     {#each navs as nav (nav.key)}
       <Button

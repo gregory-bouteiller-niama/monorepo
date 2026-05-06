@@ -14,6 +14,7 @@
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@unpic/core": "^1.0.3",
     "@fontsource-variable/outfit": "^5.2.8",
     "@fontsource/cormorant-upright": "^5.2.7",
     "@fontsource/museomoderno": "^5.2.8",
@@ -24,19 +25,21 @@
     "embla-carousel": "^8.6.0",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-svelte": "^8.6.0",
-    "svelte-sonner": "^1.1.1"
+    "svelte-sonner": "^1.1.1",
+    "unpic": "^4.2.2"
   },
   "devDependencies": {
+    "@types/node": "^25.6.0",
     "@sveltejs/adapter-cloudflare": "^7.2.8",
     "@sveltejs/adapter-auto": "^7.0.1",
     "@sveltejs/kit": "^2.59.1",
-    "@sveltejs/vite-plugin-svelte": "^7.1.0",
+    "@sveltejs/vite-plugin-svelte": "^7.1.1",
     "@tailwindcss/vite": "^4.2.4",
     "svelte": "^5.55.5",
     "svelte-check": "^4.4.8",
     "tailwindcss": "^4.2.4",
     "typescript": "^6.0.2",
     "vite": "^8.0.10",
-    "wrangler": "^4.87.0"
+    "wrangler": "^4.88.0"
   }
 }

@@ -7,7 +7,7 @@
 </script>
 
 <footer class={THE_FOOTER.base()}>
-  <Button class={THE_FOOTER.disclaimer()} href="/" variant="outline">Mentions Légales</Button>
+  <Button class={THE_FOOTER.disclaimer()} href="/mentions-legales" variant="outline">Mentions Légales</Button>
   <div class={THE_FOOTER.socials()}>
     {#each socials as social (social.key)}
       <Button

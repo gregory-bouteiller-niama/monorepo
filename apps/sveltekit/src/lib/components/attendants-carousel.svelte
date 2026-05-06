@@ -5,6 +5,7 @@
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui/svelte/card";
   import Autoplay from "embla-carousel-autoplay";
   import DisciplinesBadge from "$lib/components/disciplines-badge.svelte";
+  import Image from "$lib/components/image.svelte";
   import Carousel from "$lib/components/ui/carousel/carousel.svelte";
   import CarouselContent from "$lib/components/ui/carousel/carousel-content.svelte";
   import CarouselItem from "$lib/components/ui/carousel/carousel-item.svelte";
@@ -52,17 +53,7 @@
                       <span class={ATTENDANT.icon()}></span>
                     </Button>
                   </div>
-                  <img
-                    alt={item.image.alt}
-                    decoding="async"
-                    fetchpriority="high"
-                    height={item.image.height}
-                    loading="eager"
-                    sizes="(min-width: 640px) 420px, 100vw"
-                    src={item.image.src}
-                    style:background={item.image.background}
-                    width={item.image.width}
-                  >
+                  <Image {...item.image} sizes="(min-width: 640px) 420px, 100vw" widths={[420, 840]} />
                 </CardContent>
               </Card>
               <Card class={ATTENDANT.card()} data-back>

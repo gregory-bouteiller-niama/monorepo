@@ -1,3 +1,2 @@
-import Root from "../raw/svelte/separator/separator.svelte";
-
-export { Root, Root as Separator };
+/** biome-ignore-all lint/performance/noBarrelFile: false positive */
+export { default as Separator } from "./separator/separator.svelte";

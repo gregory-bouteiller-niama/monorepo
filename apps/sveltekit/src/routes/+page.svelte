@@ -36,11 +36,13 @@
       <p class={INDEX_PAGE.heroDescription()}>{data.hero.description}</p>
     </div>
   </Section>
-  <Section id="les-voies" {...data.disciplines} withSeparator> <DisciplinesCarousel items={data.disciplines.items} /> </Section>
-  <Section id="les-accompagnants" {...data.attendants} withSeparator>
+  <Section description={data.disciplines.description} id="les-voies" tabindex={-1} title={data.disciplines.title} withSeparator>
+    <DisciplinesCarousel items={data.disciplines.items} />
+  </Section>
+  <Section description={data.attendants.description} id="les-accompagnants" title={data.attendants.title} withSeparator>
     <AttendantsCarousel autoplay={10} items={data.attendants.items} />
   </Section>
-  <Section id="contact" {...data.contact} withSeparator>
+  <Section description={data.contact.description} id="contact" title={data.contact.title} withSeparator>
     <ContactForm
       onSubmit={createContact}
       onSuccess={() => toast.success("Merci de votre intérêt ! Nous reviendrons vers vous très bientôt.")}
