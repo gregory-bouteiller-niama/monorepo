@@ -1,6 +1,6 @@
 import { createStoreContext, type Store, useSelector } from "@tanstack/react-store";
 import useEmblaCarousel, { type EmblaRootNodeRefType } from "embla-carousel-react";
-import { Children, cloneElement, isValidElement, useEffect } from "react";
+import { Children, cloneElement, isValidElement, useLayoutEffect } from "react";
 import { cn } from "../../lib/utils";
 import { CAROUSEL, type CarouselActions, type CarouselState, CLONE_ATTRS } from "../shared/carousel";
 import { Button } from "./button";
@@ -16,7 +16,7 @@ export function Carousel({ store, className, children, ...rest }: CarouselProps)
   const plugins = useSelector(store, (state) => state.plugins);
   const [ref, api] = useEmblaCarousel(opts, plugins);
 
-  useEffect(() => (api ? store.actions.bindApi(api) : undefined), [api, store]);
+  useLayoutEffect(() => (api ? store.actions.bindApi(api) : undefined), [api, store]);
 
   return (
     <CarouselProvider value={{ ref, store }}>
