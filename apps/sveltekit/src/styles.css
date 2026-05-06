@@ -3,6 +3,12 @@
 @import "@fontsource-variable/outfit";
 @import "@fontsource/cormorant-upright";
 
+@source "./**/*.{ts,svelte}";
+@source "../../../packages/ui/src/components/svelte/**/*.{ts,svelte}";
+@source "../../../packages/ui/src/components/shared/**/*.ts";
+@source "../../../packages/ui/src/components/raw/svelte/**/*.{ts,svelte}";
+@source "../../../packages/domain/src/**/*.ts";
+
 :root {
   --font-heading: "Cormorant Upright", serif;
   --font-logo: "MuseoModerno", sans-serif;

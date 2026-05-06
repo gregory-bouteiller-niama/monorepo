@@ -1,8 +1,20 @@
-<script lang="ts">
+<script lang="ts" module>
+  import type { WithElementRef } from "@niama/ui/lib/utils";
   import type { HTMLAttributes } from "svelte/elements";
-  import { cn, type WithElementRef } from "../../lib/utils";
-  import { SECTION } from "../shared/section";
-  import { Separator } from "./separator";
+
+  export type SectionProps = WithElementRef<HTMLAttributes<HTMLElement>> & {
+    class?: string;
+    description?: string;
+    id: string;
+    title?: string;
+    withSeparator?: boolean;
+  };
+</script>
+
+<script lang="ts">
+  import { cn } from "@niama/ui/lib/utils";
+  import { SECTION } from "@niama/ui/shared/section";
+  import { Separator } from "@niama/ui/svelte/separator";
 
   let {
     ref = $bindable(null),
@@ -13,13 +25,7 @@
     title,
     withSeparator = false,
     ...restProps
-  }: WithElementRef<HTMLAttributes<HTMLElement>> & {
-    class?: string;
-    description?: string;
-    id: string;
-    title?: string;
-    withSeparator?: boolean;
-  } = $props();
+  }: SectionProps = $props();
 </script>
 
 <section bind:this={ref} data-section class={cn(SECTION.base({ className }))} {id} {...restProps}>

@@ -1,27 +1,37 @@
-<script lang="ts">
-  import { cn, type WithElementRef } from "@niama/ui/lib/utils";
-  import emblaCarouselSvelte from "embla-carousel-svelte";
+<script lang="ts" module>
+  import type { WithElementRef } from "@niama/ui/lib/utils";
   import type { HTMLAttributes } from "svelte/elements";
+
+  export type CarouselContentProps = WithElementRef<HTMLAttributes<HTMLDivElement>>;
+</script>
+
+<script lang="ts">
+  import { cn } from "@niama/ui/lib/utils";
+  import carousel from "embla-carousel-svelte";
   import { getEmblaContext } from "./context";
 
-  let { ref = $bindable(null), class: className, children, ...restProps }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();
+  // PROPS ---------------------------------------------------------------------------------------------------------------------------------
+  let { ref = $bindable(null), class: className, children, ...restProps }: CarouselContentProps = $props();
 
+  // DATA ----------------------------------------------------------------------------------------------------------------------------------
+  let opts = { container: "[data-embla-container]", slides: "[data-embla-slide]" };
+
+  // CONTEXT -------------------------------------------------------------------------------------------------------------------------------
   const emblaCtx = getEmblaContext("<Carousel.Content/>");
 </script>
 
 <div
   data-slot="carousel-content"
   class="overflow-hidden"
-  use:emblaCarouselSvelte={{
+  use:carousel={{
 		options: {
-			container: "[data-embla-container]",
-			slides: "[data-embla-slide]",
+			...opts,
 			...emblaCtx.options,
 			axis: emblaCtx.orientation === "horizontal" ? "x" : "y",
 		},
 		plugins: emblaCtx.plugins,
 	}}
-  onemblaInit={emblaCtx.onInit}
+  on:emblainit={emblaCtx.onInit}
 >
   <div
     bind:this={ref}

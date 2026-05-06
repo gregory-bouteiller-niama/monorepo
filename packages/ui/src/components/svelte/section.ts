@@ -1,3 +1,2 @@
-import Root from "./section.svelte";
-
-export { Root, Root as Section };
+/** biome-ignore-all lint/performance/noBarrelFile: false positive */
+export { default as Section } from "./section/section.svelte";

@@ -6,8 +6,8 @@
   import { Separator } from "@niama/ui/svelte/separator";
   import { onMount } from "svelte";
   import { toast } from "svelte-sonner";
-  import AttendantsCarousel from "$lib/components/attendants-carousel.svelte";
-  import DisciplinesCarousel from "$lib/components/disciplines-carousel.svelte";
+  import AttendantsCarousel from "$lib/components/attendants/carousel.svelte";
+  import DisciplinesCarousel from "$lib/components/disciplines/carousel.svelte";
 
   let { data } = $props();
 

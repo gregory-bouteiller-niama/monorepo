@@ -46,7 +46,7 @@
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
-    "embla-carousel-svelte": "^8.6.0",
+    "embla-carousel-svelte": "^9.0.0-rc02",
     "globals": "^17.6.0",
     "tailwindcss": "^4.2.4",
     "typescript": "^6.0.3"

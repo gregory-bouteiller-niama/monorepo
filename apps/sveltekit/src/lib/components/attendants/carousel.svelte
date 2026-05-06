@@ -3,14 +3,10 @@
   import { ATTENDANT, ATTENDANTS, AUTOPLAY, ROTATIONS } from "@niama/ui/shared/attendants/carousel";
   import { Button } from "@niama/ui/svelte/button";
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui/svelte/card";
+  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui/svelte/carousel";
+  import { Image } from "@unpic/svelte";
   import Autoplay from "embla-carousel-autoplay";
-  import DisciplinesBadge from "$lib/components/disciplines-badge.svelte";
-  import Image from "$lib/components/image.svelte";
-  import Carousel from "$lib/components/ui/carousel/carousel.svelte";
-  import CarouselContent from "$lib/components/ui/carousel/carousel-content.svelte";
-  import CarouselItem from "$lib/components/ui/carousel/carousel-item.svelte";
-  import CarouselNext from "$lib/components/ui/carousel/carousel-next.svelte";
-  import CarouselPrevious from "$lib/components/ui/carousel/carousel-previous.svelte";
+  import DisciplinesBadge from "$lib/components/disciplines/badge.svelte";
 
   let { autoplay = AUTOPLAY / 1000, items }: { autoplay?: number; items: Attendants["Entity"][] } = $props();
   let flippedItems = $state<Record<string, boolean>>({});

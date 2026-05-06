@@ -12,7 +12,7 @@
   import Sky from "$lib/components/sky.svelte";
   import TheFooter from "$lib/components/the-footer.svelte";
   import TheHeader from "$lib/components/the-header.svelte";
-  import "./layout.css";
+  import "../styles.css";
 
   let { children, data } = $props();
   const structuredData = JSON.stringify(createStructuredData());
