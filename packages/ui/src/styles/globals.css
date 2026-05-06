@@ -1,11 +1,6 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-
-@source "../../../domain/**/*.{ts,tsx,astro,svelte}";
-@source "../../../../apps/**/*.{ts,tsx,astro,svelte}";
-@source "../components/**/*.{ts,tsx,astro,svelte}";
-@source "../**/*.{ts,tsx,astro,svelte}";
 
 @plugin "@iconify/tailwind4";
 
