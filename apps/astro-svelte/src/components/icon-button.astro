@@ -1,0 +1,22 @@
+---
+import { Button, type ButtonProps } from "@niama/ui/svelte/button";
+import { cn } from "@niama/ui/lib/utils";
+import { ICON_BUTTON } from "@niama/ui/shared/icon-button";
+
+const { icon, label, loading = false, class: className, disabled, size = "icon", variant = "outline", ...rest } = Astro.props;
+const isDisabled = disabled || loading;
+
+type Props = { class?: string; icon: string; label: string; loading?: boolean } & ButtonProps;
+---
+
+<Button
+  aria-label={label}
+  class={cn(ICON_BUTTON.base(), className)}
+  data-loading={loading}
+  disabled={isDisabled}
+  size={size}
+  variant={variant}
+  {...rest}
+>
+  <span class={cn(ICON_BUTTON.icon(), icon)} />
+</Button>

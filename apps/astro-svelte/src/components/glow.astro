@@ -1,0 +1,27 @@
+---
+import { Card } from "@niama/ui/astro/card.ts";
+import { Item } from "@niama/ui/astro/item.ts";
+import { cn } from "@niama/ui/lib/utils";
+import { GLOW } from "@niama/ui/shared/glow";
+import type { HTMLAttributes } from "astro/types";
+
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
+const { class: className, kind = "item", ...rest } = Astro.props;
+const Root = kind === "card" ? Card : Item;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+type Props = HTMLAttributes<"div"> & {
+  kind?: "card" | "item";
+  size?: "default" | "sm";
+  variant?: "default" | "outline" | "muted";
+};
+---
+
+<Root class={cn(GLOW(), className)} data-glow {...rest}> <slot /> </Root>
+
+<script>
+  import { bindGlows } from "@niama/ui/shared/glow";
+
+  bindGlows();
+  document.addEventListener("astro:after-swap", bindGlows);
+</script>

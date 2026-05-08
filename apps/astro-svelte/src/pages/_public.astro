@@ -1,0 +1,26 @@
+---
+import { readPublicLayout } from "@niama/domain/functions/layouts";
+import { Button } from "@niama/ui/svelte/button";
+import { PUBLIC_LAYOUT } from "@niama/ui/shared/public-layout";
+import Sky from "@/components/sky.astro";
+import TheFooter from "./_public/_the-footer.astro";
+import TheHeader from "./_public/_the-header.astro";
+import RootLayout from "./_root.astro";
+
+// DATA ------------------------------------------------------------------------------------------------------------------------------------
+const { navs, socials } = readPublicLayout();
+const { description, skipTo = "#main", title } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+type Props = { description?: string; skipTo?: string; title?: string };
+---
+
+<RootLayout {description} {title}>
+  <Button class={PUBLIC_LAYOUT.skipLink()} href={skipTo} variant="outline">Aller au contenu principal</Button>
+  <TheHeader {navs} />
+  <Sky class="fixed inset-0" />
+  <main id="main" tabindex="-1">
+    <slot />
+  </main>
+  <TheFooter {socials} />
+</RootLayout>

@@ -1,0 +1,16 @@
+---
+import { type Disciplines, readDisciplineBySlug } from "@niama/domain/functions/disciplines";
+import { cn } from "@niama/ui/lib/utils";
+import { Badge } from "@niama/ui/svelte/badge";
+import { DISCIPLINES_BADGE } from "@niama/ui/shared/disciplines/badge";
+
+const { class: className, slug, ...restProps } = Astro.props;
+
+const { title } = readDisciplineBySlug(slug);
+
+type Props = { class?: string; slug: Disciplines["Entity"]["slug"] };
+---
+
+<Badge {...restProps} class={cn(DISCIPLINES_BADGE(), className)} data-discipline={slug}>
+  {title}
+</Badge>

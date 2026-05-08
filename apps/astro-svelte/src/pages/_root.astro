@@ -1,0 +1,55 @@
+---
+import "@/styles.css";
+import { Font } from "astro:assets";
+import { createStructuredData, SEO } from "@niama/domain/functions/site";
+import { Toaster } from "@niama/ui/svelte/sonner";
+import { themeScript } from "@niama/ui/shared/theme";
+
+const {
+  description = SEO.defaultDescription,
+  robots = "index, follow",
+  structuredData = createStructuredData(),
+  title = SEO.defaultTitle,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? SEO.url);
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>{title}</title>
+    <meta content={description} name="description">
+    <meta content={robots} name="robots">
+    <meta content={SEO.name} property="og:site_name">
+    <meta content={SEO.locale} property="og:locale">
+    <meta content={title} property="og:title">
+    <meta content={description} property="og:description">
+    <meta content="website" property="og:type">
+    <meta content={canonicalUrl.toString()} property="og:url">
+    <meta content="summary" name="twitter:card">
+    <meta content={title} name="twitter:title">
+    <meta content={description} name="twitter:description">
+    <link href={canonicalUrl.toString()} rel="canonical">
+    <link href="/logo.svg" rel="icon">
+    <Font cssVariable="--font-heading" preload />
+    <Font cssVariable="--font-logo" preload />
+    <Font cssVariable="--font-sans" preload />
+    <script is:inline set:html={themeScript}></script>
+    <script is:inline set:html={JSON.stringify(structuredData)} type="application/ld+json"></script>
+  </head>
+  <body class="group/body" data-scrolled="false">
+    <slot />
+    <Toaster client:load position="bottom-center" />
+  </body>
+</html>
+
+<script>
+  import { initialize } from "@niama/ui/shared/root-layout";
+  import { applyTheme } from "@niama/ui/shared/theme";
+
+  initialize();
+  document.addEventListener("astro:after-swap", () => applyTheme());
+</script>

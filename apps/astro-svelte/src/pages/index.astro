@@ -1,0 +1,41 @@
+---
+export const prerender = true;
+
+import { readIndexPage } from "@niama/domain/functions/pages";
+import { Section } from "@niama/ui/svelte/section";
+import { Separator } from "@niama/ui/svelte/separator";
+import { INDEX_PAGE } from "@niama/ui/shared/index-page";
+import AttendantsCarousel from "@/components/attendants/carousel.astro";
+import ContactForm from "@/components/contact-form.svelte";
+import DisciplinesCarousel from "@/components/disciplines/carousel.astro";
+import PublicLayout from "./_public.astro";
+
+const { attendants, contact, disciplines, hero } = readIndexPage();
+---
+
+<PublicLayout skipTo="#les-voies">
+  <div class={INDEX_PAGE.base()}>
+    <Section class={INDEX_PAGE.hero()} id="top-3">
+      <div class={INDEX_PAGE.heroContent()}>
+        <h1 class={INDEX_PAGE.heroTitle()}>{hero.title}</h1>
+        <p class={INDEX_PAGE.heroDescription()}>{hero.description}</p>
+      </div>
+    </Section>
+    <Section id="les-voies" tabindex={-1} title={disciplines.title} description={disciplines.description} withSeparator>
+      <DisciplinesCarousel items={disciplines.items} />
+    </Section>
+    <Section id="les-accompagnants" title={attendants.title} description={attendants.description} withSeparator>
+      <AttendantsCarousel items={attendants.items} />
+    </Section>
+    <Section id="contact" title={contact.title} description={contact.description} withSeparator>
+      <ContactForm client:visible />
+      <Separator class="self-center! mb-34 h-24" orientation="vertical" />
+    </Section>
+  </div>
+</PublicLayout>
+
+<script>
+  import { nativeHashUpdater, updateHash } from "@niama/ui/shared/index-page";
+
+  updateHash(nativeHashUpdater);
+</script>

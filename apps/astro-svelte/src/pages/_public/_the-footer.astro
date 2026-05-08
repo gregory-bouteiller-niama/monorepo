@@ -1,0 +1,26 @@
+---
+import type { ReadPublicLayoutProps } from "@niama/domain/functions/layouts";
+import { Button } from "@niama/ui/svelte/button";
+import { THE_FOOTER } from "@niama/ui/shared/the-footer";
+import IconButton from "@/components/icon-button.astro";
+
+const { socials } = Astro.props;
+
+type Props = Pick<ReadPublicLayoutProps, "socials">;
+---
+
+<footer class={THE_FOOTER.base()}>
+  <Button class={THE_FOOTER.disclaimer()} href="/mentions-legales" variant="outline"> Mentions Légales </Button>
+  <div class={THE_FOOTER.socials()}>
+    {socials.map((social) => (
+      <IconButton
+        class={THE_FOOTER.social()}
+        size="icon"
+        variant="outline"
+        rel="noopener noreferrer"
+        target="_blank"
+        {...social}
+      />
+    ))}
+  </div>
+</footer>

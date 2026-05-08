@@ -1,0 +1,47 @@
+---
+import type { ReadPublicLayoutProps } from "@niama/domain/functions/layouts";
+import { Button } from "@niama/ui/svelte/button";
+import { Logo } from "@niama/ui/svelte/logo";
+import { Section } from "@niama/ui/svelte/section";
+import { Separator } from "@niama/ui/svelte/separator";
+import { ThemeSwitcher } from "@niama/ui/svelte/theme-switcher";
+import { THE_HEADER } from "@niama/ui/shared/the-header";
+
+const { navs } = Astro.props;
+
+type Props = Pick<ReadPublicLayoutProps, "navs">;
+---
+
+<div class={THE_HEADER.wrapper()}>
+  <header class={THE_HEADER.base()}>
+    <a aria-label="Retour à l'accueil" class={THE_HEADER.logo()} href="/#top">
+      <Logo showTitle={false} />
+    </a>
+    <div class={THE_HEADER.actions()}>
+      <ThemeSwitcher client:load />
+    </div>
+  </header>
+</div>
+<Section class="flex justify-center" id="top">
+  <a aria-label="Retour à l'accueil" class={THE_HEADER.logoMain()} href="/#top">
+    <Logo class="w-full" />
+  </a>
+</Section>
+<Separator class="self-center! h-6" orientation="vertical" />
+<Section class={THE_HEADER.menu()} id="top-2">
+  <nav aria-label="Navigation principale" class={THE_HEADER.nav()} data-nav>
+    <div aria-hidden="true" class={THE_HEADER.stain()} data-nav-stain></div>
+    {navs.map(({ hash, text, to }) => (
+      <Button class={THE_HEADER.navLink()} data-nav-link={hash} href={`${to}#${hash}`} variant="ghost">
+        {text}
+      </Button>
+    ))}
+  </nav>
+</Section>
+<Separator class="self-center! h-24" orientation="vertical" />
+
+<script>
+  import { initialize } from "@niama/ui/shared/the-header";
+
+  initialize();
+</script>

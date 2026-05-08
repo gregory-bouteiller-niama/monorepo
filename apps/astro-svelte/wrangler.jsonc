@@ -1,0 +1,11 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"compatibility_date": "2026-04-13",
+	"name": "niama-astro-svelte",
+	"images": {
+		"binding": "IMAGES"
+	},
+	"vars": {
+		"VITE_CONVEX_URL": "https://helpful-bobcat-596.convex.cloud"
+	}
+}
