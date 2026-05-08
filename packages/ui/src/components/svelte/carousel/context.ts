@@ -1,5 +1,6 @@
 import type { WithElementRef } from "@niama/ui/lib/utils";
-import type { EmblaCarouselSvelteType, default as emblaCarouselSvelte } from "embla-carousel-svelte";
+import type { CarouselActions, CarouselState, createCarouselStore } from "@niama/ui/shared/carousel";
+import type { Store } from "@tanstack/store";
 import { getContext, hasContext, setContext } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
@@ -8,44 +9,27 @@ const CTX = Symbol("CAROUSEL_CTX");
 
 export function getEmblaContext(name = "This component") {
   if (!hasContext(CTX)) throw new Error(`${name} must be used within a <Carousel.Root> component`);
-  return getContext<ReturnType<typeof setEmblaContext>>(CTX);
+  return getContext<CarouselContextProps>(CTX);
 }
 
-export function setEmblaContext(config: EmblaContext): EmblaContext {
+export function setEmblaContext(config: CarouselContextProps): CarouselContextProps {
   setContext(CTX, config);
   return config;
 }
 
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------
-export type CarouselAPI =
-  NonNullable<NonNullable<EmblaCarouselSvelteType["$$_attributes"]>["on:emblaInit"]> extends (evt: CustomEvent<infer CarouselAPI>) => void
-    ? CarouselAPI
-    : never;
+type EmblaCarouselConfig = Parameters<typeof createCarouselStore>[0];
 
-type EmblaCarouselConfig = NonNullable<Parameters<typeof emblaCarouselSvelte>[1]>;
-
-export type CarouselOptions = EmblaCarouselConfig["options"];
-export type CarouselPlugins = EmblaCarouselConfig["plugins"];
+export type CarouselOptions = EmblaCarouselConfig;
+export type CarouselPlugins = Parameters<typeof createCarouselStore>[1];
+export type CarouselStore = ReturnType<typeof createCarouselStore>;
 
 export type CarouselProps = {
+  store?: CarouselStore;
   opts?: CarouselOptions;
   plugins?: CarouselPlugins;
-  setApi?: (api: CarouselAPI | undefined) => void;
-  orientation?: "horizontal" | "vertical";
-} & WithElementRef<HTMLAttributes<HTMLDivElement>>;
+} & WithElementRef<HTMLAttributes<HTMLElement>>;
 
-export type EmblaContext = {
-  api: CarouselAPI | undefined;
-  orientation: "horizontal" | "vertical";
-  scrollNext: () => void;
-  scrollPrev: () => void;
-  canScrollNext: boolean;
-  canScrollPrev: boolean;
-  handleKeyDown: (e: KeyboardEvent) => void;
-  options: CarouselOptions;
-  plugins: CarouselPlugins;
-  onInit: (e: CustomEvent<CarouselAPI>) => void;
-  scrollTo: (index: number, jump?: boolean) => void;
-  scrollSnaps: number[];
-  selectedIndex: number;
+export type CarouselContextProps = {
+  store: Store<CarouselState, CarouselActions>;
 };

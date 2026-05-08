@@ -1,25 +1,18 @@
 <script lang="ts">
   import { cn, type WithElementRef } from "@niama/ui/lib/utils";
+  import { CAROUSEL } from "@niama/ui/shared/carousel";
   import type { HTMLAttributes } from "svelte/elements";
-  import { getEmblaContext } from "./context";
 
-  let { ref = $bindable(null), class: className, children, ...restProps }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();
-
-  const emblaCtx = getEmblaContext("<Carousel.Item/>");
+  let { ref = $bindable(null), class: className, children, ...restProps }: WithElementRef<HTMLAttributes<HTMLElement>> = $props();
 </script>
 
-<div
+<section
   bind:this={ref}
   data-slot="carousel-item"
   role="group"
   aria-roledescription="slide"
-  class={cn(
-		"min-w-0 shrink-0 grow-0 basis-full",
-		emblaCtx.orientation === "horizontal" ? "ps-4" : "pt-4",
-		className
-	)}
-  data-embla-slide=""
+  class={cn(CAROUSEL.item(), className)}
   {...restProps}
 >
   {@render children?.()}
-</div>
+</section>

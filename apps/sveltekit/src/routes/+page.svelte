@@ -40,7 +40,7 @@
     <DisciplinesCarousel items={data.disciplines.items} />
   </Section>
   <Section description={data.attendants.description} id="les-accompagnants" title={data.attendants.title} withSeparator>
-    <AttendantsCarousel autoplay={10} items={data.attendants.items} />
+    <AttendantsCarousel items={data.attendants.items} />
   </Section>
   <Section description={data.contact.description} id="contact" title={data.contact.title} withSeparator>
     <ContactForm

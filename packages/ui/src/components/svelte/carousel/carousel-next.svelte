@@ -1,6 +1,8 @@
 <script lang="ts">
   import { cn } from "@niama/ui/lib/utils";
+  import { CAROUSEL } from "@niama/ui/shared/carousel";
   import { IconChevronRight } from "@tabler/icons-svelte";
+  import { useSelector as readStore } from "@tanstack/svelte-store";
   import type { WithoutChildren } from "bits-ui";
   import { Button, type ButtonProps } from "../button";
   import { getEmblaContext } from "./context";
@@ -13,24 +15,18 @@
     ...restProps
   }: WithoutChildren<ButtonProps> = $props();
 
-  const emblaCtx = getEmblaContext("<Carousel.Next/>");
+  const { store: carouselStore } = getEmblaContext("<Carousel.Next/>");
+  const canGoToNext = readStore(carouselStore, (state) => state.canGoToNext);
+  const api = readStore(carouselStore, (state) => state.api);
 </script>
 
 <Button
   data-slot="carousel-next"
   {variant}
   {size}
-  aria-disabled={!emblaCtx.canScrollNext}
-  disabled={!emblaCtx.canScrollNext}
-  class={cn(
-		"absolute touch-manipulation rounded-full",
-		emblaCtx.orientation === "horizontal"
-			? "-end-12 top-1/2 -translate-y-1/2"
-			: "start-1/2 -bottom-12 -translate-x-1/2 rotate-90",
-		className
-	)}
-  onclick={emblaCtx.scrollNext}
-  onkeydown={emblaCtx.handleKeyDown}
+  class={cn(CAROUSEL.next(), className)}
+  disabled={!canGoToNext.current}
+  onclick={() => api.current?.goToNext()}
   bind:ref
   {...restProps}
 >

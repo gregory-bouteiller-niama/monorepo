@@ -1,0 +1,14 @@
+@import "@niama/ui/styles/globals.css";
+@import "@fontsource/museomoderno/latin-400.css";
+@import "@fontsource-variable/outfit";
+@import "@fontsource/cormorant-upright";
+
+@source "./**/*.{ts,tsx}";
+@source "../../../packages/ui/src/components/shared/**/*.{ts}";
+@source "../../../packages/domain/src/**/*.{ts}";
+
+:root {
+  --font-heading: "Cormorant Upright", serif;
+  --font-logo: "MuseoModerno", sans-serif;
+  --font-sans: "Outfit Variable", sans-serif;
+}

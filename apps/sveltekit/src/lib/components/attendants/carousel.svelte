@@ -1,80 +1,73 @@
 <script lang="ts">
   import type { Attendants } from "@niama/domain/functions/attendants";
   import { ATTENDANT, ATTENDANTS, AUTOPLAY, ROTATIONS } from "@niama/ui/shared/attendants/carousel";
-  import { Button } from "@niama/ui/svelte/button";
+  import { createCarouselStore } from "@niama/ui/shared/carousel";
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui/svelte/card";
   import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui/svelte/carousel";
   import { Image } from "@unpic/svelte";
   import Autoplay from "embla-carousel-autoplay";
+  import Ssr from "embla-carousel-ssr";
   import DisciplinesBadge from "$lib/components/disciplines/badge.svelte";
 
-  let { autoplay = AUTOPLAY / 1000, items }: { autoplay?: number; items: Attendants["Entity"][] } = $props();
-  let flippedItems = $state<Record<string, boolean>>({});
+  let { items }: { items: Attendants["Entity"][] } = $props();
+  let flippedName = $state<string | undefined>();
 
-  const plugins = $derived.by(() => {
-    if (!Number.isFinite(autoplay) || autoplay <= 0) return [];
-    return [Autoplay({ delay: autoplay * 1000, stopOnInteraction: false })];
-  });
+  const store = createCarouselStore({ loop: true }, [Autoplay({ delay: AUTOPLAY }), Ssr()]);
 </script>
 
-{#if items.length > 0}
-  <section class={ATTENDANTS.base()}>
-    <Carousel class={ATTENDANTS.carousel()} opts={{ loop: true }} {plugins}>
-      <CarouselContent viewportClass={ATTENDANTS.viewport()}>
-        {#each items as item, index (item.name)}
-          <CarouselItem class={ATTENDANTS.item()}>
-            <button
-              aria-label={`Afficher la fiche de ${item.name}`}
-              aria-pressed={flippedItems[item.name] === true}
-              class={ATTENDANT.base({ className: ROTATIONS[index] })}
-              data-flipped={flippedItems[item.name] === true}
-              onclick={() => {
-                flippedItems[item.name] = !(flippedItems[item.name] === true);
-              }}
-              type="button"
-            >
-              <Card class={ATTENDANT.card()}>
-                <CardHeader>
-                  <CardTitle class={ATTENDANT.title()}>{item.name}</CardTitle>
-                  <CardDescription class={ATTENDANT.badges()}>
-                    {#each item.disciplines as discipline (discipline.slug)}
-                      <DisciplinesBadge slug={discipline.slug} />
-                    {/each}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent class={ATTENDANT.image()}>
-                  <div class={ATTENDANT.overlay()}>
-                    <Button variant="secondary">
-                      En savoir plus
-                      <span class={ATTENDANT.icon()}></span>
-                    </Button>
-                  </div>
-                  <Image {...item.image} sizes="(min-width: 640px) 420px, 100vw" widths={[420, 840]} />
-                </CardContent>
-              </Card>
-              <Card class={ATTENDANT.card()} data-back>
-                <CardHeader>
-                  <CardTitle class={ATTENDANT.title()}>{item.name}</CardTitle>
-                  <CardDescription class={ATTENDANT.badges()}>
-                    {#each item.disciplines as discipline (discipline.slug)}
-                      <DisciplinesBadge slug={discipline.slug} />
-                    {/each}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent class={ATTENDANT.description()}>
-                  {#each item.description as paragraph (paragraph)}
-                    <p>{paragraph}</p>
+<section class={ATTENDANTS.base()}>
+  <Carousel class={ATTENDANTS.carousel()} {store}>
+    <CarouselContent viewportClassName={ATTENDANTS.viewport()}>
+      {#each items as item, index (item.name)}
+        <CarouselItem class={ATTENDANTS.item()}>
+          <button
+            aria-label={`Afficher la fiche de ${item.name}`}
+            aria-pressed={flippedName === item.name}
+            class={ATTENDANT.base({ className: ROTATIONS[index % ROTATIONS.length] })}
+            data-flipped={flippedName === item.name}
+            onclick={() => {
+              flippedName = flippedName === item.name ? undefined : item.name;
+            }}
+            type="button"
+          >
+            <Card class={ATTENDANT.card()}>
+              <CardHeader>
+                <CardTitle class={ATTENDANT.title()}>{item.name}</CardTitle>
+                <CardDescription class={ATTENDANT.badges()}>
+                  {#each item.disciplines as discipline (discipline.slug)}
+                    <DisciplinesBadge slug={discipline.slug} />
                   {/each}
-                </CardContent>
-              </Card>
-            </button>
-          </CarouselItem>
-        {/each}
-      </CarouselContent>
-      <aside class={ATTENDANTS.controls()}>
-        <CarouselPrevious aria-label="Participant précédent" class={ATTENDANTS.control()} />
-        <CarouselNext aria-label="Participant suivant" class={ATTENDANTS.control()} />
-      </aside>
-    </Carousel>
-  </section>
-{/if}
+                </CardDescription>
+              </CardHeader>
+              <CardContent class={ATTENDANT.image()}>
+                <div class={ATTENDANT.overlay()}>
+                  <span class={ATTENDANT.icon()}></span>
+                </div>
+                <Image {...item.image} operations={{ imagekit: { f: "avif" } }} sizes="(min-width: 640px) 420px, 100vw" />
+              </CardContent>
+            </Card>
+            <Card class={ATTENDANT.card()} data-back>
+              <CardHeader>
+                <CardTitle class={ATTENDANT.title()}>{item.name}</CardTitle>
+                <CardDescription class={ATTENDANT.badges()}>
+                  {#each item.disciplines as discipline (discipline.slug)}
+                    <DisciplinesBadge slug={discipline.slug} />
+                  {/each}
+                </CardDescription>
+              </CardHeader>
+              <CardContent class={ATTENDANT.description()}>
+                {#each item.description as paragraph (paragraph)}
+                  <p>{paragraph}</p>
+                {/each}
+              </CardContent>
+            </Card>
+          </button>
+        </CarouselItem>
+      {/each}
+    </CarouselContent>
+    <aside class={ATTENDANTS.controls()}>
+      <CarouselPrevious aria-label="Participant précédent" class={ATTENDANTS.control()} />
+      <CarouselNext aria-label="Participant suivant" class={ATTENDANTS.control()} />
+    </aside>
+  </Carousel>
+</section>
