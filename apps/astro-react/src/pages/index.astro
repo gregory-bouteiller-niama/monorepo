@@ -3,12 +3,12 @@ export const prerender = true;
 
 import { readIndexPage } from "@niama/domain/functions/pages";
 import { INDEX_PAGE } from "@niama/ui/index-page";
-import { Section } from "@niama/ui-react/section";
-import { Separator } from "@niama/ui-react/separator";
-import AttendantsCarousel from "@/components/attendants/carousel.astro";
-import { ContactForm } from "@/components/contact-form";
-import DisciplinesCarousel from "@/components/disciplines/carousel.astro";
+import { AttendantsCarousel } from "@niama/ui-astro/attendants/carousel";
+import { DisciplinesCarousel } from "@niama/ui-astro/disciplines/carousel";
+import { Section } from "@niama/ui-react/ui/section";
+import { Separator } from "@niama/ui-react/ui/separator";
 import PublicLayout from "./_public.astro";
+import { ContactForm } from "./index/contact-form";
 
 const { attendants, contact, disciplines, hero } = readIndexPage();
 ---

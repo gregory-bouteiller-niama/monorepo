@@ -5,7 +5,7 @@
 
 @source "./**/*.{ts,tsx}";
 @source "../../../packages/ui-react/src/components/**/*.{ts,tsx}";
-@source "../../../packages/ui/src/components/shared/**/*.{ts}";
+@source "../../../packages/ui/src/components/**/*.{ts}";
 @source "../../../packages/domain/src/**/*.{ts}";
 
 :root {

@@ -1,13 +1,13 @@
 import { readIndexPage } from "@niama/domain/functions/pages";
 import { INDEX_PAGE, updateHash } from "@niama/ui/index-page";
+import { AttendantsCarousel } from "@niama/ui-react/attendants/carousel";
 import { ContactForm } from "@niama/ui-react/contact-form";
-import { Separator } from "@niama/ui-react/separator";
+import { DisciplinesCarousel } from "@niama/ui-react/disciplines/carousel";
+import { Section } from "@niama/ui-react/ui/section";
+import { Separator } from "@niama/ui-react/ui/separator";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { AttendantsCarousel } from "@/components/attendants/carousel";
-import { DisciplinesCarousel } from "@/components/disciplines/carousel";
-import { Section } from "@/components/section";
 import { createContact } from "@/functions/form";
 
 // ROUTE -----------------------------------------------------------------------------------------------------------------------------------

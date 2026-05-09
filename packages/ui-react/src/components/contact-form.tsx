@@ -1,7 +1,7 @@
 import { type Contacts, defaultContactCreateValues, zContactCreateValues } from "@niama/domain/functions/contacts";
 import { useAppForm } from "@niama/ui-react/hooks/form";
-import { Card, CardContent } from "@niama/ui-react/card";
-import { FieldDescription, FieldGroup, FieldLegend, FieldSeparator, FieldSet } from "@niama/ui-react/field";
+import { Card, CardContent } from "@niama/ui-react/ui/card";
+import { FieldDescription, FieldGroup, FieldLegend, FieldSeparator, FieldSet } from "@niama/ui-react/ui/field";
 import { cva } from "class-variance-authority";
 
 // STYLES ----------------------------------------------------------------------------------------------------------------------------------

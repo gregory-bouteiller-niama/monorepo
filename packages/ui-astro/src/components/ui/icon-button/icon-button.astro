@@ -1,0 +1,30 @@
+---
+import { ICON_BUTTON } from "@niama/ui/icon-button";
+import { cn } from "@niama/ui-astro/lib/utils";
+import { Button, type ButtonProps } from "@niama/ui-astro/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@niama/ui-astro/ui/tooltip";
+
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
+const { icon, label, loading = false, className, disabled, size = "icon", variant = "outline", ...rest } = Astro.props;
+const isDisabled = disabled || loading;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+type Props = { className?: string; icon: string; label: string; loading?: boolean } & ButtonProps;
+---
+
+<Tooltip>
+  <TooltipTrigger>
+    <Button
+      aria-label={label}
+      class={cn(ICON_BUTTON.base(), className)}
+      data-loading={loading}
+      disabled={isDisabled}
+      size={size}
+      variant={variant}
+      {...rest}
+    >
+      <span class={cn(ICON_BUTTON.icon(), icon)} />
+    </Button>
+  </TooltipTrigger>
+  <TooltipContent>{label}</TooltipContent>
+</Tooltip>

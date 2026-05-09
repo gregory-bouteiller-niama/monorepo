@@ -3,7 +3,7 @@
   import { readDisciplineBySlug } from "@niama/domain/functions/disciplines";
   import { DISCIPLINES_BADGE } from "@niama/ui/disciplines/badge";
   import { Badge } from "@niama/ui-svelte/badge";
-  import { cn } from "@niama/ui-svelte/utils";
+  import { cn } from "@niama/ui-svelte/lib/utils";
 
   let { class: className = "", slug }: { class?: string; slug: Disciplines["Entity"]["slug"] } = $props();
 

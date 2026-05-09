@@ -1,0 +1,57 @@
+---
+import type { Disciplines } from "@niama/domain/functions/disciplines";
+import { DISCIPLINE, DISCIPLINES } from "@niama/ui/disciplines/carousel";
+import { CarouselContent, CarouselItem, Carousel as CarouselNative, CarouselNext, CarouselPrevious } from "@niama/ui-astro/ui/carousel";
+import { Glow } from "@niama/ui-astro/ui/glow";
+import { ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@niama/ui-astro/ui/item";
+import { Logo } from "@niama/ui-astro/ui/logo";
+
+// BASE ------------------------------------------------------------------------------------------------------------------------------------
+const { items } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+type Props = { items: Disciplines["Entity"][] };
+---
+
+<disciplines-carousel class={DISCIPLINES.base()}>
+  <CarouselNative class={DISCIPLINES.carousel()}>
+    <CarouselContent>
+      {items.map((item) => (
+        <CarouselItem class={DISCIPLINES.item()}>
+          <Glow class={DISCIPLINE.base()} data-discipline={item.slug} kind="item" variant="outline">
+            <ItemMedia class={DISCIPLINE.media()}>
+              <Logo class={DISCIPLINE.logo()} discipline={item} />
+            </ItemMedia>
+            <ItemContent class={DISCIPLINE.content()}>
+              <ItemTitle class={DISCIPLINE.title()}>{item.title}</ItemTitle>
+              {item.description.map((sentence) => (
+                <ItemDescription class={DISCIPLINE.description()}>
+                  {sentence}
+                </ItemDescription>
+              ))}
+            </ItemContent>
+          </Glow>
+        </CarouselItem>
+      ))}
+    </CarouselContent>
+    <aside class={DISCIPLINES.controls()}>
+      <CarouselPrevious class={DISCIPLINES.control()} />
+      <CarouselNext class={DISCIPLINES.control()} />
+    </aside>
+  </CarouselNative>
+</disciplines-carousel>
+
+<script>
+  import { createCarouselStore } from "@niama/ui/carousel";
+  import { AUTOPLAY } from "@niama/ui/disciplines/carousel";
+  import { defineCarousel, initCarousel } from "@niama/ui-astro/ui/carousel";
+  import Autoplay from "embla-carousel-autoplay";
+
+  defineCarousel({
+    name: "disciplines-carousel",
+    setup: (el) => {
+      const store = createCarouselStore({ loop: true }, [Autoplay({ delay: AUTOPLAY })]);
+      return initCarousel(el, store);
+    },
+  });
+</script>

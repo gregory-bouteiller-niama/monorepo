@@ -1,7 +1,7 @@
 @import "@niama/ui/styles/globals.css";
 
 @source "./**/*.{ts,tsx,astro}";
-@source "../../../packages/ui-astro/src/components/**/*.{ts,tsx,astro}";
+@source "../../../packages/ui-astro/src/components/**/*.{ts,astro}";
 @source "../../../packages/ui-react/src/components/**/*.{ts,tsx}";
 @source "../../../packages/ui/src/components/**/*.{ts}";
 @source "../../../packages/domain/src/**/*.{ts}";

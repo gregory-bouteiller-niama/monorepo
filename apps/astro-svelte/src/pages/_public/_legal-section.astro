@@ -1,8 +1,8 @@
 ---
 import type { ReadLegalPageProps } from "@niama/domain/functions/pages";
-import { Button } from "@niama/ui-svelte/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@niama/ui-svelte/card";
-import { Section } from "@niama/ui-svelte/section";
+import { Button } from "@niama/ui-svelte/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@niama/ui-svelte/ui/card";
+import { Section } from "@niama/ui-svelte/ui/section";
 import { cva } from "class-variance-authority";
 
 const LEGAL_SECTION = {
@@ -21,13 +21,7 @@ type LegalSection = ReadLegalPageProps["legal"] | ReadLegalPageProps["privacy"];
 type Props = { section: LegalSection; withSeparator?: boolean };
 ---
 
-<Section
-  class={LEGAL_SECTIONS.base()}
-  description={section.description}
-  id={section.id}
-  title={section.title}
-  {withSeparator}
->
+<Section class={LEGAL_SECTIONS.base()} description={section.description} id={section.id} title={section.title} {withSeparator}>
   <div class={LEGAL_SECTIONS.container()}>
     {section.cards.map(({ content, title }) => (
       <Card>

@@ -1,12 +1,12 @@
 ---
 import type { ReadPublicLayoutProps } from "@niama/domain/functions/layouts";
 import { THE_HEADER } from "@niama/ui/the-header";
-import { Button } from "@niama/ui-astro/button";
-import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "@niama/ui-astro/dropdown";
 import { ThemeSwitcher } from "@niama/ui-astro/theme-switcher";
-import { Logo } from "@niama/ui-react/logo";
-import { Section } from "@niama/ui-react/section";
-import { Separator } from "@niama/ui-react/separator";
+import { Button } from "@niama/ui-astro/ui/button";
+import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "@niama/ui-astro/ui/dropdown";
+import { Logo } from "@niama/ui-astro/ui/logo";
+import { Section } from "@niama/ui-react/ui/section";
+import { Separator } from "@niama/ui-react/ui/separator";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { navs } = Astro.props;
@@ -39,7 +39,7 @@ type Props = Pick<ReadPublicLayoutProps, "navs">;
   </header>
 </div>
 <Section className="flex justify-center" id="top">
-  <a aria-label="Retour à l'accueil" class={THE_HEADER.logoMain()} href="/#top"> <Logo className="w-full" /> </a>
+  <a aria-label="Retour à l'accueil" class={THE_HEADER.logoMain()} href="/#top"> <Logo class="w-full" /> </a>
 </Section>
 <Separator className="self-center! h-6" orientation="vertical" />
 <Section className={THE_HEADER.menu()} id="top-2">

@@ -17,7 +17,7 @@
 
 <section class={ATTENDANTS.base()}>
   <Carousel class={ATTENDANTS.carousel()} {store}>
-    <CarouselContent viewportClassName={ATTENDANTS.viewport()}>
+    <CarouselContent viewportClass={ATTENDANTS.viewport()}>
       {#each items as item, index (item.name)}
         <CarouselItem class={ATTENDANTS.item()}>
           <button

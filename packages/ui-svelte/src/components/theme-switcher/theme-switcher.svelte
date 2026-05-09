@@ -1,7 +1,7 @@
 <script lang="ts">
   import { themeStore, toggleThemeWithTransition } from "@niama/ui/theme";
   import { getThemeSwitcherLabel, THEME_SWITCHER } from "@niama/ui/theme-switcher";
-  import { Button } from "@niama/ui-svelte/button";
+  import { Button } from "@niama/ui-svelte/ui/button";
   import { useSelector as readStore } from "@tanstack/svelte-store";
 
   let ref = $state<HTMLButtonElement | null>(null);

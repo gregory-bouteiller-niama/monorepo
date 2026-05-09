@@ -1,25 +1,25 @@
+import { Field } from "@niama/ui-react/form/field";
 import { useFieldContext } from "@niama/ui-react/hooks/form-context";
-import { Input } from "@niama/ui-react/input";
-import { Field } from "./field";
+import { Input } from "@niama/ui-react/ui/input";
 
 // MAIN ------------------------------------------------------------------------------------------------------------------------------------
 export default function InputField({ label, type }: InputFieldProps) {
-	const { handleBlur, handleChange, name, state } = useFieldContext<string>();
+  const { handleBlur, handleChange, name, state } = useFieldContext<string>();
 
-	return (
-		<Field label={label}>
-			{(isInvalid) => (
-				<Input
-					aria-invalid={isInvalid}
-					id={name}
-					onBlur={handleBlur}
-					onChange={(e) => handleChange(e.target.value)}
-					placeholder={label}
-					type={type}
-					value={state.value}
-				/>
-			)}
-		</Field>
-	);
+  return (
+    <Field label={label}>
+      {(isInvalid) => (
+        <Input
+          aria-invalid={isInvalid}
+          id={name}
+          onBlur={handleBlur}
+          onChange={(e) => handleChange(e.target.value)}
+          placeholder={label}
+          type={type}
+          value={state.value}
+        />
+      )}
+    </Field>
+  );
 }
 export type InputFieldProps = { label: string; type: string };

@@ -1,6 +1,6 @@
 import { useFormContext } from "@niama/ui-react/hooks/form-context";
-import { Button } from "@niama/ui-react/button";
-import { LoadingSwap } from "@niama/ui-react/loading-swap";
+import { Button } from "@niama/ui-react/ui/button";
+import { LoadingSwap } from "@niama/ui-react/ui/loading-swap";
 import { useRef } from "react";
 
 export default function Submit() {

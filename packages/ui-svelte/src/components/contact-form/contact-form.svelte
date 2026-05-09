@@ -1,13 +1,13 @@
 <script lang="ts">
   import { type Contacts, defaultContactCreateValues, zContactCreateValues } from "@niama/domain/functions/contacts";
+  import { Button } from "@niama/ui-svelte/ui/button";
+  import { Card, CardContent } from "@niama/ui-svelte/ui/card";
+  import { Input } from "@niama/ui-svelte/ui/input";
+  import { Label } from "@niama/ui-svelte/ui/label";
+  import { Select } from "@niama/ui-svelte/ui/select";
+  import { Textarea } from "@niama/ui-svelte/ui/textarea";
   import { createForm } from "@tanstack/svelte-form";
   import { cva } from "class-variance-authority";
-  import { Button } from "../button";
-  import { Card, CardContent } from "../card";
-  import { Input } from "../input";
-  import { Label } from "../label";
-  import { Select } from "../select";
-  import { Textarea } from "../textarea";
 
   const CONTACT = {
     card: cva("@container relative w-full max-w-xl border-0 ring-0"),

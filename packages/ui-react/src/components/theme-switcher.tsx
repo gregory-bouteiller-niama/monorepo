@@ -1,6 +1,6 @@
 import { themeStore, toggleThemeWithTransition } from "@niama/ui/theme";
 import { getThemeSwitcherLabel, THEME_SWITCHER } from "@niama/ui/theme-switcher";
-import { Button } from "@niama/ui-react/button";
+import { Button } from "@niama/ui-react/ui/button";
 import { useSelector } from "@tanstack/react-store";
 import { useRef } from "react";
 

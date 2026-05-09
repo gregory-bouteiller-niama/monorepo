@@ -35,6 +35,10 @@
     {
       "name": "tooltip",
       "version": "1.5.0"
+    },
+    {
+      "name": "badge",
+      "version": "1.4.2"
     }
   ]
 }

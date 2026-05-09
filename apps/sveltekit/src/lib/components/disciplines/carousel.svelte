@@ -5,8 +5,8 @@
   import { GLOW } from "@niama/ui/glow";
   import { Card } from "@niama/ui-svelte/card";
   import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui-svelte/carousel";
+  import { cn } from "@niama/ui-svelte/lib/utils";
   import { Logo } from "@niama/ui-svelte/logo";
-  import { cn } from "@niama/ui-svelte/utils";
   import Autoplay from "embla-carousel-autoplay";
   import Ssr from "embla-carousel-ssr";
 
