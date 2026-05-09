@@ -1,6 +1,6 @@
 <script lang="ts">
   import { CAROUSEL } from "@niama/ui/carousel";
-  import { cn, type WithElementRef } from "@niama/ui/lib/utils";
+  import { cn, type WithElementRef } from "@niama/ui-svelte/utils";
   import type { HTMLAttributes } from "svelte/elements";
 
   let { ref = $bindable(null), class: className, children, ...restProps }: WithElementRef<HTMLAttributes<HTMLElement>> = $props();

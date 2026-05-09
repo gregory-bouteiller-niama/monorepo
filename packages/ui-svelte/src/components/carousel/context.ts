@@ -1,5 +1,5 @@
 import type { CarouselActions, CarouselState, createCarouselStore } from "@niama/ui/carousel";
-import type { WithElementRef } from "@niama/ui/lib/utils";
+import type { WithElementRef } from "@niama/ui-svelte/utils";
 import type { Store } from "@tanstack/store";
 import { getContext, hasContext, setContext } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";

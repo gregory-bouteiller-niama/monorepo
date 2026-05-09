@@ -33,6 +33,7 @@
     "typescript": "^6.0.3"
   },
   "exports": {
+    "./utils": "./src/utils.ts",
     "./*": "./src/components/*/index.ts"
   }
 }

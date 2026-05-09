@@ -1,7 +1,2 @@
-import Root from "./input.svelte";
-
-export {
-	Root,
-	//
-	Root as Input,
-};
+/** biome-ignore-all lint/performance/noBarrelFile: false positive */
+export { default as Input } from "./input.svelte";

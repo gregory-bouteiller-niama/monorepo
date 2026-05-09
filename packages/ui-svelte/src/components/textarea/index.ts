@@ -1,7 +1,2 @@
-import Root from "./textarea.svelte";
-
-export {
-	Root,
-	//
-	Root as Textarea,
-};
+/** biome-ignore-all lint/performance/noBarrelFile: false positive */
+export { default as Textarea } from "./textarea.svelte";

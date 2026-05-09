@@ -1,14 +1,14 @@
 <script lang="ts">
   import type { Disciplines } from "@niama/domain/functions/disciplines";
+  import { cn } from "@niama/ui-svelte/utils";
   import { cva } from "class-variance-authority";
-  import { cn } from "$lib/utils";
 
   const LOGO = {
     base: cva(`@container flex flex-col items-end font-logo text-primary
-				data-[discipline=anima]:text-anima
-				data-[discipline=animus]:text-animus
-				data-[discipline=astro]:text-astro
-				data-[discipline=yogart]:text-yogart`),
+  				data-[discipline=anima]:text-anima
+  				data-[discipline=animus]:text-animus
+  				data-[discipline=astro]:text-astro
+  				data-[discipline=yogart]:text-yogart`),
     subtitle: cva("text-[20cqw] lowercase leading-none"),
     title: cva("text-[32cqw] text-foreground leading-none"),
   } as const;

@@ -5,8 +5,7 @@
 
 @source "./**/*.{ts,svelte}";
 @source "../../../packages/ui-svelte/src/components/**/*.{ts,svelte}";
-@source "../../../packages/ui/src/components/shared/**/*.ts";
-@source "../../../packages/ui-svelte/src/components/raw/**/*.{ts,svelte}";
+@source "../../../packages/ui/src/components/**/*.ts";
 @source "../../../packages/domain/src/**/*.ts";
 
 :root {

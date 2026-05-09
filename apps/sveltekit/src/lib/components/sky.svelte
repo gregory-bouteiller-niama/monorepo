@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { cn } from "@niama/ui/lib/utils";
   import { initializeSky, SKY, SKY_ORBITS } from "@niama/ui/sky";
+  import { cn } from "@niama/ui-svelte/utils";
   import { onMount } from "svelte";
 
   let { class: className = "" }: { class?: string } = $props();

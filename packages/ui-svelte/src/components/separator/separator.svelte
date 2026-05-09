@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn } from "@niama/ui/lib/utils";
+  import { cn } from "@niama/ui-svelte/utils";
   import { Separator as SeparatorPrimitive } from "bits-ui";
 
   let {

@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { WithElementRef } from "@niama/ui/lib/utils";
+  import type { WithElementRef } from "@niama/ui-svelte/utils";
   import type { HTMLAttributes } from "svelte/elements";
 
   export type SectionProps = WithElementRef<HTMLAttributes<HTMLElement>> & {
@@ -12,9 +12,9 @@
 </script>
 
 <script lang="ts">
-  import { cn } from "@niama/ui/lib/utils";
   import { SECTION } from "@niama/ui/section";
   import { Separator } from "@niama/ui-svelte/separator";
+  import { cn } from "@niama/ui-svelte/utils";
 
   let {
     ref = $bindable(null),

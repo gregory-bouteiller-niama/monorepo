@@ -29,6 +29,7 @@
   },
   "exports": {
     "./hooks/*": "./src/hooks/*.ts",
+    "./lib/*": "./src/lib/*.ts",
     "./*": "./src/components/*.tsx"
   }
 }

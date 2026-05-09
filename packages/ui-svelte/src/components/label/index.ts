@@ -1,7 +1,2 @@
-import Root from "./label.svelte";
-
-export {
-	Root,
-	//
-	Root as Label,
-};
+/** biome-ignore-all lint/performance/noBarrelFile: false positive */
+export { default as Label } from "./label.svelte";
