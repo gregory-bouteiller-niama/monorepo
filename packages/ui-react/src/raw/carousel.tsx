@@ -5,22 +5,14 @@ import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react"
 
-import { cn } from "@niama/ui/lib/utils"
-import { Button } from "@niama/ui-react/raw/button"
+import { cn } from "@/lib/utils"
+import { Button } from "@/raw/button"
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react"
 
 type CarouselApi = UseEmblaCarouselType[1]
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
 type CarouselOptions = UseCarouselParameters[0]
 type CarouselPlugin = UseCarouselParameters[1]
-type CarouselControls = {
-  canScrollNext: () => boolean
-  canScrollPrev: () => boolean
-  off: (event: string, callback: () => void) => void
-  on: (event: string, callback: () => void) => void
-  scrollNext: () => void
-  scrollPrev: () => void
-}
 
 type CarouselProps = {
   opts?: CarouselOptions
@@ -66,23 +58,22 @@ function Carousel({
     },
     plugins
   )
-  const emblaApi = api as unknown as CarouselControls | undefined
   const [canScrollPrev, setCanScrollPrev] = React.useState(false)
   const [canScrollNext, setCanScrollNext] = React.useState(false)
 
-  const onSelect = React.useCallback(() => {
-    if (!emblaApi) return
-    setCanScrollPrev(emblaApi.canScrollPrev())
-    setCanScrollNext(emblaApi.canScrollNext())
-  }, [emblaApi])
+  const onSelect = React.useCallback((api: CarouselApi) => {
+    if (!api) return
+    setCanScrollPrev(api.canScrollPrev())
+    setCanScrollNext(api.canScrollNext())
+  }, [])
 
   const scrollPrev = React.useCallback(() => {
-    emblaApi?.scrollPrev()
-  }, [emblaApi])
+    api?.scrollPrev()
+  }, [api])
 
   const scrollNext = React.useCallback(() => {
-    emblaApi?.scrollNext()
-  }, [emblaApi])
+    api?.scrollNext()
+  }, [api])
 
   const handleKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -104,12 +95,12 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
-    onSelect()
-    api.on("reInit" as never, onSelect as never)
-    api.on("select", onSelect as never)
+    onSelect(api)
+    api.on("reInit", onSelect)
+    api.on("select", onSelect)
 
     return () => {
-      api?.off("select" as never, onSelect as never)
+      api?.off("select", onSelect)
     }
   }, [api, onSelect])
 

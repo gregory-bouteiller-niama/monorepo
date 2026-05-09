@@ -7,11 +7,11 @@
   },
   "typescript": true,
   "aliases": {
-    "lib": "$lib",
-    "utils": "$lib/utils",
-    "components": "$lib/components",
-    "hooks": "$lib/raw",
-    "ui": "$lib/raw"
+    "lib": "@/lib",
+    "utils": "@/lib/utils",
+    "components": "@/components",
+    "hooks": "@/hooks",
+    "ui": "@/raw"
   },
   "registry": "https://shadcn-svelte.com/registry",
   "iconLibrary": "tabler",

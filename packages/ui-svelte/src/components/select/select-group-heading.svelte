@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn } from "@niama/ui-svelte/utils";
+  import { cn } from "@niama/ui-svelte/lib/utils";
   import { Select as SelectPrimitive } from "bits-ui";
   import type { ComponentProps } from "svelte";
 

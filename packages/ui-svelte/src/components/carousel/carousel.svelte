@@ -1,6 +1,6 @@
 <script lang="ts">
   import { CAROUSEL, createCarouselStore } from "@niama/ui/carousel";
-  import { cn, type WithElementRef } from "@niama/ui-svelte/utils";
+  import { cn, type WithElementRef } from "@niama/ui-svelte/lib/utils";
   import { useSelector as readStore } from "@tanstack/svelte-store";
   import { type CarouselProps, setEmblaContext } from "./context";
 

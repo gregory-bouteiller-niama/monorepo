@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Disciplines } from "@niama/domain/functions/disciplines";
-  import { cn } from "@niama/ui-svelte/utils";
+  import { cn } from "@niama/ui-svelte/lib/utils";
   import { cva } from "class-variance-authority";
 
   const LOGO = {

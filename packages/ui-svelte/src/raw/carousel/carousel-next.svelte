@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { WithoutChildren } from "bits-ui";
 	import { getEmblaContext } from "./context.js";
-	import { cn } from "$lib/utils.js";
-	import { Button, type Props } from "$lib/raw/button/index.js";
+	import { cn } from "@/lib/utils.js";
+	import { Button, type Props } from "@/raw/button/index.js";
 	import { IconChevronRight } from '@tabler/icons-svelte';
 
 	let {

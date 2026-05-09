@@ -1,6 +1,6 @@
 <script lang="ts">
   import { CAROUSEL } from "@niama/ui/carousel";
-  import { cn } from "@niama/ui-svelte/utils";
+  import { cn } from "@niama/ui-svelte/lib/utils";
   import { IconChevronLeft } from "@tabler/icons-svelte";
   import { useSelector as readStore } from "@tanstack/svelte-store";
   import type { WithoutChildren } from "bits-ui";

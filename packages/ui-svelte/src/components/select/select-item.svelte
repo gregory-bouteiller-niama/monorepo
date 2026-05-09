@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithoutChild } from "@niama/ui-svelte/utils";
+  import { cn, type WithoutChild } from "@niama/ui-svelte/lib/utils";
   import { IconCheck } from "@tabler/icons-svelte";
   import { Select as SelectPrimitive } from "bits-ui";
 

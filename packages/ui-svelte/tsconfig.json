@@ -9,9 +9,7 @@
     "strict": true,
     "noEmit": true,
     "paths": {
-      "$lib": ["./src"],
-      "$lib/*": ["./src/*"],
-      "@niama/ui-svelte/utils/*": ["./src/lib/utils/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["."],

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithElementRef } from "@niama/ui-svelte/utils";
+  import { cn, type WithElementRef } from "@niama/ui-svelte/lib/utils";
   import type { HTMLAttributes } from "svelte/elements";
 
   let { ref = $bindable(null), class: className, children, ...restProps }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();

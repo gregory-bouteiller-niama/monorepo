@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn } from "@niama/ui-svelte/utils";
+  import { cn } from "@niama/ui-svelte/lib/utils";
   import { Label as LabelPrimitive } from "bits-ui";
 
   let { ref = $bindable(null), class: className, ...restProps }: LabelPrimitive.RootProps = $props();

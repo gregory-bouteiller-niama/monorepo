@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import { cn, type WithElementRef } from "@niama/ui-svelte/utils";
+  import { cn, type WithElementRef } from "@niama/ui-svelte/lib/utils";
   import type { HTMLAnchorAttributes, HTMLButtonAttributes } from "svelte/elements";
   import { tv, type VariantProps } from "tailwind-variants";
 

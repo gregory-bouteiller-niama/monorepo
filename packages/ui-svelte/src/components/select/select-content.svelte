@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { WithoutChildrenOrChild } from "@niama/ui-svelte/utils";
-  import { cn, type WithoutChild } from "@niama/ui-svelte/utils";
+  import type { WithoutChildrenOrChild } from "@niama/ui-svelte/lib/utils";
+  import { cn, type WithoutChild } from "@niama/ui-svelte/lib/utils";
   import { Select as SelectPrimitive } from "bits-ui";
   import type { ComponentProps } from "svelte";
   import SelectPortal from "./select-portal.svelte";

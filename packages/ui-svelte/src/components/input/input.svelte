@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithElementRef } from "@niama/ui-svelte/utils";
+  import { cn, type WithElementRef } from "@niama/ui-svelte/lib/utils";
   import type { HTMLInputAttributes, HTMLInputTypeAttribute } from "svelte/elements";
 
   type InputType = Exclude<HTMLInputTypeAttribute, "file">;

@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { WithElementRef } from "@niama/ui-svelte/utils";
+  import type { WithElementRef } from "@niama/ui-svelte/lib/utils";
   import type { HTMLAttributes } from "svelte/elements";
 
   export type CarouselContentProps = WithElementRef<HTMLAttributes<HTMLDivElement>> & {
@@ -9,7 +9,7 @@
 
 <script lang="ts">
   import { CAROUSEL, CLONE_ATTR, CLONE_ATTRS, FOCUSABLE_SELECTOR, getOriginalSlideNodes } from "@niama/ui/carousel";
-  import { cn } from "@niama/ui-svelte/utils";
+  import { cn } from "@niama/ui-svelte/lib/utils";
   import { useSelector as readStore } from "@tanstack/svelte-store";
   import type { EmblaCarouselType, EmblaOptionsType, EmblaPluginType } from "embla-carousel";
   import emblaCarouselSvelte from "embla-carousel-svelte";

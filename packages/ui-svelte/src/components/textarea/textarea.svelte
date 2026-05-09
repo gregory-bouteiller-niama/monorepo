@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithElementRef, type WithoutChildren } from "@niama/ui-svelte/utils";
+  import { cn, type WithElementRef, type WithoutChildren } from "@niama/ui-svelte/lib/utils";
   import type { HTMLTextareaAttributes } from "svelte/elements";
 
   let {
