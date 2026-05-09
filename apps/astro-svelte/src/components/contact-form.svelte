@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { type Contacts } from "@niama/domain/functions/contacts";
+  import type { Contacts } from "@niama/domain/functions/contacts";
   import { ContactForm as ContactFormNative } from "@niama/ui-svelte/contact-form";
   import { toast } from "svelte-sonner";
 
