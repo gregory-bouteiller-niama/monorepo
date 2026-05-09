@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cn } from "@niama/ui-svelte/lib/utils";
-  import { Separator } from "@niama/ui-svelte/separator";
+  import { Separator } from "@niama/ui-svelte/ui/separator";
   import type { Separator as SeparatorPrimitive } from "bits-ui";
 
   let { ref = $bindable(null), class: className, ...restProps }: SeparatorPrimitive.RootProps = $props();

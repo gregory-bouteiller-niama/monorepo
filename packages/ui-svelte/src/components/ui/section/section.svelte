@@ -14,7 +14,7 @@
 <script lang="ts">
   import { SECTION } from "@niama/ui/section";
   import { cn } from "@niama/ui-svelte/lib/utils";
-  import { Separator } from "@niama/ui-svelte/separator";
+  import { Separator } from "@niama/ui-svelte/ui/separator";
 
   let {
     ref = $bindable(null),
