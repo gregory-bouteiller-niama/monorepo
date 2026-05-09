@@ -1,12 +1,12 @@
 <script lang="ts">
   import type { Disciplines } from "@niama/domain/functions/disciplines";
+  import { createCarouselStore } from "@niama/ui/carousel";
+  import { AUTOPLAY, DISCIPLINE, DISCIPLINES } from "@niama/ui/disciplines/carousel";
+  import { GLOW } from "@niama/ui/glow";
   import { cn } from "@niama/ui/lib/utils";
-  import { createCarouselStore } from "@niama/ui/shared/carousel";
-  import { AUTOPLAY, DISCIPLINE, DISCIPLINES } from "@niama/ui/shared/disciplines/carousel";
-  import { GLOW } from "@niama/ui/shared/glow";
-  import { Card } from "@niama/ui/svelte/card";
-  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui/svelte/carousel";
-  import { Logo } from "@niama/ui/svelte/logo";
+  import { Card } from "@niama/ui-svelte/card";
+  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui-svelte/carousel";
+  import { Logo } from "@niama/ui-svelte/logo";
   import Autoplay from "embla-carousel-autoplay";
   import Ssr from "embla-carousel-ssr";
 

@@ -2,8 +2,8 @@
 import "@/styles.css";
 import { Font } from "astro:assets";
 import { createStructuredData, SEO } from "@niama/domain/functions/site";
-import { Toaster } from "@niama/ui/svelte/sonner";
-import { themeScript } from "@niama/ui/shared/theme";
+import { themeScript } from "@niama/ui/theme";
+import { Toaster } from "@niama/ui-svelte/sonner";
 
 const {
   description = SEO.defaultDescription,
@@ -47,8 +47,8 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? SEO.url);
 </html>
 
 <script>
-  import { initialize } from "@niama/ui/shared/root-layout";
-  import { applyTheme } from "@niama/ui/shared/theme";
+  import { initialize } from "@niama/ui/root-layout";
+  import { applyTheme } from "@niama/ui/theme";
 
   initialize();
   document.addEventListener("astro:after-swap", () => applyTheme());

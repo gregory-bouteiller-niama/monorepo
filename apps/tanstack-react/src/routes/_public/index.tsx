@@ -1,7 +1,7 @@
 import { readIndexPage } from "@niama/domain/functions/pages";
-import { ContactForm } from "@niama/ui/react/contact-form";
-import { Separator } from "@niama/ui/react/separator";
-import { INDEX_PAGE, updateHash } from "@niama/ui/shared/index-page";
+import { INDEX_PAGE, updateHash } from "@niama/ui/index-page";
+import { ContactForm } from "@niama/ui-react/contact-form";
+import { Separator } from "@niama/ui-react/separator";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { toast } from "sonner";

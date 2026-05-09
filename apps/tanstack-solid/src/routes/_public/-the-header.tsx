@@ -1,10 +1,10 @@
 import { headerStore, selectStainStyle } from "@niama/ui/lib/stores/header";
+import { clearHovered, observeNavLink, THE_HEADER } from "@niama/ui/the-header";
+import { createSignal, createTrackedEffect } from "solid-js";
 import { Logo } from "@/components/logo";
 import { Section } from "@/components/section";
 import { Separator } from "@/components/separator";
 import { ThemeSwitcher } from "@/components/theme-switcher";
-import { clearHovered, observeNavLink, THE_HEADER } from "@niama/ui/shared/the-header";
-import { createSignal, createTrackedEffect } from "solid-js";
 import type { ReadPublicLayoutProps } from "@/lib/layouts";
 
 export function TheHeader(props: Pick<ReadPublicLayoutProps, "navs">) {
@@ -70,7 +70,7 @@ function HeaderNav(props: HeaderNavProps) {
   createTrackedEffect(() => {
     if (typeof window === "undefined") return;
 
-    if (!linkRef) return undefined;
+    if (!linkRef) return;
     return observeNavLink(nav.hash, linkRef);
   });
 
@@ -96,7 +96,7 @@ function HeaderBurger(props: Pick<ReadPublicLayoutProps, "navs">) {
       <summary aria-label="Menu" class={`${THE_HEADER.burger()} list-none [&::-webkit-details-marker]:hidden`}>
         <span class={THE_HEADER.burgerIcon()} />
       </summary>
-          <div class={THE_HEADER.burgerContent()}>
+      <div class={THE_HEADER.burgerContent()}>
         <nav class="flex flex-col gap-1">
           {navs.map((nav) => (
             <a class={THE_HEADER.burgerItem()} href={`${nav.to}#${nav.hash}`}>

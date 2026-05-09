@@ -1,9 +1,9 @@
 ---
 import type { Disciplines } from "@niama/domain/functions/disciplines";
-import { CarouselContent, CarouselItem, Carousel as CarouselNative, CarouselNext, CarouselPrevious } from "@niama/ui/astro/carousel.ts";
-import { ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@niama/ui/astro/item.ts";
-import { Logo } from "@niama/ui/svelte/logo";
-import { DISCIPLINE, DISCIPLINES } from "@niama/ui/shared/disciplines/carousel";
+import { DISCIPLINE, DISCIPLINES } from "@niama/ui/disciplines/carousel";
+import { CarouselContent, CarouselItem, Carousel as CarouselNative, CarouselNext, CarouselPrevious } from "@niama/ui-astro/carousel";
+import { ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@niama/ui-astro/item";
+import { Logo } from "@niama/ui-svelte/logo";
 import Glow from "@/components/glow.astro";
 
 const { items } = Astro.props;
@@ -40,9 +40,9 @@ type Props = { items: Disciplines["Entity"][] };
 </disciplines-carousel>
 
 <script>
-  import { defineCarousel, initCarousel } from "@niama/ui/astro/carousel.ts";
-  import { createCarouselStore } from "@niama/ui/shared/carousel";
-  import { AUTOPLAY } from "@niama/ui/shared/disciplines/carousel";
+  import { createCarouselStore } from "@niama/ui/carousel";
+  import { AUTOPLAY } from "@niama/ui/disciplines/carousel";
+  import { defineCarousel, initCarousel } from "@niama/ui-astro/carousel";
   import Autoplay from "embla-carousel-autoplay";
 
   defineCarousel({

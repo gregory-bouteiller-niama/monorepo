@@ -1,0 +1,15 @@
+---
+import { CAROUSEL } from "@niama/ui/carousel";
+import { cn } from "@niama/ui/lib/utils";
+import type { HTMLAttributes } from "astro/types";
+
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
+const { class: className = "", viewportClass = "", ...props } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"div"> & { viewportClass?: string };
+---
+
+<div class={cn(CAROUSEL.viewport(), viewportClass)} data-slot="carousel-content">
+  <div class={cn(CAROUSEL.content(), className)} data-slot="carousel-container" {...props}><slot /></div>
+</div>

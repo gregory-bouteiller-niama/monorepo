@@ -15,7 +15,7 @@
 		"hooks": "@/hooks",
 		"lib": "@/lib",
 		"utils": "@niama/ui/lib/utils",
-		"ui": "@niama/ui/components"
+		"ui": "@niama/ui-react/raw"
 	},
 	"rtl": false,
 	"menuColor": "default",

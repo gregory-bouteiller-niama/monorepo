@@ -1,5 +1,5 @@
+import { ICON_BUTTON } from "@niama/ui/icon-button";
 import { cn } from "@niama/ui/lib/utils";
-import { ICON_BUTTON } from "@niama/ui/shared/icon-button";
 import { Button, type ButtonProps } from "./button";
 
 export function IconButton(props: IconButtonProps) {

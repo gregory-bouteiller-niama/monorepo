@@ -1,8 +1,8 @@
 import type { Disciplines } from "@niama/domain/functions/disciplines";
+import { AUTOPLAY, DISCIPLINE, DISCIPLINES } from "@niama/ui/disciplines/carousel";
+import { bindGlows } from "@niama/ui/glow";
 import { cn } from "@niama/ui/lib/utils";
-import { DISCIPLINE, DISCIPLINES, AUTOPLAY } from "@niama/ui/shared/disciplines/carousel";
-import { bindGlows } from "@niama/ui/shared/glow";
-import { prefersReducedMotion } from "@niama/ui/shared/motion";
+import { prefersReducedMotion } from "@niama/ui/motion";
 import { createTrackedEffect } from "solid-js";
 import { Card, CardContent } from "../card";
 import { Logo } from "../logo";
@@ -41,8 +41,8 @@ export function DisciplinesCarousel(props: DisciplinesCarouselProps) {
     <section class={DISCIPLINES.base()}>
       <div class={DISCIPLINES.carousel()}>
         <div
-          ref={viewportRef}
           class="overflow-x-clip overflow-y-visible py-6 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          ref={viewportRef}
           style={{ "scroll-snap-type": "x mandatory" }}
         >
           <div class="flex w-max">

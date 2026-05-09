@@ -1,10 +1,10 @@
 import { headerStore, selectStainStyle } from "@niama/ui/lib/stores/header";
-import { Button } from "@niama/ui/react/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@niama/ui/react/dropdown-menu";
-import { Logo } from "@niama/ui/react/logo";
-import { Separator } from "@niama/ui/react/separator";
-import { ThemeSwitcher } from "@niama/ui/react/theme-switcher";
-import { clearHovered, observeNavLink, THE_HEADER } from "@niama/ui/shared/the-header";
+import { clearHovered, observeNavLink, THE_HEADER } from "@niama/ui/the-header";
+import { Button } from "@niama/ui-react/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@niama/ui-react/dropdown-menu";
+import { Logo } from "@niama/ui-react/logo";
+import { Separator } from "@niama/ui-react/separator";
+import { ThemeSwitcher } from "@niama/ui-react/theme-switcher";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useSelector } from "@tanstack/react-store";
 import { useEffect, useRef } from "react";

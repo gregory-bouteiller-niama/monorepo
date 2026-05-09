@@ -1,7 +1,7 @@
 import type { Attendants } from "@niama/domain/functions/attendants";
+import { ATTENDANT, ATTENDANTS, AUTOPLAY, ROTATIONS } from "@niama/ui/attendants/carousel";
 import { cn } from "@niama/ui/lib/utils";
-import { ATTENDANT, ATTENDANTS, AUTOPLAY, ROTATIONS } from "@niama/ui/shared/attendants/carousel";
-import { prefersReducedMotion } from "@niama/ui/shared/motion";
+import { prefersReducedMotion } from "@niama/ui/motion";
 import { Image } from "@unpic/solid";
 import { createSignal, createTrackedEffect, type JSX } from "solid-js";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../card";
@@ -25,7 +25,7 @@ export function AttendantsCarousel(props: AttendantsCarouselProps) {
   createTrackedEffect(() => {
     if (typeof window === "undefined") return;
 
-    if (prefersReducedMotion()) return undefined;
+    if (prefersReducedMotion()) return;
     const timer = window.setInterval(scrollNext, AUTOPLAY);
     return () => window.clearInterval(timer);
   });
@@ -33,8 +33,8 @@ export function AttendantsCarousel(props: AttendantsCarouselProps) {
   return (
     <section class={ATTENDANTS.base()}>
       <div class={ATTENDANTS.carousel()}>
-        <div ref={viewportRef} class={ATTENDANTS.viewport()} style={{ "scroll-snap-type": "x mandatory" }}>
-      <div class="flex w-max">
+        <div class={ATTENDANTS.viewport()} ref={viewportRef} style={{ "scroll-snap-type": "x mandatory" }}>
+          <div class="flex w-max">
             {items.map((item, renderIndex) => (
               <div class={ATTENDANTS.item()} style={{ "scroll-snap-align": "center" }}>
                 <AttendantItem
@@ -81,7 +81,13 @@ function AttendantItem(props: AttendantItemProps) {
           <div class={ATTENDANT.overlay()}>
             <span class={ATTENDANT.icon()} />
           </div>
-          <Image alt={item.image.alt} background={item.image.background} height={item.image.height} src={item.image.src} width={item.image.width} />
+          <Image
+            alt={item.image.alt}
+            background={item.image.background}
+            height={item.image.height}
+            src={item.image.src}
+            width={item.image.width}
+          />
         </CardContent>
       </AttendantItemCard>
       <AttendantItemCard data-back item={item}>

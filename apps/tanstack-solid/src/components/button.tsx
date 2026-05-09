@@ -1,18 +1,11 @@
-import { BUTTON, type ButtonStyles } from "@niama/ui/shared/button";
+import { BUTTON, type ButtonStyles } from "@niama/ui/button";
 import { cn } from "@niama/ui/lib/utils";
 import type { JSX } from "solid-js";
 
 export function Button(props: ButtonProps) {
-  const {
-    class: className,
-    ref,
-    size = "default",
-    type = "button",
-    variant = "default",
-    ...rest
-  } = props;
+  const { class: className, ref, size = "default", type = "button", variant = "default", ...rest } = props;
 
-  return <button ref={ref} class={cn(BUTTON({ size, variant }), className)} type={type} {...rest} />;
+  return <button class={cn(BUTTON({ size, variant }), className)} ref={ref} type={type} {...rest} />;
 }
 
 export type ButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> &

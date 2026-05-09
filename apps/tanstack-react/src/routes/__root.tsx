@@ -1,8 +1,8 @@
 import { SEO } from "@niama/domain/functions/site";
-import { Toaster } from "@niama/ui/react/sonner";
-import { TooltipProvider } from "@niama/ui/react/tooltip";
-import { initialize } from "@niama/ui/shared/root-layout";
-import { themeScript } from "@niama/ui/shared/theme";
+import { initialize } from "@niama/ui/root-layout";
+import { themeScript } from "@niama/ui/theme";
+import { Toaster } from "@niama/ui-react/sonner";
+import { TooltipProvider } from "@niama/ui-react/tooltip";
 import { createRootRoute, HeadContent, ScriptOnce, Scripts } from "@tanstack/react-router";
 import { useEffect } from "react";
 import appCss from "@/styles.css?url";

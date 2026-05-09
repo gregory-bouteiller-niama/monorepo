@@ -1,4 +1,4 @@
-import { ContactForm as ContactFormNative } from "@niama/ui/react/contact-form";
+import { ContactForm as ContactFormNative } from "@niama/ui-react/contact-form";
 import { toast } from "sonner";
 import { createContact } from "@/functions/form";
 

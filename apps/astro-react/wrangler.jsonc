@@ -1,11 +1,8 @@
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"compatibility_date": "2026-04-13",
-	"name": "niama-astro",
-	"images": {
-		"binding": "IMAGES"
-	},
-	"vars": {
-		"VITE_CONVEX_URL": "https://helpful-bobcat-596.convex.cloud"
-	}
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "compatibility_date": "2026-04-13",
+  "name": "niama-astro",
+  "vars": {
+    "VITE_CONVEX_URL": "https://helpful-bobcat-596.convex.cloud"
+  }
 }

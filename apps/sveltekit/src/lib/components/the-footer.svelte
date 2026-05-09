@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { ReadPublicLayoutProps } from "@niama/domain/functions/layouts";
-  import { THE_FOOTER } from "@niama/ui/shared/the-footer";
-  import { Button } from "@niama/ui/svelte/button";
+  import { THE_FOOTER } from "@niama/ui/the-footer";
+  import { Button } from "@niama/ui-svelte/button";
 
   let { socials }: Pick<ReadPublicLayoutProps, "socials"> = $props();
 </script>

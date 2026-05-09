@@ -1,6 +1,6 @@
+import { themeStore, toggleThemeWithTransition } from "@niama/ui/theme";
+import { getThemeSwitcherLabel, THEME_SWITCHER } from "@niama/ui/theme-switcher";
 import { createSignal, createTrackedEffect } from "solid-js";
-import { themeStore, toggleThemeWithTransition } from "@niama/ui/shared/theme";
-import { THEME_SWITCHER, getThemeSwitcherLabel } from "@niama/ui/shared/theme-switcher";
 import { Button } from "./button";
 
 export function ThemeSwitcher() {
@@ -16,13 +16,13 @@ export function ThemeSwitcher() {
 
   return (
     <Button
-      ref={(el) => {
-        buttonRef = el;
-      }}
       aria-label={getThemeSwitcherLabel(theme())}
       aria-pressed={theme() === "dark" ? "true" : "false"}
       class={THEME_SWITCHER.base()}
       onClick={() => toggleThemeWithTransition(buttonRef ?? null)}
+      ref={(el) => {
+        buttonRef = el;
+      }}
       size="icon"
       title={getThemeSwitcherLabel(theme())}
       variant="outline"

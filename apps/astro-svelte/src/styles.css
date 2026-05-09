@@ -1,8 +1,8 @@
 @import "@niama/ui/styles/globals.css";
 
 @source "./**/*.{ts,svelte,astro}";
-@source "../../../packages/ui/src/components/astro/**/*.{ts,astro}";
-@source "../../../packages/ui/src/components/svelte/**/*.{ts,svelte}";
-@source "../../../packages/ui/src/components/raw/svelte/**/*.{ts,svelte}";
+@source "../../../packages/ui-astro/src/components/**/*.{ts,astro}";
+@source "../../../packages/ui-svelte/src/components/**/*.{ts,svelte}";
+@source "../../../packages/ui-svelte/src/components/raw/**/*.{ts,svelte}";
 @source "../../../packages/ui/src/components/shared/**/*.{ts}";
 @source "../../../packages/domain/src/**/*.{ts}";

@@ -39,7 +39,7 @@ Implemented:
 Implemented:
 
 - Fixed the `@niama/ui` Svelte export surface in `packages/ui/package.json`.
-- Normalized `@niama/ui/svelte/*` imports in the SvelteKit app to extensionless subpaths.
+- Normalized `@niama/ui-svelte/*` imports in the SvelteKit app to extensionless subpaths.
 - Added `@types/node` to `apps/sveltekit/package.json`.
 - Refreshed the workspace install and lockfile.
 

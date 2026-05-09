@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "paths": {
+      "@niama/ui-astro/*": ["./src/components/*"],
+      "@niama/ui-astro/lib/utils/starwind/*": ["./src/lib/utils/starwind/*"],
+      "@niama/ui-astro/raw/*": ["./src/components/raw/*/index.ts"],
+      "@niama/ui/lib/*": ["../ui/src/lib/*"],
+      "@niama/ui/*": ["../ui/src/components/shared/*"],
+      "@niama/ui/styles/*": ["../ui/src/styles/*"]
+    }
+  },
+  "include": ["."],
+  "exclude": ["node_modules", "dist"]
+}

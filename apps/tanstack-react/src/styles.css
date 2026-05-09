@@ -4,7 +4,7 @@
 @import "@fontsource/cormorant-upright";
 
 @source "./**/*.{ts,tsx}";
-@source "../../../packages/ui/src/components/react/**/*.{ts,tsx}";
+@source "../../../packages/ui-react/src/components/**/*.{ts,tsx}";
 @source "../../../packages/ui/src/components/shared/**/*.{ts}";
 @source "../../../packages/domain/src/**/*.{ts}";
 

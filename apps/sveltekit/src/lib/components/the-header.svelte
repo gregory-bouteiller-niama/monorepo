@@ -1,12 +1,12 @@
 <script lang="ts">
   import type { ReadPublicLayoutProps } from "@niama/domain/functions/layouts";
   import { headerStore, selectStainStyle } from "@niama/ui/lib/stores/header";
-  import { clearHovered, observeNavLink, THE_HEADER } from "@niama/ui/shared/the-header";
-  import { Button } from "@niama/ui/svelte/button";
-  import { Logo } from "@niama/ui/svelte/logo";
-  import { Section } from "@niama/ui/svelte/section";
-  import { Separator } from "@niama/ui/svelte/separator";
-  import { ThemeSwitcher } from "@niama/ui/svelte/theme-switcher";
+  import { clearHovered, observeNavLink, THE_HEADER } from "@niama/ui/the-header";
+  import { Button } from "@niama/ui-svelte/button";
+  import { Logo } from "@niama/ui-svelte/logo";
+  import { Section } from "@niama/ui-svelte/section";
+  import { Separator } from "@niama/ui-svelte/separator";
+  import { ThemeSwitcher } from "@niama/ui-svelte/theme-switcher";
   import { useSelector as readStore } from "@tanstack/svelte-store";
 
   import { onMount } from "svelte";

@@ -1,8 +1,8 @@
 import type { Attendants } from "@niama/domain/functions/attendants";
-import { Card, CardContent, CardDescription, CardHeader, type CardProps, CardTitle } from "@niama/ui/react/card";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui/react/carousel";
-import { ATTENDANT, ATTENDANTS, AUTOPLAY, ROTATIONS } from "@niama/ui/shared/attendants/carousel";
-import { createCarouselStore } from "@niama/ui/shared/carousel";
+import { ATTENDANT, ATTENDANTS, AUTOPLAY, ROTATIONS } from "@niama/ui/attendants/carousel";
+import { createCarouselStore } from "@niama/ui/carousel";
+import { Card, CardContent, CardDescription, CardHeader, type CardProps, CardTitle } from "@niama/ui-react/card";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui-react/carousel";
 import { Image } from "@unpic/react";
 import Autoplay from "embla-carousel-autoplay";
 import Ssr from "embla-carousel-ssr";

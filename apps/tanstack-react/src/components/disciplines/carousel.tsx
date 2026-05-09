@@ -1,11 +1,11 @@
 import type { Disciplines } from "@niama/domain/functions/disciplines";
+import { createCarouselStore } from "@niama/ui/carousel";
+import { AUTOPLAY, DISCIPLINE, DISCIPLINES } from "@niama/ui/disciplines/carousel";
+import { GLOW } from "@niama/ui/glow";
 import { cn } from "@niama/ui/lib/utils";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui/react/carousel";
-import { Item, ItemContent, ItemDescription, ItemMedia, type ItemProps, ItemTitle } from "@niama/ui/react/item";
-import { Logo } from "@niama/ui/react/logo";
-import { createCarouselStore } from "@niama/ui/shared/carousel";
-import { AUTOPLAY, DISCIPLINE, DISCIPLINES } from "@niama/ui/shared/disciplines/carousel";
-import { GLOW } from "@niama/ui/shared/glow";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui-react/carousel";
+import { Item, ItemContent, ItemDescription, ItemMedia, type ItemProps, ItemTitle } from "@niama/ui-react/item";
+import { Logo } from "@niama/ui-react/logo";
 import Autoplay from "embla-carousel-autoplay";
 import Ssr from "embla-carousel-ssr";
 import { useState } from "react";

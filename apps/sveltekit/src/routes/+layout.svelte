@@ -1,11 +1,11 @@
 <script lang="ts">
   import { createStructuredData, SEO } from "@niama/domain/functions/site";
-  import { bindGlows } from "@niama/ui/shared/glow";
-  import { PUBLIC_LAYOUT } from "@niama/ui/shared/public-layout";
-  import { initialize } from "@niama/ui/shared/root-layout";
-  import { themeScript } from "@niama/ui/shared/theme";
-  import { Button } from "@niama/ui/svelte/button";
-  import { Toaster } from "@niama/ui/svelte/sonner";
+  import { bindGlows } from "@niama/ui/glow";
+  import { PUBLIC_LAYOUT } from "@niama/ui/public-layout";
+  import { initialize } from "@niama/ui/root-layout";
+  import { themeScript } from "@niama/ui/theme";
+  import { Button } from "@niama/ui-svelte/button";
+  import { Toaster } from "@niama/ui-svelte/sonner";
   import { onMount } from "svelte";
   import { page } from "$app/state";
   import favicon from "$lib/assets/favicon.svg";

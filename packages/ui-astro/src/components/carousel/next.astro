@@ -1,0 +1,26 @@
+---
+import { CAROUSEL } from "@niama/ui/carousel";
+import { cn } from "@niama/ui/lib/utils";
+import type { ComponentProps } from "astro/types";
+import Button from "../button/button.astro";
+
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
+const { class: className = "", variant = "outline", size = "icon-sm", disabled = true, ...props } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = ComponentProps<typeof Button>;
+---
+
+<Button
+  aria-disabled={disabled ? "true" : undefined}
+  aria-label="Suivant"
+  class={cn(CAROUSEL.next(), className)}
+  data-slot="carousel-next"
+  disabled={disabled}
+  size={size}
+  variant={variant}
+  {...props}
+>
+  <span class="icon-[tabler--chevron-right]" />
+  <span class="sr-only">Suivant</span>
+</Button>

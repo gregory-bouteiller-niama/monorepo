@@ -70,7 +70,7 @@ Measured from a successful local `bun run build` on 2026-05-05.
 ### Accessibility
 
 - `Done` Move the skip link into `apps/astro/src/pages/_public.astro`, next to the public `main` target.
-- `Done` Render the skip link through `@niama/ui/astro/button`, while preserving anchor semantics with `href`.
+- `Done` Render the skip link through `@niama/ui-astro/button`, while preserving anchor semantics with `href`.
 - `Done` Make the skip-link target configurable through the public layout `skipTo` prop.
 - `Done` Use `skipTo="#les-voies"` on the homepage because it is the first meaningful content after the hero/header area.
 - `Done` Keep `<main id="main" tabindex="-1">` as the default public-layout fallback target.

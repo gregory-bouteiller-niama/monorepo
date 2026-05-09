@@ -1,0 +1,23 @@
+{
+	"$schema": "https://ui.shadcn.com/schema.json",
+	"style": "base-maia",
+	"rsc": false,
+	"tsx": true,
+	"tailwind": {
+		"config": "",
+		"css": "../ui/src/styles/globals.css",
+		"baseColor": "neutral",
+		"cssVariables": true
+	},
+	"iconLibrary": "tabler",
+	"aliases": {
+		"components": "@niama/ui-react",
+		"utils": "@niama/ui/lib/utils",
+		"hooks": "@niama/ui-react/hooks",
+		"lib": "@niama/ui/lib",
+		"ui": "@niama/ui-react/raw"
+	},
+	"rtl": false,
+	"menuColor": "default",
+	"menuAccent": "subtle"
+}

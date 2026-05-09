@@ -1,8 +1,8 @@
 ---
 import type { Attendants } from "@niama/domain/functions/attendants";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui/astro/card.ts";
-import { CarouselContent, CarouselItem, Carousel as CarouselNative, CarouselNext, CarouselPrevious } from "@niama/ui/astro/carousel.ts";
-import { ATTENDANT, ATTENDANTS, ROTATIONS } from "@niama/ui/shared/attendants/carousel";
+import { ATTENDANT, ATTENDANTS, ROTATIONS } from "@niama/ui/attendants/carousel";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui-astro/card";
+import { CarouselContent, CarouselItem, Carousel as CarouselNative, CarouselNext, CarouselPrevious } from "@niama/ui-astro/carousel";
 import DisciplinesBadge from "@/components/disciplines/badge.astro";
 import Image from "@/components/image.astro";
 
@@ -69,9 +69,9 @@ type Props = { class?: string; items: Attendants["Entity"][] };
 </attendants-carousel>
 
 <script>
-  import { defineCarousel, initCarousel } from "@niama/ui/astro/carousel.ts";
-  import { AUTOPLAY } from "@niama/ui/shared/attendants/carousel";
-  import { createCarouselStore } from "@niama/ui/shared/carousel";
+  import { AUTOPLAY } from "@niama/ui/attendants/carousel";
+  import { createCarouselStore } from "@niama/ui/carousel";
+  import { defineCarousel, initCarousel } from "@niama/ui-astro/carousel";
   import Autoplay from "embla-carousel-autoplay";
 
   const setFlipState = (el: HTMLButtonElement, isFlipped: string) => {

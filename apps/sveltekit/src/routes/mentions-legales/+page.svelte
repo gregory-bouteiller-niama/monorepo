@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { LEGAL_NOTICE_PAGE } from "@niama/ui/shared/page-mentions-legales";
+  import { LEGAL_NOTICE_PAGE } from "@niama/ui/page-mentions-legales";
   import LegalSection from "$lib/components/legal-section.svelte";
 
   let { data } = $props();

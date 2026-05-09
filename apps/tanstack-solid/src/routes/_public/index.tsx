@@ -1,5 +1,5 @@
 import { readIndexPage } from "@niama/domain/functions/pages";
-import { INDEX_PAGE, nativeHashUpdater, updateHash } from "@niama/ui/shared/index-page";
+import { INDEX_PAGE, nativeHashUpdater, updateHash } from "@niama/ui/index-page";
 import { createFileRoute } from "@tanstack/solid-router";
 import { onSettled } from "solid-js";
 import { AttendantsCarousel } from "@/components/attendants/carousel";

@@ -1,5 +1,5 @@
 import { cn } from "@niama/ui/lib/utils";
-import { initializeSky, SKY, SKY_ORBITS } from "@niama/ui/shared/sky";
+import { initializeSky, SKY, SKY_ORBITS } from "@niama/ui/sky";
 import { useEffect, useRef } from "react";
 
 export type SkyProps = React.ComponentProps<"div">;

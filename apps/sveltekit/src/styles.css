@@ -4,9 +4,9 @@
 @import "@fontsource/cormorant-upright";
 
 @source "./**/*.{ts,svelte}";
-@source "../../../packages/ui/src/components/svelte/**/*.{ts,svelte}";
+@source "../../../packages/ui-svelte/src/components/**/*.{ts,svelte}";
 @source "../../../packages/ui/src/components/shared/**/*.ts";
-@source "../../../packages/ui/src/components/raw/svelte/**/*.{ts,svelte}";
+@source "../../../packages/ui-svelte/src/components/raw/**/*.{ts,svelte}";
 @source "../../../packages/domain/src/**/*.ts";
 
 :root {

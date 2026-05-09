@@ -1,5 +1,5 @@
-import { SEPARATOR } from "@niama/ui/shared/separator";
 import { cn } from "@niama/ui/lib/utils";
+import { SEPARATOR } from "@niama/ui/separator";
 import type { JSX } from "solid-js";
 
 export function Separator(props: SeparatorProps) {

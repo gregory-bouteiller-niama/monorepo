@@ -1,0 +1,15 @@
+---
+import { CAROUSEL } from "@niama/ui/carousel";
+import { cn } from "@niama/ui/lib/utils";
+import type { HTMLAttributes } from "astro/types";
+
+// PROPS -----------------------------------------------------------------------------------------------------------------------------------
+const { class: className, ...rest } = Astro.props;
+
+// TYPES -----------------------------------------------------------------------------------------------------------------------------------
+export type Props = HTMLAttributes<"section">;
+---
+
+<section aria-roledescription="carousel" class={cn(CAROUSEL.base(), className)} data-slot="carousel" role="region" {...rest}>
+  <slot />
+</section>

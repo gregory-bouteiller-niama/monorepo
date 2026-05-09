@@ -1,6 +1,6 @@
 import { SEO } from "@niama/domain/functions/site";
-import { initialize } from "@niama/ui/shared/root-layout";
-import { themeScript } from "@niama/ui/shared/theme";
+import { initialize } from "@niama/ui/root-layout";
+import { themeScript } from "@niama/ui/theme";
 import { HydrationScript, type JSX } from "@solidjs/web";
 import { createRootRoute, HeadContent, ScriptOnce, Scripts } from "@tanstack/solid-router";
 import { onSettled } from "solid-js";

@@ -1,6 +1,6 @@
 import { actions } from "astro:actions";
-import { toast } from "@niama/ui/astro/toast.ts";
-import { ContactForm as ContactFormNative } from "@niama/ui/react/contact-form";
+import { toast } from "@niama/ui-astro/toast";
+import { ContactForm as ContactFormNative } from "@niama/ui-react/contact-form";
 
 // MAIN ------------------------------------------------------------------------------------------------------------------------------------
 export function ContactForm() {

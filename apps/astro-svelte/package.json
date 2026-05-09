@@ -17,10 +17,12 @@
     "@niama/backend": "workspace:*",
     "@niama/domain": "workspace:*",
     "@niama/ui": "workspace:*",
+    "@niama/ui-astro": "workspace:*",
+    "@niama/ui-svelte": "workspace:*",
     "@unpic/core": "^1.0.3",
     "astro": "^6.3.1",
     "class-variance-authority": "^0.7.1",
-    "convex": "^1.37.0",
+    "convex": "^1.38.0",
     "embla-carousel-autoplay": "^9.0.0-rc02",
     "embla-carousel-ssr": "^9.0.0-rc02",
     "svelte": "^5.55.5",
@@ -28,7 +30,7 @@
     "unpic": "^4.2.2"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.2.4",
+    "@tailwindcss/vite": "^4.3.0",
     "@types/node": "^25.6.2",
     "globals": "^17.6.0",
     "typescript": "^6.0.3",

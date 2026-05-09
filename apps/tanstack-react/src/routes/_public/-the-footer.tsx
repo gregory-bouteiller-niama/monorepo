@@ -1,5 +1,5 @@
-import { Button } from "@niama/ui/react/button";
-import { THE_FOOTER } from "@niama/ui/shared/the-footer";
+import { THE_FOOTER } from "@niama/ui/the-footer";
+import { Button } from "@niama/ui-react/button";
 import { Link } from "@tanstack/react-router";
 import { IconButton } from "@/components/icon-button";
 import type { ReadPublicLayoutProps } from "@/lib/layouts";

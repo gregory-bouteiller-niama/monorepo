@@ -1,6 +1,6 @@
 ---
 import { cn } from "@niama/ui/lib/utils";
-import { SKY, SKY_ORBITS } from "@niama/ui/shared/sky";
+import { SKY, SKY_ORBITS } from "@niama/ui/sky";
 
 // PROPS -----------------------------------------------------------------------------------------------------------------------------------
 const { class: className } = Astro.props;
@@ -23,7 +23,7 @@ type Props = { class?: string };
 </the-sky>
 
 <script>
-  import { initializeSky } from "@niama/ui/shared/sky";
+  import { initializeSky } from "@niama/ui/sky";
 
   const Sky = class extends HTMLElement {
     destroy!: () => void;

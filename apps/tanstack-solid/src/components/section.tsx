@@ -1,5 +1,5 @@
 import { cn } from "@niama/ui/lib/utils";
-import { SECTION } from "@niama/ui/shared/section";
+import { SECTION } from "@niama/ui/section";
 import type { JSX } from "solid-js";
 import { Separator } from "./separator";
 

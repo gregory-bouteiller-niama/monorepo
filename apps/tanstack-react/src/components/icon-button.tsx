@@ -1,6 +1,6 @@
-import { Button, type ButtonProps } from "@niama/ui/react/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@niama/ui/react/tooltip";
-import { ICON_BUTTON } from "@niama/ui/shared/icon-button";
+import { ICON_BUTTON } from "@niama/ui/icon-button";
+import { Button, type ButtonProps } from "@niama/ui-react/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@niama/ui-react/tooltip";
 
 // MAIN ------------------------------------------------------------------------------------------------------------------------------------
 export function IconButton(props: IconButtonProps) {

@@ -2,9 +2,9 @@
 export const prerender = true;
 
 import { readIndexPage } from "@niama/domain/functions/pages";
-import { Section } from "@niama/ui/svelte/section";
-import { Separator } from "@niama/ui/svelte/separator";
-import { INDEX_PAGE } from "@niama/ui/shared/index-page";
+import { INDEX_PAGE } from "@niama/ui/index-page";
+import { Section } from "@niama/ui-svelte/section";
+import { Separator } from "@niama/ui-svelte/separator";
 import AttendantsCarousel from "@/components/attendants/carousel.astro";
 import ContactForm from "@/components/contact-form.svelte";
 import DisciplinesCarousel from "@/components/disciplines/carousel.astro";
@@ -35,7 +35,7 @@ const { attendants, contact, disciplines, hero } = readIndexPage();
 </PublicLayout>
 
 <script>
-  import { nativeHashUpdater, updateHash } from "@niama/ui/shared/index-page";
+  import { nativeHashUpdater, updateHash } from "@niama/ui/index-page";
 
   updateHash(nativeHashUpdater);
 </script>
