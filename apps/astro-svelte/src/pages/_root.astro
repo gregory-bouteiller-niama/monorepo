@@ -50,6 +50,8 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? SEO.url);
   import { initialize } from "@niama/ui/root-layout";
   import { applyTheme } from "@niama/ui/theme";
 
+  console.log("ROOT");
+
   initialize();
   document.addEventListener("astro:after-swap", () => applyTheme());
 </script>
