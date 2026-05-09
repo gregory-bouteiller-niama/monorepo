@@ -23,7 +23,7 @@
 </script>
 
 <script lang="ts">
-  import { cn, type WithElementRef } from "@niama/ui-svelte/utils";
+  import { cn, type WithElementRef } from "@niama/ui-svelte/lib/utils";
   import type { HTMLAnchorAttributes } from "svelte/elements";
 
   let {

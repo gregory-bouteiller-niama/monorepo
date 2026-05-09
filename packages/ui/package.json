@@ -21,7 +21,7 @@
   },
   "exports": {
     "./lib/*": "./src/lib/*.ts",
-    "./*": "./src/components/*.ts",
-    "./styles/*": "./src/styles/*"
+    "./styles/*": "./src/styles/*",
+    "./*": "./src/components/*.ts"
   }
 }

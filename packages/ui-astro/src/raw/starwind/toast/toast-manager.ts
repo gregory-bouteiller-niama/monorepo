@@ -5,7 +5,7 @@
  *
  * @example
  * ```ts
- * import { toast } from "@niama/ui-astro/raw/toast";
+ * import { toast } from "@/components/starwind/toast";
  *
  * // Simple usage
  * toast("Hello world");
