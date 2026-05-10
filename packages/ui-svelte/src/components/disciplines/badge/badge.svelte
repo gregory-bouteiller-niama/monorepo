@@ -1,6 +1,5 @@
 <script lang="ts">
-  import type { Disciplines } from "@niama/domain/functions/disciplines";
-  import { readDisciplineBySlug } from "@niama/domain/functions/disciplines";
+  import { type Disciplines, readDisciplineBySlug } from "@niama/domain/functions/disciplines";
   import { DISCIPLINES_BADGE } from "@niama/ui/disciplines/badge";
   import { cn } from "@niama/ui-svelte/lib/utils";
   import { Badge } from "@niama/ui-svelte/ui/badge";

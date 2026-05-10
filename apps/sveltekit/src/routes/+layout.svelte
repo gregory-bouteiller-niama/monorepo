@@ -4,12 +4,12 @@
   import { PUBLIC_LAYOUT } from "@niama/ui/public-layout";
   import { initialize } from "@niama/ui/root-layout";
   import { themeScript } from "@niama/ui/theme";
+  import { Sky } from "@niama/ui-svelte/sky";
   import { Button } from "@niama/ui-svelte/ui/button";
   import { Toaster } from "@niama/ui-svelte/ui/sonner";
   import { onMount } from "svelte";
   import { page } from "$app/state";
   import favicon from "$lib/assets/favicon.svg";
-  import Sky from "$lib/components/sky.svelte";
   import TheFooter from "$lib/components/the-footer.svelte";
   import TheHeader from "$lib/components/the-header.svelte";
   import "../styles.css";

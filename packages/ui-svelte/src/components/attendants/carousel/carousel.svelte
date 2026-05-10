@@ -2,12 +2,12 @@
   import type { Attendants } from "@niama/domain/functions/attendants";
   import { ATTENDANT, ATTENDANTS, AUTOPLAY, ROTATIONS } from "@niama/ui/attendants/carousel";
   import { createCarouselStore } from "@niama/ui/carousel";
+  import { DisciplinesBadge } from "@niama/ui-svelte/disciplines/badge";
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui-svelte/ui/card";
   import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui-svelte/ui/carousel";
   import { Image } from "@unpic/svelte";
   import Autoplay from "embla-carousel-autoplay";
   import Ssr from "embla-carousel-ssr";
-  import DisciplinesBadge from "$lib/components/disciplines/badge.svelte";
 
   let { items }: { items: Attendants["Entity"][] } = $props();
   let flippedName = $state<string | undefined>();
