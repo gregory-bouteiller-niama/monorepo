@@ -2,8 +2,8 @@
   import type { Contacts } from "@niama/domain/functions/contacts";
   import { INDEX_PAGE, nativeHashUpdater, updateHash } from "@niama/ui/index-page";
   import { ContactForm } from "@niama/ui-svelte/contact-form";
-  import { Section } from "@niama/ui-svelte/section";
-  import { Separator } from "@niama/ui-svelte/separator";
+  import { Section } from "@niama/ui-svelte/ui/section";
+  import { Separator } from "@niama/ui-svelte/ui/separator";
   import { onMount } from "svelte";
   import { toast } from "svelte-sonner";
   import AttendantsCarousel from "$lib/components/attendants/carousel.svelte";

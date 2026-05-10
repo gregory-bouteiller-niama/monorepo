@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { ReadLegalPageProps } from "@niama/domain/functions/pages";
-  import { Button } from "@niama/ui-svelte/button";
-  import { Card, CardContent, CardHeader, CardTitle } from "@niama/ui-svelte/card";
-  import { Section } from "@niama/ui-svelte/section";
+  import { Button } from "@niama/ui-svelte/ui/button";
+  import { Card, CardContent, CardHeader, CardTitle } from "@niama/ui-svelte/ui/card";
+  import { Section } from "@niama/ui-svelte/ui/section";
 
   type LegalSectionProps = ReadLegalPageProps["legal"] | ReadLegalPageProps["privacy"];
 

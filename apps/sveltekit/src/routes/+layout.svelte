@@ -4,8 +4,8 @@
   import { PUBLIC_LAYOUT } from "@niama/ui/public-layout";
   import { initialize } from "@niama/ui/root-layout";
   import { themeScript } from "@niama/ui/theme";
-  import { Button } from "@niama/ui-svelte/button";
-  import { Toaster } from "@niama/ui-svelte/sonner";
+  import { Button } from "@niama/ui-svelte/ui/button";
+  import { Toaster } from "@niama/ui-svelte/ui/sonner";
   import { onMount } from "svelte";
   import { page } from "$app/state";
   import favicon from "$lib/assets/favicon.svg";
