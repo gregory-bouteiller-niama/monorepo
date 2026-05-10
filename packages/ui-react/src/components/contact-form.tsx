@@ -1,15 +1,8 @@
 import { type Contacts, defaultContactCreateValues, zContactCreateValues } from "@niama/domain/functions/contacts";
+import { CONTACT } from "@niama/ui/contact-form";
 import { useAppForm } from "@niama/ui-react/hooks/form";
 import { Card, CardContent } from "@niama/ui-react/ui/card";
 import { FieldDescription, FieldGroup, FieldLegend, FieldSeparator, FieldSet } from "@niama/ui-react/ui/field";
-import { cva } from "class-variance-authority";
-
-// STYLES ----------------------------------------------------------------------------------------------------------------------------------
-const CONTACT = {
-  card: cva("@container relative w-full max-w-xl border-0 ring-0"),
-  description: cva("italic"),
-  form: cva("flex w-full flex-col items-center gap-4"),
-};
 
 // MAIN ------------------------------------------------------------------------------------------------------------------------------------
 export function ContactForm({ onSubmit, onSuccess }: ContactFormProps) {

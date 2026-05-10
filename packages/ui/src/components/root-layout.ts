@@ -1,7 +1,6 @@
 import { applyTheme, bindThemeApplication, watchSystemTheme, watchThemeStorage } from "./theme";
 
 export const initialize = () => {
-  console.log("IN ROOT INIT");
   const cleanScrolled = initializeScrolled();
   const cleanTheme = initializeTheme();
 

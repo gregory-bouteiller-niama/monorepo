@@ -1,241 +1,91 @@
+<script lang="ts" module>
+  export type ContactFormProps = {
+    onSubmit: (value: Contacts["CreateValues"]) => Promise<void>;
+    onSuccess?: () => void;
+  };
+</script>
+
 <script lang="ts">
   import { type Contacts, defaultContactCreateValues, zContactCreateValues } from "@niama/domain/functions/contacts";
-  import { Button } from "@niama/ui-svelte/ui/button";
+  import { CONTACT } from "@niama/ui/contact-form";
+  import { createAppForm } from "@niama/ui-svelte/hooks/form";
   import { Card, CardContent } from "@niama/ui-svelte/ui/card";
-  import { Input } from "@niama/ui-svelte/ui/input";
-  import { Label } from "@niama/ui-svelte/ui/label";
-  import { Select } from "@niama/ui-svelte/ui/select";
-  import { Textarea } from "@niama/ui-svelte/ui/textarea";
-  import { createForm } from "@tanstack/svelte-form";
-  import { cva } from "class-variance-authority";
-
-  const CONTACT = {
-    card: cva("@container relative w-full max-w-xl border-0 ring-0"),
-    description: cva("italic"),
-    error: cva("text-center text-destructive text-sm"),
-    field: cva("flex w-full flex-col gap-2"),
-    fieldset: cva("flex w-full flex-col gap-4"),
-    form: cva("flex w-full flex-col items-center gap-4"),
-    grid: cva("grid w-full grid-cols-1 gap-3 sm:grid-cols-2"),
-    legend: cva("text-center font-heading text-3xl"),
-    separator: cva("h-px w-full bg-border"),
-    submit: cva("min-w-56 uppercase tracking-widest"),
-  };
+  import { FieldDescription, FieldGroup, FieldLegend, FieldSeparator, FieldSet } from "@niama/ui-svelte/ui/field";
 
   const subjects = [
     { label: "Commencer mon parcours", value: "discipline" },
     { label: "Devenir accompagnant", value: "attendant" },
     { label: "Poser une question", value: "question" },
-  ] as const;
-
-  type ContactFormProps = {
-    onSubmit: (value: Contacts["CreateValues"]) => Promise<void>;
-    onSuccess?: () => void;
-  };
+  ];
 
   let { onSubmit, onSuccess }: ContactFormProps = $props();
-  let submitError = $state<string | undefined>(undefined);
 
-  const form = createForm(() => ({
+  const form = createAppForm(() => ({
     defaultValues: defaultContactCreateValues,
     onSubmit: async ({ value }) => {
-      submitError = undefined;
-
-      try {
-        await onSubmit(value);
-        form.reset();
-        onSuccess?.();
-      } catch (error) {
-        submitError = error instanceof Error ? error.message : "Une erreur est survenue.";
-      }
+      await onSubmit(value);
+      form.reset();
+      onSuccess?.();
     },
   }));
-
-  const fieldError = (errors: unknown[]) => {
-    const first = errors[0];
-    return typeof first === "string" ? first : undefined;
-  };
 </script>
 
 <Card class={CONTACT.card()}>
   <CardContent>
     <form
       class={CONTACT.form()}
-      novalidate
+      noValidate
       onsubmit={(event) => {
-				event.preventDefault();
-				event.stopPropagation();
-				form.handleSubmit();
-			}}
+        event.preventDefault();
+        form.handleSubmit();
+      }}
     >
-      <form.Field name="forename" validators={{ onChange: zContactCreateValues.shape.forename }}>
-        {#snippet children(forename)}
-          <form.Field name="surname" validators={{ onChange: zContactCreateValues.shape.surname }}>
-            {#snippet children(surname)}
-              <form.Field name="email" validators={{ onChange: zContactCreateValues.shape.email }}>
-                {#snippet children(email)}
-                  <form.Field name="subject" validators={{ onChange: zContactCreateValues.shape.subject }}>
-                    {#snippet children(subject)}
-                      <form.Field name="discipline" validators={{ onChange: zContactCreateValues.shape.discipline }}>
-                        {#snippet children(discipline)}
-                          <form.Field name="message" validators={{ onChange: zContactCreateValues.shape.message }}>
-                            {#snippet children(message)}
-                              <fieldset class={CONTACT.fieldset()}>
-                                <legend class={CONTACT.legend()}>Votre demande</legend>
-                                <p class={CONTACT.description()}>- tous les champs sont obligatoires -</p>
-
-                                <div class={CONTACT.grid()}>
-                                  <div class={CONTACT.field()}>
-                                    <Label for={forename.name}>Prénom</Label>
-                                    <Input
-                                      aria-invalid={forename.state.meta.errors.length > 0}
-                                      id={forename.name}
-                                      name={forename.name}
-                                      onblur={forename.handleBlur}
-                                      oninput={(event) => forename.handleChange((event.currentTarget as HTMLInputElement).value)}
-                                      type="text"
-                                      value={forename.state.value}
-                                    />
-                                    {#if forename.state.meta.isTouched && fieldError(forename.state.meta.errors)}
-                                      <p class={CONTACT.error()} role="alert">{fieldError(forename.state.meta.errors)}</p>
-                                    {/if}
-                                  </div>
-
-                                  <div class={CONTACT.field()}>
-                                    <Label for={surname.name}>Nom</Label>
-                                    <Input
-                                      aria-invalid={surname.state.meta.errors.length > 0}
-                                      id={surname.name}
-                                      name={surname.name}
-                                      onblur={surname.handleBlur}
-                                      oninput={(event) => surname.handleChange((event.currentTarget as HTMLInputElement).value)}
-                                      type="text"
-                                      value={surname.state.value}
-                                    />
-                                    {#if surname.state.meta.isTouched && fieldError(surname.state.meta.errors)}
-                                      <p class={CONTACT.error()} role="alert">{fieldError(surname.state.meta.errors)}</p>
-                                    {/if}
-                                  </div>
-                                </div>
-
-                                <div class={CONTACT.field()}>
-                                  <Label for={email.name}>Courriel</Label>
-                                  <Input
-                                    aria-invalid={email.state.meta.errors.length > 0}
-                                    id={email.name}
-                                    name={email.name}
-                                    onblur={email.handleBlur}
-                                    oninput={(event) => email.handleChange((event.currentTarget as HTMLInputElement).value)}
-                                    type="email"
-                                    value={email.state.value}
-                                  />
-                                  {#if email.state.meta.isTouched && fieldError(email.state.meta.errors)}
-                                    <p class={CONTACT.error()} role="alert">{fieldError(email.state.meta.errors)}</p>
-                                  {/if}
-                                </div>
-
-                                <div class={CONTACT.separator()}></div>
-
-                                <div class={CONTACT.grid()}>
-                                  <div class={CONTACT.field()}>
-                                    <Label for={subject.name}>Sujet</Label>
-                                    <Select
-                                      aria-invalid={subject.state.meta.errors.length > 0}
-                                      id={subject.name}
-                                      name={subject.name}
-                                      onblur={subject.handleBlur}
-                                      onchange={(event) =>
-																				subject.handleChange(
-																					(event.currentTarget as HTMLSelectElement).value as Contacts["CreateValues"]["subject"],
-																				)}
-                                      value={subject.state.value}
-                                    >
-                                      {#each subjects as item}
-                                        <option value={item.value}>{item.label}</option>
-                                      {/each}
-                                    </Select>
-                                    {#if subject.state.meta.isTouched && fieldError(subject.state.meta.errors)}
-                                      <p class={CONTACT.error()} role="alert">{fieldError(subject.state.meta.errors)}</p>
-                                    {/if}
-                                  </div>
-
-                                  <div class={CONTACT.field()}>
-                                    <Label for={discipline.name}>Voie</Label>
-                                    <Select
-                                      aria-invalid={discipline.state.meta.errors.length > 0}
-                                      id={discipline.name}
-                                      name={discipline.name}
-                                      onblur={discipline.handleBlur}
-                                      onchange={(event) =>
-																				discipline.handleChange(
-																					(event.currentTarget as HTMLSelectElement).value as Contacts["CreateValues"]["discipline"],
-																				)}
-                                      value={discipline.state.value}
-                                    >
-                                      <option value="unknown">Je ne sais pas encore</option>
-                                      <option value="yogart">Yog'art</option>
-                                      <option value="anima">Hypnose spirituelle</option>
-                                      <option value="animus">Hormèse subtile</option>
-                                      <option value="astro">Astro</option>
-                                      <option value="new">Autre voie</option>
-                                    </Select>
-                                    {#if discipline.state.meta.isTouched && fieldError(discipline.state.meta.errors)}
-                                      <p class={CONTACT.error()} role="alert">{fieldError(discipline.state.meta.errors)}</p>
-                                    {/if}
-                                  </div>
-                                </div>
-
-                                <div class={CONTACT.field()}>
-                                  <Label for={message.name}>Message</Label>
-                                  <Textarea
-                                    aria-invalid={message.state.meta.errors.length > 0}
-                                    id={message.name}
-                                    name={message.name}
-                                    onblur={message.handleBlur}
-                                    oninput={(event) => message.handleChange((event.currentTarget as HTMLTextAreaElement).value)}
-                                    rows={6}
-                                    value={message.state.value}
-                                  />
-                                  {#if message.state.meta.isTouched && fieldError(message.state.meta.errors)}
-                                    <p class={CONTACT.error()} role="alert">{fieldError(message.state.meta.errors)}</p>
-                                  {/if}
-                                </div>
-
-                                {#if submitError}
-                                  <p class={CONTACT.error()} role="alert">{submitError}</p>
-                                {/if}
-                              </fieldset>
-
-                              <form.Subscribe
-                                selector={(state) => ({
-																	canSubmit: state.canSubmit,
-																	isSubmitting: state.isSubmitting,
-																})}
-                              >
-                                {#snippet children(state)}
-                                  <Button
-                                    aria-disabled={!state.canSubmit || state.isSubmitting}
-                                    class={CONTACT.submit()}
-                                    disabled={state.isSubmitting}
-                                    type="submit"
-                                    variant="outline"
-                                  >
-                                    {state.isSubmitting ? "Envoi..." : "Envoyer"}
-                                  </Button>
-                                {/snippet}
-                              </form.Subscribe>
-                            {/snippet}
-                          </form.Field>
-                        {/snippet}
-                      </form.Field>
-                    {/snippet}
-                  </form.Field>
+      <form.AppForm>
+        <FieldGroup>
+          <FieldSet>
+            <FieldLegend>Votre demande</FieldLegend>
+            <FieldDescription class={CONTACT.description()}>- tous les champs sont obligatoires -</FieldDescription>
+            <div class="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
+              <form.AppField name="forename" validators={{ onChange: zContactCreateValues.shape.forename }}>
+                {#snippet children({InputField})}
+                  <InputField label="Prénom" type="text" />
                 {/snippet}
-              </form.Field>
-            {/snippet}
-          </form.Field>
-        {/snippet}
-      </form.Field>
+              </form.AppField>
+              <form.AppField name="surname" validators={{ onChange: zContactCreateValues.shape.surname }}>
+                {#snippet children({InputField})}
+                  <InputField label="Nom" type="text" />
+                {/snippet}
+              </form.AppField>
+            </div>
+            <form.AppField name="email" validators={{ onChange: zContactCreateValues.shape.email }}>
+              {#snippet children({InputField})}
+                <InputField label="Courriel" type="email" />
+              {/snippet}
+            </form.AppField>
+          </FieldSet>
+          <FieldSeparator />
+          <FieldSet>
+            <div class="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
+              <form.AppField name="subject" validators={{ onChange: zContactCreateValues.shape.subject }}>
+                {#snippet children({SelectField})}
+                  <SelectField defaultValue="discipline" items={subjects} label="Sujet" placeholder="Sujet" />
+                {/snippet}
+              </form.AppField>
+              <form.AppField name="discipline" validators={{ onChange: zContactCreateValues.shape.discipline }}>
+                {#snippet children({DisciplinesSelectField})}
+                  <DisciplinesSelectField />
+                {/snippet}
+              </form.AppField>
+            </div>
+            <form.AppField name="message" validators={{ onChange: zContactCreateValues.shape.message }}>
+              {#snippet children({TextareaField})}
+                <TextareaField label="Message" />
+              {/snippet}
+            </form.AppField>
+          </FieldSet>
+        </FieldGroup>
+        <form.Submit />
+      </form.AppForm>
     </form>
   </CardContent>
 </Card>

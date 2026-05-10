@@ -7,7 +7,7 @@ import { AttendantsCarousel } from "@niama/ui-astro/attendants/carousel";
 import { DisciplinesCarousel } from "@niama/ui-astro/disciplines/carousel";
 import { Section } from "@niama/ui-svelte/ui/section";
 import { Separator } from "@niama/ui-svelte/ui/separator";
-import ContactForm from "@/components/contact-form.svelte";
+import ContactForm from "@/pages/index/_contact-form.svelte";
 import PublicLayout from "./_public.astro";
 
 const { attendants, contact, disciplines, hero } = readIndexPage();
@@ -28,7 +28,7 @@ const { attendants, contact, disciplines, hero } = readIndexPage();
       <AttendantsCarousel items={attendants.items} />
     </Section>
     <Section id="contact" title={contact.title} description={contact.description} withSeparator>
-      <ContactForm client:visible />
+      <ContactForm client:only="svelte" />
       <Separator class="self-center! mb-34 h-24" orientation="vertical" />
     </Section>
   </div>
