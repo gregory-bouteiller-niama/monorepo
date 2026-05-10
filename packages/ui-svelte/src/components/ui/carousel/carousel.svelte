@@ -1,18 +1,20 @@
+<script lang="ts" module>
+  import type { WithElementRef } from "@niama/ui-svelte/lib/utils";
+  import type { HTMLAttributes } from "svelte/elements";
+  import type { CarouselOptions, CarouselPlugins, CarouselStore } from "./context";
+
+  export type CarouselProps = { opts?: CarouselOptions; plugins?: CarouselPlugins; store?: CarouselStore } & WithElementRef<
+    HTMLAttributes<HTMLElement>
+  >;
+</script>
+
 <script lang="ts">
   import { CAROUSEL, createCarouselStore } from "@niama/ui/carousel";
-  import { cn, type WithElementRef } from "@niama/ui-svelte/lib/utils";
+  import { cn } from "@niama/ui-svelte/lib/utils";
   import { useSelector as readStore } from "@tanstack/svelte-store";
-  import { type CarouselProps, setEmblaContext } from "./context";
+  import { setEmblaContext } from "./context";
 
-  let {
-    ref = $bindable(null),
-    store,
-    opts = {},
-    plugins = [],
-    class: className,
-    children,
-    ...restProps
-  }: WithElementRef<CarouselProps> = $props();
+  let { ref = $bindable(null), store, opts = {}, plugins = [], class: className, children, ...restProps }: CarouselProps = $props();
 
   const carouselStore = store ?? createCarouselStore(opts, plugins);
   const carouselOpts = readStore(carouselStore, (state) => state.opts);

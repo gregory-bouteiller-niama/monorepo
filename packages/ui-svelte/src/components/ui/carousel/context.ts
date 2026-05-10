@@ -1,14 +1,12 @@
 import type { CarouselActions, CarouselState, createCarouselStore } from "@niama/ui/carousel";
-import type { WithElementRef } from "@niama/ui-svelte/utils";
 import type { Store } from "@tanstack/store";
 import { getContext, hasContext, setContext } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
 
 // CONTEXT ---------------------------------------------------------------------------------------------------------------------------------
 const CTX = Symbol("CAROUSEL_CTX");
 
-export function getEmblaContext(name = "This component") {
-  if (!hasContext(CTX)) throw new Error(`${name} must be used within a <Carousel.Root> component`);
+export function getEmblaContext() {
+  if (!hasContext(CTX)) throw new Error("Must be used within a <Carousel> component");
   return getContext<CarouselContextProps>(CTX);
 }
 
@@ -23,12 +21,6 @@ type EmblaCarouselConfig = Parameters<typeof createCarouselStore>[0];
 export type CarouselOptions = EmblaCarouselConfig;
 export type CarouselPlugins = Parameters<typeof createCarouselStore>[1];
 export type CarouselStore = ReturnType<typeof createCarouselStore>;
-
-export type CarouselProps = {
-  store?: CarouselStore;
-  opts?: CarouselOptions;
-  plugins?: CarouselPlugins;
-} & WithElementRef<HTMLAttributes<HTMLElement>>;
 
 export type CarouselContextProps = {
   store: Store<CarouselState, CarouselActions>;

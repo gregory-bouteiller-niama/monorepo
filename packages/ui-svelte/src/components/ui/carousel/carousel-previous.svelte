@@ -1,23 +1,22 @@
+<script lang="ts" module>
+  import type { ButtonProps } from "@niama/ui-svelte/ui/button";
+  import type { WithoutChildren } from "bits-ui";
+
+  export type CarouselPreviousProps = WithoutChildren<ButtonProps>;
+</script>
+
 <script lang="ts">
   import { CAROUSEL } from "@niama/ui/carousel";
   import { cn } from "@niama/ui-svelte/lib/utils";
-  import { IconChevronLeft } from "@tabler/icons-svelte";
-  import { useSelector as readStore } from "@tanstack/svelte-store";
-  import type { WithoutChildren } from "bits-ui";
-  import { Button, type ButtonProps } from "../button";
+  import { Button } from "@niama/ui-svelte/ui/button";
+  import { useSelector } from "@tanstack/svelte-store";
   import { getEmblaContext } from "./context";
 
-  let {
-    ref = $bindable(null),
-    class: className,
-    variant = "outline",
-    size = "icon-sm",
-    ...restProps
-  }: WithoutChildren<ButtonProps> = $props();
+  let { ref = $bindable(null), class: className, variant = "outline", size = "icon-sm", ...restProps }: CarouselPreviousProps = $props();
 
-  const { store: carouselStore } = getEmblaContext("<Carousel.Previous/>");
-  const canGoToPrev = readStore(carouselStore, (state) => state.canGoToPrev);
-  const api = readStore(carouselStore, (state) => state.api);
+  const { store: carouselStore } = getEmblaContext();
+  const canGoToPrev = useSelector(carouselStore, (state) => state.canGoToPrev);
+  const api = useSelector(carouselStore, (state) => state.api);
 </script>
 
 <Button
@@ -30,6 +29,6 @@
   bind:ref
   {...restProps}
 >
-  <IconChevronLeft />
-  <span class="sr-only">Previous slide</span>
+  <span class="icon-[tabler--chevron-left]"></span>
+  <span class="sr-only">Précédent</span>
 </Button>

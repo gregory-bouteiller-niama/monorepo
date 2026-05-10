@@ -2,9 +2,7 @@
   import type { WithElementRef } from "@niama/ui-svelte/lib/utils";
   import type { HTMLAttributes } from "svelte/elements";
 
-  export type CarouselContentProps = WithElementRef<HTMLAttributes<HTMLDivElement>> & {
-    viewportClass?: string;
-  };
+  export type CarouselContentProps = WithElementRef<HTMLAttributes<HTMLDivElement>> & { viewportClass?: string };
 </script>
 
 <script lang="ts">
@@ -24,7 +22,7 @@
   let { ref = $bindable(null), class: className, viewportClass, children, ...restProps }: CarouselContentProps = $props();
 
   let containerRef = $state<HTMLElement | null>(null);
-  const { store: carouselStore } = getEmblaContext("<Carousel.Content/>");
+  const { store: carouselStore } = getEmblaContext();
 
   const opts = readStore(carouselStore, (state) => state.opts);
   const plugins = readStore(carouselStore, (state) => state.plugins);

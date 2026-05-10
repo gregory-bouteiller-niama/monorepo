@@ -10,8 +10,8 @@
   import { onMount } from "svelte";
   import { page } from "$app/state";
   import favicon from "$lib/assets/favicon.svg";
-  import TheFooter from "$lib/components/the-footer.svelte";
-  import TheHeader from "$lib/components/the-header.svelte";
+  import TheFooter from "./the-footer.svelte";
+  import TheHeader from "./the-header.svelte";
   import "../styles.css";
 
   let { children, data } = $props();
