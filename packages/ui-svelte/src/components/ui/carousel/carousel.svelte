@@ -11,13 +11,13 @@
 <script lang="ts">
   import { CAROUSEL, createCarouselStore } from "@niama/ui/carousel";
   import { cn } from "@niama/ui-svelte/lib/utils";
-  import { useSelector as readStore } from "@tanstack/svelte-store";
+  import { useSelector } from "@tanstack/svelte-store";
   import { setEmblaContext } from "./context";
 
   let { ref = $bindable(null), store, opts = {}, plugins = [], class: className, children, ...restProps }: CarouselProps = $props();
 
   const carouselStore = store ?? createCarouselStore(opts, plugins);
-  const carouselOpts = readStore(carouselStore, (state) => state.opts);
+  const carouselOpts = useSelector(carouselStore, (state) => state.opts);
 
   setEmblaContext({ store: carouselStore });
 

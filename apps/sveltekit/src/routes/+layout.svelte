@@ -22,15 +22,15 @@
   const skipTo = $derived.by(() => (page.data as { skipTo?: string }).skipTo ?? "#main");
   const canonicalUrl = $derived.by(() => new URL(page.url.pathname, SEO.url).toString());
 
-  onMount(() => {
-    const cleanLayout = initialize();
-    const glowCleaners = bindGlows();
+  // onMount(() => {
+  //   const cleanLayout = initialize();
+  //   const glowCleaners = bindGlows();
 
-    return () => {
-      cleanLayout();
-      for (const cleanGlow of glowCleaners) cleanGlow();
-    };
-  });
+  //   return () => {
+  //     cleanLayout();
+  //     for (const cleanGlow of glowCleaners) cleanGlow();
+  //   };
+  // });
 </script>
 
 <svelte:head>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { SEPARATOR } from "@niama/ui/separator";
   import { cn } from "@niama/ui-svelte/lib/utils";
   import { Separator as SeparatorPrimitive } from "bits-ui";
 
@@ -10,14 +11,4 @@
   }: SeparatorPrimitive.RootProps = $props();
 </script>
 
-<SeparatorPrimitive.Root
-  bind:ref
-  data-slot={dataSlot}
-  class={cn(
-		"bg-border shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-px",
-		// this is different in shadcn/ui but self-stretch breaks things for us
-		"data-[orientation=vertical]:h-full",
-		className
-	)}
-  {...restProps}
-/>
+<SeparatorPrimitive.Root bind:ref data-slot={dataSlot} class={cn(SEPARATOR.base(),  className)} {...restProps} />

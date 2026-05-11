@@ -8,6 +8,7 @@
   import { Separator } from "@niama/ui-svelte/ui/separator";
   import { onMount } from "svelte";
   import { toast } from "svelte-sonner";
+  import { goto } from "$app/navigation";
 
   let { data } = $props();
 
@@ -26,7 +27,7 @@
     throw new Error(payload?.error ?? "Une erreur est survenue.");
   };
 
-  onMount(() => updateHash(nativeHashUpdater));
+  onMount(() => updateHash((hash) => goto(`#${hash}`, { replaceState: true, noScroll: true })));
 </script>
 
 <div class={INDEX_PAGE.base()}>
