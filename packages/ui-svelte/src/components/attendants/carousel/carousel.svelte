@@ -65,7 +65,12 @@
     <div class={ATTENDANT.overlay()}>
       <span class={ATTENDANT.icon()}></span>
     </div>
-    <Image {...item.image} operations={{ imagekit: { f: "avif" } }} sizes="(min-width: 640px) 420px, 100vw" />
+    <Image
+      {...item.image}
+      operations={{ imagekit: { f: "avif", q: 80 } }}
+      breakpoints={[420, 840]}
+      sizes="(min-width: 640px) 420px, 100vw"
+    />
   </CardContent>
 {/snippet}
 

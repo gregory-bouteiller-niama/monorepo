@@ -57,7 +57,12 @@ function AttendantItem({ index, isFlipped, item, onToggle }: AttendantItemProps)
           <div className={ATTENDANT.overlay()}>
             <span className={ATTENDANT.icon()} />
           </div>
-          <Image {...item.image} operations={{ imagekit: { f: "avif" } }} sizes="(min-width: 640px) 420px, 100vw" />
+          <Image
+            {...item.image}
+            breakpoints={[420, 840]}
+            operations={{ imagekit: { f: "avif", q: 80 } }}
+            sizes="(min-width: 640px) 420px, 100vw"
+          />
         </CardContent>
       </AttendantItemCard>
       <AttendantItemCard data-back item={item}>
