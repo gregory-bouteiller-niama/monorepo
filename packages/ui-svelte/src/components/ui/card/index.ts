@@ -1,5 +1,5 @@
 /** biome-ignore-all lint/performance/noBarrelFile: false positive */
-export { default as Card } from "./card.svelte";
+export { type CardProps, default as Card } from "./card.svelte";
 export { default as CardAction } from "./card-action.svelte";
 export { default as CardContent } from "./card-content.svelte";
 export { default as CardDescription } from "./card-description.svelte";
