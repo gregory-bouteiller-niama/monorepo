@@ -5,12 +5,12 @@ import { getContext, hasContext, setContext } from "svelte";
 // CONTEXT ---------------------------------------------------------------------------------------------------------------------------------
 const CTX = Symbol("CAROUSEL_CTX");
 
-export function getEmblaContext() {
+export function getCarouselContext() {
   if (!hasContext(CTX)) throw new Error("Must be used within a <Carousel> component");
   return getContext<CarouselContextProps>(CTX);
 }
 
-export function setEmblaContext(config: CarouselContextProps): CarouselContextProps {
+export function setCarouselContext(config: CarouselContextProps): CarouselContextProps {
   setContext(CTX, config);
   return config;
 }

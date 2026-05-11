@@ -1,41 +1,28 @@
 <script lang="ts" module>
+  import { CAROUSEL } from "@niama/ui/carousel";
   import type { WithElementRef } from "@niama/ui-svelte/lib/utils";
+  import { cn } from "@niama/ui-svelte/lib/utils";
+  import { untrack } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
-  import type { CarouselOptions, CarouselPlugins, CarouselStore } from "./context";
+  import { type CarouselStore, setCarouselContext } from "./context";
 
-  export type CarouselProps = { opts?: CarouselOptions; plugins?: CarouselPlugins; store?: CarouselStore } & WithElementRef<
-    HTMLAttributes<HTMLElement>
-  >;
+  export type CarouselProps = { store: CarouselStore } & WithElementRef<HTMLAttributes<HTMLElement>>;
 </script>
 
 <script lang="ts">
-  import { CAROUSEL, createCarouselStore } from "@niama/ui/carousel";
-  import { cn } from "@niama/ui-svelte/lib/utils";
-  import { useSelector } from "@tanstack/svelte-store";
-  import { setEmblaContext } from "./context";
+  let { ref = $bindable(null), store, class: className, children, ...restProps }: CarouselProps = $props();
 
-  let { ref = $bindable(null), store, opts = {}, plugins = [], class: className, children, ...restProps }: CarouselProps = $props();
-
-  const carouselStore = store ?? createCarouselStore(opts, plugins);
-  const carouselOpts = useSelector(carouselStore, (state) => state.opts);
-
-  setEmblaContext({ store: carouselStore });
-
-  $effect(() => {
-    if (store) return;
-    carouselStore.setState((prev) => ({ ...prev, opts, plugins }));
-    carouselStore.state.api?.reInit(opts, plugins);
-  });
+  const initialStore = untrack(() => store);
+  setCarouselContext({ store: initialStore });
 </script>
 
 <section
   bind:this={ref}
   aria-roledescription="carousel"
   class={cn(CAROUSEL.base(), className)}
-  data-axis={carouselOpts.current.axis ?? "x"}
+  data-axis={store.state.opts.axis ?? "x"}
   data-slot="carousel"
-  onkeydowncapture={carouselStore.actions.handleKeydown}
-  role="region"
+  onkeydowncapture={store.actions.handleKeydown}
   {...restProps}
 >
   {@render children?.()}
