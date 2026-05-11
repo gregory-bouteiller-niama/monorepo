@@ -3,7 +3,7 @@
 @import "@fontsource-variable/outfit";
 @import "@fontsource/cormorant-upright";
 
-@source "./**/*.{ts,svelte}";
+@source "./**/*.{ts,svelte,html}";
 @source "../../../packages/ui-svelte/src/components/**/*.{ts,svelte}";
 @source "../../../packages/ui/src/components/**/*.ts";
 @source "../../../packages/domain/src/**/*.ts";

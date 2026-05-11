@@ -1,17 +1,20 @@
-<script lang="ts">
+<script lang="ts" module>
   import type { Disciplines } from "@niama/domain/functions/disciplines";
   import { createCarouselStore } from "@niama/ui/carousel";
-  import { AUTOPLAY, DISCIPLINE, DISCIPLINES } from "@niama/ui/disciplines/carousel";
-  import { GLOW } from "@niama/ui/glow";
-  import { cn } from "@niama/ui-svelte/lib/utils";
-  import { Card } from "@niama/ui-svelte/ui/card";
+  import { AUTOPLAY, DISCIPLINES } from "@niama/ui/disciplines/carousel";
   import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui-svelte/ui/carousel";
-  import { Logo } from "@niama/ui-svelte/ui/logo";
   import Autoplay from "embla-carousel-autoplay";
   import Ssr from "embla-carousel-ssr";
+  import DisciplinesItem from "./carousel.item.svelte";
 
-  let { items }: { items: Disciplines["Entity"][] } = $props();
+  export type DisciplinesCarouselProps = { items: Disciplines["Entity"][] };
+</script>
 
+<script lang="ts">
+  // PROPS ---------------------------------------------------------------------------------------------------------------------------------
+  let { items }: DisciplinesCarouselProps = $props();
+
+  // STORE ---------------------------------------------------------------------------------------------------------------------------------
   const store = createCarouselStore({ loop: true }, [Autoplay({ delay: AUTOPLAY }), Ssr()]);
 </script>
 
@@ -20,15 +23,7 @@
     <CarouselContent>
       {#each items as item (item.slug)}
         <CarouselItem class={DISCIPLINES.item()}>
-          <Card class={cn(GLOW(), DISCIPLINE.base())} data-discipline={item.slug} data-glow>
-            <div class={DISCIPLINE.media()}><Logo class={DISCIPLINE.logo()} discipline={item} /></div>
-            <div class={DISCIPLINE.content()}>
-              <h3 class={DISCIPLINE.title()}>{item.title}</h3>
-              {#each item.description as sentence (sentence)}
-                <p class={DISCIPLINE.description()}>{sentence}</p>
-              {/each}
-            </div>
-          </Card>
+          <DisciplinesItem {item} />
         </CarouselItem>
       {/each}
     </CarouselContent>

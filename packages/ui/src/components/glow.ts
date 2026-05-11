@@ -29,7 +29,7 @@ export const moveGlowTo = (el: HTMLElement | null, x: number, y: number) => {
 // NATIVE ----------------------------------------------------------------------------------------------------------------------------------
 export const bindGlows = () =>
   Array.from(document.querySelectorAll<HTMLElement>("[data-glow]")).map((el) => {
-    if (!el || el.dataset.initialized === "true") return () => {};
+    if (!el || el.dataset.initialized === "true") return () => undefined;
     el.dataset.initialized = "true";
     initializeGlow(el);
 
