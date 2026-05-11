@@ -1,6 +1,6 @@
 import { readAllDisciplines } from "@niama/domain/functions/disciplines";
+import { Field } from "@niama/ui-react/form/field";
 import { useFieldContext } from "@niama/ui-react/hooks/form-context";
-import { Field } from "@niama/ui-react/ui/field";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@niama/ui-react/ui/select";
 
 // MAIN ------------------------------------------------------------------------------------------------------------------------------------
