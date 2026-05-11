@@ -27,25 +27,33 @@ export const moveGlowTo = (el: HTMLElement | null, x: number, y: number) => {
 };
 
 // NATIVE ----------------------------------------------------------------------------------------------------------------------------------
+export const bindGlow = (el: HTMLElement) => {
+  initializeGlow(el);
+
+  const handlePointerMove = ({ clientX, clientY }: PointerEvent) => moveGlowTo(el, clientX, clientY);
+  const handlePointerEnter = ({ clientX, clientY }: PointerEvent) => showGlowAt(el, clientX, clientY);
+  const handlePointerLeave = () => hideGlow(el);
+
+  el.addEventListener("pointermove", handlePointerMove);
+  el.addEventListener("pointerenter", handlePointerEnter);
+  el.addEventListener("pointerleave", handlePointerLeave);
+
+  return () => {
+    el.removeEventListener("pointermove", handlePointerMove);
+    el.removeEventListener("pointerenter", handlePointerEnter);
+    el.removeEventListener("pointerleave", handlePointerLeave);
+  };
+};
+
 export const bindGlows = () =>
   Array.from(document.querySelectorAll<HTMLElement>("[data-glow]")).map((el) => {
     if (!el || el.dataset.initialized === "true") return () => undefined;
     el.dataset.initialized = "true";
-    initializeGlow(el);
-
-    const handlePointerMove = ({ clientX, clientY }: PointerEvent) => moveGlowTo(el, clientX, clientY);
-    const handlePointerEnter = ({ clientX, clientY }: PointerEvent) => showGlowAt(el, clientX, clientY);
-    const handlePointerLeave = () => hideGlow(el);
-
-    el.addEventListener("pointermove", handlePointerMove);
-    el.addEventListener("pointerenter", handlePointerEnter);
-    el.addEventListener("pointerleave", handlePointerLeave);
+    const unbind = bindGlow(el);
 
     return () => {
+      unbind();
       delete el.dataset.initialized;
-      el.removeEventListener("pointermove", handlePointerMove);
-      el.removeEventListener("pointerenter", handlePointerEnter);
-      el.removeEventListener("pointerleave", handlePointerLeave);
     };
   });
 

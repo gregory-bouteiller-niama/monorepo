@@ -1,6 +1,5 @@
 <script lang="ts">
   import { createStructuredData, SEO } from "@niama/domain/functions/site";
-  import { bindGlows } from "@niama/ui/glow";
   import { PUBLIC_LAYOUT } from "@niama/ui/public-layout";
   import { initialize } from "@niama/ui/root-layout";
   import { themeScript } from "@niama/ui/theme";
@@ -22,15 +21,7 @@
   const skipTo = $derived.by(() => (page.data as { skipTo?: string }).skipTo ?? "#main");
   const canonicalUrl = $derived.by(() => new URL(page.url.pathname, SEO.url).toString());
 
-  onMount(() => {
-    const cleanLayout = initialize();
-    //   const glowCleaners = bindGlows();
-
-    return () => {
-      cleanLayout();
-      //     for (const cleanGlow of glowCleaners) cleanGlow();
-    };
-  });
+  onMount(initialize);
 </script>
 
 <svelte:head>
