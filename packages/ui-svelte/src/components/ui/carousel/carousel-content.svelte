@@ -5,7 +5,8 @@
   import type { EmblaCarouselType } from "embla-carousel";
   import carousel from "embla-carousel-svelte";
   import type { HTMLAttributes } from "svelte/elements";
-  import { getCarouselContext } from "./context";
+  import CarouselClones from "./carousel-clones.svelte";
+  import { getCarouselCtx } from "./context";
 
   export type CarouselContentProps = WithElementRef<HTMLAttributes<HTMLDivElement>> & { viewportClass?: string };
 </script>
@@ -13,7 +14,7 @@
 <script lang="ts">
   let { ref = $bindable(null), class: className, viewportClass, children, ...restProps }: CarouselContentProps = $props();
 
-  const { store } = getCarouselContext();
+  const store = getCarouselCtx();
 
   const opts = useSelector(store, (state) => state.opts);
   const plugins = useSelector(store, (state) => state.plugins);
@@ -32,7 +33,7 @@
   <div class={cn(CAROUSEL.content(), className)} data-slot="carousel-container" {...restProps}>
     {@render children?.()}
     {#if allSlidesClipped.current}
-      {@render children?.()}
+      <CarouselClones>{@render children?.()}</CarouselClones>
     {/if}
   </div>
 </div>

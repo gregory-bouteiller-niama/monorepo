@@ -1,4 +1,4 @@
-import { CLONE_ATTR, CLONE_ATTRS, type createCarouselStore, FOCUSABLE_SELECTOR, getOriginalSlideNodes } from "@niama/ui/carousel";
+import { type CarouselStore, CLONE_ATTR, CLONE_ATTRS, FOCUSABLE_SELECTOR, getOriginalSlideNodes } from "@niama/ui/carousel";
 import { subscribeSelector } from "@niama/ui/lib/stores/selector";
 import EmblaCarousel from "embla-carousel";
 
@@ -128,4 +128,3 @@ export function defineCarousel({ name, setup }: DefineCarouselArgs) {
   );
 }
 type DefineCarouselArgs = { name: string; setup: (rootElement: HTMLElement) => () => void };
-type CarouselStore = ReturnType<typeof createCarouselStore>;

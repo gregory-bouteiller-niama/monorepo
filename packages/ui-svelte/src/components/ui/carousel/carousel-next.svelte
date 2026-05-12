@@ -4,7 +4,7 @@
   import { cn } from "@niama/ui-svelte/lib/utils";
   import { Button, type ButtonProps } from "@niama/ui-svelte/ui/button";
   import type { WithoutChildren } from "bits-ui";
-  import { getCarouselContext } from "./context";
+  import { getCarouselCtx } from "./context";
 
   export type CarouselNextProps = WithoutChildren<ButtonProps>;
 </script>
@@ -12,7 +12,7 @@
 <script lang="ts">
   let { ref = $bindable(null), class: className, variant = "outline", size = "icon-sm", ...restProps }: CarouselNextProps = $props();
 
-  const { store } = getCarouselContext();
+  const store = getCarouselCtx();
   const canGoToNext = useSelector(store, (state) => state.canGoToNext);
   const api = useSelector(store, (state) => state.api);
 </script>

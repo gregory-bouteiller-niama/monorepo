@@ -1,10 +1,10 @@
 <script lang="ts" module>
-  import { CAROUSEL } from "@niama/ui/carousel";
+  import { CAROUSEL, type CarouselStore } from "@niama/ui/carousel";
   import type { WithElementRef } from "@niama/ui-svelte/lib/utils";
   import { cn } from "@niama/ui-svelte/lib/utils";
   import { untrack } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
-  import { type CarouselStore, setCarouselContext } from "./context";
+  import { setCarouselCtx } from "./context";
 
   export type CarouselProps = { store: CarouselStore } & WithElementRef<HTMLAttributes<HTMLElement>>;
 </script>
@@ -12,8 +12,7 @@
 <script lang="ts">
   let { ref = $bindable(null), store, class: className, children, ...restProps }: CarouselProps = $props();
 
-  const initialStore = untrack(() => store);
-  setCarouselContext({ store: initialStore });
+  setCarouselCtx(untrack(() => store));
 </script>
 
 <section
