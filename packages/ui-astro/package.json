@@ -17,13 +17,13 @@
     "clsx": "^2.1.1",
     "embla-carousel": "^9.0.0-rc02",
     "embla-carousel-autoplay": "^9.0.0-rc02",
-    "tailwind-merge": "^3.5.0",
+    "tailwind-merge": "^3.6.0",
     "tailwind-variants": "^3.2.2",
     "tailwindcss": "^4.3.0",
     "unpic": "^4.2.2"
   },
   "devDependencies": {
-    "@types/node": "^25.6.2",
+    "@types/node": "^25.7.0",
     "typescript": "^6.0.3"
   },
   "exports": {

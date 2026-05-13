@@ -1,7 +1,7 @@
-import { cn } from "@niama/ui/lib/utils";
 import { SECTION } from "@niama/ui/section";
+import { cn } from "@niama/ui-solid/lib/utils";
+import { Separator } from "@niama/ui-solid/ui/separator";
 import type { JSX } from "solid-js";
-import { Separator } from "./separator";
 
 export function Section(props: SectionProps) {
   const { children, class: className, description, id, title, withSeparator, ...rest } = props;

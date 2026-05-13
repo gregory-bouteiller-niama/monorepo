@@ -1,5 +1,5 @@
-import { cn } from "@niama/ui/lib/utils";
 import { initializeSky, SKY, SKY_ORBITS } from "@niama/ui/sky";
+import { cn } from "@niama/ui-solid/lib/utils";
 import { onSettled } from "solid-js";
 
 export function Sky(props: SkyProps) {

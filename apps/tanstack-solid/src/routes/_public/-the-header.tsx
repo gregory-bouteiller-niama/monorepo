@@ -1,9 +1,9 @@
 import { headerStore, selectStainStyle } from "@niama/ui/lib/stores/header";
 import { clearHovered, observeNavLink, THE_HEADER } from "@niama/ui/the-header";
+import { Separator } from "@niama/ui-solid/ui/separator";
 import { createSignal, createTrackedEffect } from "solid-js";
 import { Logo } from "@/components/logo";
 import { Section } from "@/components/section";
-import { Separator } from "@/components/separator";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import type { ReadPublicLayoutProps } from "@/lib/layouts";
 

@@ -1,8 +1,8 @@
 import type { Disciplines } from "@niama/domain/functions/disciplines";
 import { AUTOPLAY, DISCIPLINE, DISCIPLINES } from "@niama/ui/disciplines/carousel";
 import { bindGlows } from "@niama/ui/glow";
-import { cn } from "@niama/ui/lib/utils";
 import { prefersReducedMotion } from "@niama/ui/motion";
+import { cn } from "@niama/ui-solid/lib/utils";
 import { createTrackedEffect } from "solid-js";
 import { Card, CardContent } from "../card";
 import { Logo } from "../logo";

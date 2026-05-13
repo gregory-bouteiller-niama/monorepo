@@ -1,7 +1,7 @@
 import { themeStore, toggleThemeWithTransition } from "@niama/ui/theme";
 import { getThemeSwitcherLabel, THEME_SWITCHER } from "@niama/ui/theme-switcher";
+import { Button } from "@niama/ui-solid/ui/button";
 import { createSignal, createTrackedEffect } from "solid-js";
-import { Button } from "./button";
 
 export function ThemeSwitcher() {
   const [theme, setTheme] = createSignal(themeStore.state);

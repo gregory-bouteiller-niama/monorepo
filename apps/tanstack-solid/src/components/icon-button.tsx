@@ -1,6 +1,6 @@
 import { ICON_BUTTON } from "@niama/ui/icon-button";
-import { cn } from "@niama/ui/lib/utils";
-import { Button, type ButtonProps } from "./button";
+import { cn } from "@niama/ui-solid/lib/utils";
+import { Button, type ButtonProps } from "@niama/ui-solid/ui/button";
 
 export function IconButton(props: IconButtonProps) {
   const { class: className, icon, label, loading = false, disabled, size = "icon", variant = "outline", ...rest } = props;

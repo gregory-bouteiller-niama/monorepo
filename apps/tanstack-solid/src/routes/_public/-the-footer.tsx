@@ -1,6 +1,6 @@
 import { BUTTON } from "@niama/ui/button";
-import { cn } from "@niama/ui/lib/utils";
 import { THE_FOOTER } from "@niama/ui/the-footer";
+import { cn } from "@niama/ui-solid/lib/utils";
 import type { ReadPublicLayoutProps } from "@/lib/layouts";
 
 export function TheFooter(props: Pick<ReadPublicLayoutProps, "socials">) {

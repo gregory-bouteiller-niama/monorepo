@@ -1,7 +1,7 @@
 import { type Disciplines, readDisciplineBySlug } from "@niama/domain/functions/disciplines";
 import { DISCIPLINES_BADGE } from "@niama/ui/disciplines/badge";
-import { cn } from "@niama/ui/lib/utils";
-import { Badge, type BadgeProps } from "../badge";
+import { cn } from "@niama/ui-solid/lib/utils";
+import { Badge, type BadgeProps } from "@niama/ui-solid/ui/badge";
 
 export function DisciplinesBadge(props: DisciplinesBadgeProps) {
   const { class: className, slug, ...rest } = props;

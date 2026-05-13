@@ -1,14 +1,14 @@
 import { type Contacts, defaultContactCreateValues } from "@niama/domain/functions/contacts";
 import { readAllDisciplines } from "@niama/domain/functions/disciplines";
-import { cn } from "@niama/ui/lib/utils";
-import { createContact } from "@/functions/form";
+import { cn } from "@niama/ui-solid/lib/utils";
+import { Button } from "@niama/ui-solid/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui-solid/ui/card";
+import { Input } from "@niama/ui-solid/ui/input";
+import { Textarea } from "@niama/ui-solid/ui/textarea";
 import { createSignal } from "solid-js";
-import { Button } from "@/components/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/card";
-import { Input } from "@/components/input";
-import { LoadingSwap } from "@/components/loading-swap";
-import { Textarea } from "@/components/textarea";
 import { toast } from "solid-sonner";
+import { LoadingSwap } from "@/components/loading-swap";
+import { createContact } from "@/functions/form";
 
 const CONTACT = {
   card: "relative w-full max-w-xl border-0 ring-0",
@@ -57,7 +57,7 @@ export function ContactForm() {
   return (
     <Card class={CONTACT.card}>
       <CardContent>
-        <form ref={formRef} class={CONTACT.form} novalidate onSubmit={handleSubmit}>
+        <form class={CONTACT.form} novalidate onSubmit={handleSubmit} ref={formRef}>
           <CardHeader class="w-full px-0">
             <CardTitle class="text-center font-heading text-4xl">Votre demande</CardTitle>
             <CardDescription class={cn(CONTACT.description, "text-center")}>- tous les champs sont obligatoires -</CardDescription>
@@ -87,9 +87,9 @@ export function ContactForm() {
                 <span>Sujet</span>
                 <select
                   class="h-9 rounded-4xl border border-input bg-input/30 px-3 text-sm outline-none"
-                  value={defaultContactCreateValues.subject}
                   name="subject"
                   required
+                  value={defaultContactCreateValues.subject}
                 >
                   {subjects.map(({ label, value }) => (
                     <option value={value}>{label}</option>
@@ -101,9 +101,9 @@ export function ContactForm() {
                 <span>Voie</span>
                 <select
                   class="h-9 rounded-4xl border border-input bg-input/30 px-3 text-sm outline-none"
-                  value={defaultContactCreateValues.discipline}
                   name="discipline"
                   required
+                  value={defaultContactCreateValues.discipline}
                 >
                   {disciplines.map(({ label, value }) => (
                     <option value={value}>{label}</option>

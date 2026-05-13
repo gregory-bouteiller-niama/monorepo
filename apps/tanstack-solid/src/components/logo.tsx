@@ -1,5 +1,5 @@
 import type { Disciplines } from "@niama/domain/functions/disciplines";
-import { cn } from "@niama/ui/lib/utils";
+import { cn } from "@niama/ui-solid/lib/utils";
 import { cva } from "class-variance-authority";
 import type { JSX } from "solid-js";
 

@@ -1,10 +1,10 @@
 import type { Attendants } from "@niama/domain/functions/attendants";
 import { ATTENDANT, ATTENDANTS, AUTOPLAY, ROTATIONS } from "@niama/ui/attendants/carousel";
-import { cn } from "@niama/ui/lib/utils";
 import { prefersReducedMotion } from "@niama/ui/motion";
+import { cn } from "@niama/ui-solid/lib/utils";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui-solid/ui/card";
 import { Image } from "@unpic/solid";
 import { createSignal, createTrackedEffect, type JSX } from "solid-js";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../card";
 import { DisciplinesBadge } from "../disciplines/badge";
 
 export function AttendantsCarousel(props: AttendantsCarouselProps) {

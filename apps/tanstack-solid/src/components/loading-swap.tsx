@@ -1,5 +1,5 @@
+import { cn } from "@niama/ui-solid/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@niama/ui/lib/utils";
 import type { JSX } from "solid-js";
 
 const LOADING_SWAP = {
@@ -43,7 +43,6 @@ export function LoadingSwap(props: LoadingSwapProps) {
 
 export type LoadingSwapProps = {
   children?: JSX.Element;
-} &
-  VariantProps<typeof LOADING_SWAP.children> & {
+} & VariantProps<typeof LOADING_SWAP.children> & {
     class?: string;
   };
