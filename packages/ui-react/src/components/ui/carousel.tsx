@@ -1,6 +1,6 @@
 import { CAROUSEL, type CarouselStore, CLONE_ATTRS } from "@niama/ui/carousel";
 import { cn } from "@niama/ui-react/lib/utils";
-import { createStoreContext, useSelector } from "@tanstack/react-store";
+import { createStoreContext, shallow, useSelector } from "@tanstack/react-store";
 import useEmblaCarousel, { type EmblaRootNodeRefType } from "embla-carousel-react";
 import { Children, cloneElement, isValidElement, useLayoutEffect } from "react";
 import { Button } from "./button";
@@ -12,7 +12,7 @@ type CarouselContextProps = { ref: EmblaRootNodeRefType; store: CarouselStore };
 
 // BASE ------------------------------------------------------------------------------------------------------------------------------------
 export function Carousel({ store, className, children, ...rest }: CarouselProps) {
-  const opts = useSelector(store, (state) => state.opts);
+  const opts = useSelector(store, (state) => state.opts, { compare: shallow });
   const plugins = useSelector(store, (state) => state.plugins);
   const [ref, api] = useEmblaCarousel(opts, plugins);
 

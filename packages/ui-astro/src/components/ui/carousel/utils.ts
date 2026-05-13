@@ -1,5 +1,6 @@
 import { type CarouselStore, CLONE_ATTR, CLONE_ATTRS, FOCUSABLE_SELECTOR, getOriginalSlideNodes } from "@niama/ui/carousel";
 import { subscribeSelector } from "@niama/ui/lib/stores/selector";
+import { shallow } from "@tanstack/store";
 import EmblaCarousel from "embla-carousel";
 
 // CONSTS ----------------------------------------------------------------------------------------------------------------------------------
@@ -50,24 +51,31 @@ function bindLayout(store: CarouselStore, containerEl: HTMLElement) {
     containerEl.append(fragment);
   };
 
-  const { unsubscribe } = subscribeSelector(
+  const { unsubscribe: unsubscribeClipped } = subscribeSelector(
     store,
-    ({ allSlidesClipped, opts }) => ({ allSlidesClipped, jsonOpts: JSON.stringify(opts) }),
-    ({ allSlidesClipped }, prev) => {
-      if (allSlidesClipped !== prev.allSlidesClipped) {
-        removeClones();
-        if (allSlidesClipped) addClones();
-      }
+    ({ allSlidesClipped }) => allSlidesClipped,
+    (allSlidesClipped) => {
+      removeClones();
+      if (allSlidesClipped) addClones();
+      store.state.api?.reInit(store.state.opts, store.state.plugins);
+    }
+  );
+
+  const { unsubscribe: unsubscribeOpts } = subscribeSelector(
+    store,
+    ({ opts }) => opts,
+    () => {
       store.state.api?.reInit(store.state.opts, store.state.plugins);
     },
-    (a, b) => a.allSlidesClipped === b.allSlidesClipped && a.jsonOpts === b.jsonOpts
+    shallow
   );
 
   if (store.state.allSlidesClipped) addClones();
   store.state.api?.reInit(store.state.opts, store.state.plugins);
 
   return () => {
-    unsubscribe();
+    unsubscribeClipped();
+    unsubscribeOpts();
     removeClones();
   };
 }

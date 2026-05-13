@@ -1,5 +1,5 @@
 import { CAROUSEL, type CarouselStore } from "@niama/ui/carousel";
-import { createStoreContext, useSelector } from "@tanstack/solid-store";
+import { createStoreContext, shallow, useSelector } from "@tanstack/solid-store";
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-solid";
 import type { ComponentProps } from "solid-js";
 import { createEffect, mergeProps, on, splitProps } from "solid-js";
@@ -13,7 +13,7 @@ type CarouselContextProps = { ref: UseEmblaCarouselType[0]; store: CarouselStore
 // BASE ------------------------------------------------------------------------------------------------------------------------------------
 export const Carousel = (props: CarouselProps) => {
   const [local, others] = splitProps(props, ["class", "store"]);
-  const opts = useSelector(local.store, (state) => state.opts);
+  const opts = useSelector(local.store, (state) => state.opts, { compare: shallow });
   const plugins = useSelector(local.store, (state) => state.plugins);
   const [ref, api] = useEmblaCarousel(opts, plugins);
 

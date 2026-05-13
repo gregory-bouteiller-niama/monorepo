@@ -49,6 +49,7 @@ const getLayout = (api: EmblaCarouselType, opts: EmblaOptionsType) => {
   let nextOpts: Partial<EmblaOptionsType> = { containScroll: "trimSnaps", slidesToScroll: 1 };
   if (allSlidesVisible) nextOpts = { containScroll: false, loop: false, slidesToScroll: "auto" };
   if (allSlidesClipped) nextOpts = { containScroll: false, loop: true, slidesToScroll: 1 };
+
   return { allSlidesClipped, opts: { ...opts, ...nextOpts } };
 };
 
@@ -130,3 +131,5 @@ export type CarouselState = {
   opts: EmblaOptionsType;
   plugins: EmblaPluginType[];
 };
+
+export type CarouselStore = ReturnType<typeof createCarouselStore>;
