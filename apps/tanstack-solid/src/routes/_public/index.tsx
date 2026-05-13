@@ -1,27 +1,27 @@
-// import { readIndexPage } from "@niama/domain/functions/pages";
-import { INDEX_PAGE } from "@niama/ui/index-page";
-// import { Separator } from "@niama/ui-solid/ui/separator";
+import { readIndexPage } from "@niama/domain/functions/pages";
+import { INDEX_PAGE, nativeHashUpdater, updateHash } from "@niama/ui/index-page";
+// import { AttendantsCarousel } from "@niama/ui-solid/attendants/carousel";
+import { DisciplinesCarousel } from "@niama/ui-solid/disciplines/carousel";
+import { Section } from "@niama/ui-solid/ui/section";
+import { Separator } from "@niama/ui-solid/ui/separator";
 import { createFileRoute } from "@tanstack/solid-router";
-// import { onSettled } from "solid-js";
-// import { AttendantsCarousel } from "@/components/attendants/carousel";
-// import { DisciplinesCarousel } from "@/components/disciplines/carousel";
-// import { Section } from "@/components/section";
+import { onMount } from "solid-js";
 // import { ContactForm } from "./index/-contact-form";
 
 export const Route = createFileRoute("/_public/")({
   component: IndexPage,
-  // loader: () => readIndexPage(),
+  loader: () => readIndexPage(),
 });
 
 function IndexPage() {
-  // const data = Route.useLoaderData();
-  // const { attendants, contact, disciplines, hero } = data();
+  const data = Route.useLoaderData();
+  const { attendants, contact, disciplines, hero } = data();
 
-  // onSettled(() => updateHash(nativeHashUpdater));
+  onMount(() => updateHash(nativeHashUpdater));
 
   return (
     <div class={INDEX_PAGE.base()}>
-      {/* <Section class={INDEX_PAGE.hero()} id="top-3">
+      <Section class={INDEX_PAGE.hero()} id="top-3">
         <div class={INDEX_PAGE.heroContent()}>
           <h1 class={INDEX_PAGE.heroTitle()}>{hero.title}</h1>
           <p class={INDEX_PAGE.heroDescription()}>{hero.description}</p>
@@ -31,12 +31,12 @@ function IndexPage() {
         <DisciplinesCarousel items={disciplines.items} />
       </Section>
       <Section id="les-accompagnants" {...attendants} withSeparator>
-        <AttendantsCarousel items={attendants.items} />
+        {/* <AttendantsCarousel items={attendants.items} /> */}
       </Section>
       <Section id="contact" {...contact} withSeparator>
-        <ContactForm />
+        {/* <ContactForm /> */}
         <Separator class="self-center! mb-34 h-24" orientation="vertical" />
-      </Section> */}
+      </Section>
     </div>
   );
 }

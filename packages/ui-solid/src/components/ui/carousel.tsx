@@ -1,254 +1,118 @@
-import type { EmblaCarouselType, EmblaOptionsType, EmblaPluginType } from "embla-carousel";
-import createEmblaCarousel from "embla-carousel-solid";
-import { ChevronLeft, ChevronRight } from "lucide-solid";
-import type { Accessor, ComponentProps } from "solid-js";
-import {
-  createContext,
-  createEffect,
-  createSignal,
-  mergeProps,
-  onCleanup,
-  splitProps,
-  useContext,
-} from "solid-js";
-
+import { CAROUSEL, type CarouselStore } from "@niama/ui/carousel";
+import { createStoreContext, useSelector } from "@tanstack/solid-store";
+import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-solid";
+import type { ComponentProps } from "solid-js";
+import { createEffect, mergeProps, on, splitProps } from "solid-js";
 import { cn } from "@/lib/utils";
 import { Button, type ButtonProps } from "@/raw/button";
 
-type CarouselApi = EmblaCarouselType | undefined;
-type CarouselOptions = EmblaOptionsType;
-type CarouselPlugin = EmblaPluginType;
+// CONTEXT ---------------------------------------------------------------------------------------------------------------------------------
+const { StoreProvider: CarouselProvider, useStoreContext: useCarousel } = createStoreContext<CarouselContextProps>();
+type CarouselContextProps = { ref: UseEmblaCarouselType[0]; store: CarouselStore };
 
-type CarouselProps = {
-  opts?: CarouselOptions;
-  plugins?: CarouselPlugin[];
-  orientation?: "horizontal" | "vertical";
-  setApi?: (api: CarouselApi) => void;
-};
+// BASE ------------------------------------------------------------------------------------------------------------------------------------
+export const Carousel = (props: CarouselProps) => {
+  const [local, others] = splitProps(props, ["class", "store"]);
+  const opts = useSelector(local.store, (state) => state.opts);
+  const plugins = useSelector(local.store, (state) => state.plugins);
+  const [ref, api] = useEmblaCarousel(opts, plugins);
 
-type CarouselContextProps = {
-  carouselRef: ReturnType<typeof createEmblaCarousel>[0];
-  api: ReturnType<typeof createEmblaCarousel>[1];
-  scrollPrev: () => void;
-  scrollNext: () => void;
-  canScrollPrev: Accessor<boolean>;
-  canScrollNext: Accessor<boolean>;
-} & CarouselProps;
-
-const CarouselContext = createContext<CarouselContextProps | null>(null);
-
-function useCarousel() {
-  const context = useContext(CarouselContext);
-
-  if (!context) {
-    throw new Error("useCarousel must be used within a <Carousel />");
-  }
-
-  return context;
-}
-
-type CarouselRootProps = ComponentProps<"div"> & CarouselProps;
-
-const Carousel = (props: CarouselRootProps) => {
-  const mergedProps = mergeProps({ orientation: "horizontal" as const }, props);
-  const [local, others] = splitProps(mergedProps, [
-    "class",
-    "children",
-    "opts",
-    "plugins",
-    "orientation",
-    "setApi",
-  ]);
-
-  const [carouselRef, api] = createEmblaCarousel(
-    () => ({
-      ...local.opts,
-      axis: local.orientation === "horizontal" ? "x" : "y",
-    }),
-    () => local.plugins ?? [],
+  createEffect(
+    on(api, (api) => {
+      if (api) local.store.actions.bindApi(api);
+    })
   );
 
-  const [canScrollPrev, setCanScrollPrev] = createSignal(false);
-  const [canScrollNext, setCanScrollNext] = createSignal(false);
-
-  const onSelect = (emblaApi: EmblaCarouselType) => {
-    setCanScrollPrev(emblaApi.canScrollPrev());
-    setCanScrollNext(emblaApi.canScrollNext());
-  };
-
-  const scrollPrev = () => {
-    api()?.scrollPrev();
-  };
-
-  const scrollNext = () => {
-    api()?.scrollNext();
-  };
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === "ArrowLeft") {
-      event.preventDefault();
-      scrollPrev();
-    } else if (event.key === "ArrowRight") {
-      event.preventDefault();
-      scrollNext();
-    }
-  };
-
-  createEffect(() => {
-    const emblaApi = api();
-    if (!emblaApi || !local.setApi) return;
-    local.setApi(emblaApi);
-  });
-
-  createEffect(() => {
-    const emblaApi = api();
-    if (!emblaApi) return;
-
-    onSelect(emblaApi);
-    emblaApi.on("reInit", onSelect);
-    emblaApi.on("select", onSelect);
-
-    onCleanup(() => {
-      emblaApi.off("select", onSelect);
-    });
-  });
-
   return (
-    <CarouselContext.Provider
-      value={{
-        carouselRef,
-        api,
-        opts: local.opts,
-        orientation: local.orientation || (local.opts?.axis === "y" ? "vertical" : "horizontal"),
-        scrollPrev,
-        scrollNext,
-        canScrollPrev,
-        canScrollNext,
-      }}
-    >
-      {/** biome-ignore lint/a11y/useSemanticElements: <exception for carousel> */}
-      <div
+    <CarouselProvider value={{ ref, store: local.store }}>
+      <section
         aria-roledescription="carousel"
-        class={cn("relative", local.class)}
+        class={cn(CAROUSEL.base(), local.class)}
+        data-axis={opts().axis ?? "x"}
         data-slot="carousel"
-        onKeyDown={handleKeyDown}
+        onKeyDownCapture={local.store.actions.handleKeydown}
         role="region"
         {...others}
-      >
-        {local.children}
-      </div>
-    </CarouselContext.Provider>
+      />
+    </CarouselProvider>
   );
 };
+type CarouselProps = ComponentProps<"section"> & Pick<CarouselContextProps, "store">;
 
-type CarouselContentProps = ComponentProps<"div">;
+// CONTENT ---------------------------------------------------------------------------------------------------------------------------------
+export const CarouselContent = (props: CarouselContentProps) => {
+  const [local, others] = splitProps(props, ["class", "viewportClass"]);
+  const { ref, store } = useCarousel();
+  const allSlidesClipped = useSelector(store, ({ allSlidesClipped }) => allSlidesClipped);
 
-const CarouselContent = (props: CarouselContentProps) => {
-  const [local, others] = splitProps(props, ["class"]);
-  const { carouselRef, orientation } = useCarousel();
+  // let slides = local.children;
+
+  // if (allSlidesClipped) {
+  //   const all = Children.toArray(children);
+  //   slides = [...all, ...all.map((c) => (isValidElement(c) ? cloneElement(c, { ...CLONE_ATTRS, key: `${c.key ?? "slide"}:clone` }) : c))];
+  // }
 
   return (
-    <div class="overflow-hidden" data-slot="carousel-content" ref={carouselRef}>
-      <div
-        class={cn("flex", orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col", local.class)}
-        {...others}
-      />
+    <div class={cn(CAROUSEL.viewport(), local.viewportClass)} data-slot="carousel-content" ref={ref}>
+      <div class={cn(CAROUSEL.content(), local.class)} data-slot="carousel-container" {...others} />
     </div>
   );
 };
+type CarouselContentProps = ComponentProps<"div"> & { viewportClass?: string };
 
-type CarouselItemProps = ComponentProps<"div">;
-
-const CarouselItem = (props: CarouselItemProps) => {
+// ITEM ------------------------------------------------------------------------------------------------------------------------------------
+export const CarouselItem = (props: CarouselItemProps) => {
   const [local, others] = splitProps(props, ["class"]);
-  const { orientation } = useCarousel();
+  return <section class={cn(CAROUSEL.item(), local.class)} data-slot="carousel-item" {...others} />;
+};
+type CarouselItemProps = ComponentProps<"section">;
+
+// PREVIOUS ---------------------------------------------------------------------------------------------------------------------------------
+export const CarouselPrevious = (props: CarouselPreviousProps) => {
+  const mergedProps = mergeProps({ variant: "outline", size: "icon-sm" } as CarouselPreviousProps, props);
+  const [local, others] = splitProps(mergedProps, ["class", "variant", "size"]);
+  const { store } = useCarousel();
+  const api = useSelector(store, (state) => state.api);
+  const canGoToPrev = useSelector(store, (state) => state.canGoToPrev);
 
   return (
-    // biome-ignore lint/a11y/useSemanticElements: <exception for carousel item>
-    <div
-      aria-roledescription="slide"
-      class={cn(
-        "min-w-0 shrink-0 grow-0 basis-full",
-        orientation === "horizontal" ? "pl-4" : "pt-4",
-        local.class,
-      )}
-      data-slot="carousel-item"
-      role="group"
+    <Button
+      class={cn(CAROUSEL.previous(), local.class)}
+      data-slot="carousel-previous"
+      disabled={!canGoToPrev()}
+      onClick={() => api()?.goToPrev()}
+      size={local.size}
+      variant={local.variant}
       {...others}
-    />
+    >
+      <span class="icon-[tabler--chevron-left]" />
+      <span class="sr-only">Précédent</span>
+    </Button>
   );
 };
-
 type CarouselPreviousProps = ButtonProps;
 
-const CarouselPrevious = (props: CarouselPreviousProps) => {
-  const mergedProps = mergeProps(
-    { variant: "outline", size: "icon-sm" } as CarouselPreviousProps,
-    props,
-  );
+// NEXT ------------------------------------------------------------------------------------------------------------------------------------
+export const CarouselNext = (props: CarouselNextProps) => {
+  const mergedProps = mergeProps({ variant: "outline", size: "icon-sm" } as CarouselNextProps, props);
   const [local, others] = splitProps(mergedProps, ["class", "variant", "size"]);
-  const { orientation, scrollPrev, canScrollPrev } = useCarousel();
+  const { store } = useCarousel();
+  const api = useSelector(store, (state) => state.api);
+  const canGoToNext = useSelector(store, (state) => state.canGoToNext);
 
   return (
     <Button
-      class={cn(
-        "absolute z-carousel-previous touch-manipulation",
-        orientation === "horizontal"
-          ? "top-1/2 -left-12 -translate-y-1/2"
-          : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
-        local.class,
-      )}
-      data-slot="carousel-previous"
-      disabled={!canScrollPrev()}
-      onClick={scrollPrev}
-      size={local.size}
-      variant={local.variant}
-      {...others}
-    >
-      <ChevronLeft />
-      <span class="sr-only">Previous slide</span>
-    </Button>
-  );
-};
-
-type CarouselNextProps = ButtonProps;
-
-const CarouselNext = (props: CarouselNextProps) => {
-  const mergedProps = mergeProps(
-    { variant: "outline", size: "icon-sm" } as CarouselNextProps,
-    props,
-  );
-  const [local, others] = splitProps(mergedProps, ["class", "variant", "size"]);
-  const { orientation, scrollNext, canScrollNext } = useCarousel();
-
-  return (
-    <Button
-      class={cn(
-        "absolute z-carousel-next touch-manipulation",
-        orientation === "horizontal"
-          ? "top-1/2 -right-12 -translate-y-1/2"
-          : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
-        local.class,
-      )}
+      class={cn(CAROUSEL.next(), local.class)}
       data-slot="carousel-next"
-      disabled={!canScrollNext()}
-      onClick={scrollNext}
+      disabled={!canGoToNext()}
+      onClick={() => api()?.goToNext()}
       size={local.size}
       variant={local.variant}
       {...others}
     >
-      <ChevronRight />
-      <span class="sr-only">Next slide</span>
+      <span class="icon-[tabler--chevron-right]" />
+      <span class="sr-only">Suivant</span>
     </Button>
   );
 };
-
-export {
-  Carousel,
-  type CarouselApi,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  useCarousel,
-};
+type CarouselNextProps = ButtonProps;

@@ -12,7 +12,7 @@ const config = defineConfig({
     devtools(),
     tailwindcss(),
     tanstackStart(),
-    solid({ ssr: true, refresh: { disabled: true } }),
+    solid({ ssr: true }),
   ],
 });
 

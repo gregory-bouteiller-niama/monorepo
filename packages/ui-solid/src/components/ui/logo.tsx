@@ -1,25 +1,16 @@
 import type { Disciplines } from "@niama/domain/functions/disciplines";
+import { LOGO } from "@niama/ui/logo";
 import { cn } from "@niama/ui-solid/lib/utils";
-import { cva } from "class-variance-authority";
-import type { JSX } from "solid-js";
+import { type ComponentProps, mergeProps, Show, splitProps } from "solid-js";
 
-const LOGO = {
-  base: cva(`@container flex flex-col items-end font-logo text-primary
-    data-[discipline=anima]:text-anima
-    data-[discipline=animus]:text-animus
-    data-[discipline=astro]:text-astro
-    data-[discipline=yogart]:text-yogart
-    `),
-  subtitle: cva("text-[20cqw] lowercase leading-none"),
-  title: cva("text-[32cqw] text-foreground leading-none"),
-} as const;
-
+// MAIN ------------------------------------------------------------------------------------------------------------------------------------
 export function Logo(props: LogoProps) {
-  const { class: className, discipline, showTitle = true, ...rest } = props;
+  const mergedProps = mergeProps({ showTitle: true }, props);
+  const [local, others] = splitProps(mergedProps, ["class", "discipline", "showTitle"]);
 
   return (
-    <div class={cn(LOGO.base(), className)} data-discipline={discipline?.slug}>
-      <svg aria-label="title" role="img" viewBox="0 0 860 860" {...rest}>
+    <div class={cn(LOGO.base(), local.class)} data-discipline={local.discipline?.slug}>
+      <svg viewBox="0 0 860 860" {...others} aria-label="title" role="img">
         <g clip-path="url(#clip0_260_223)">
           <path
             d="M430 0C357.76 0 286.38 18.3467 223.313 53.0333C215.573 43.86 203.82 37.84 190.92 37.84C167.413 37.84 148.493 56.76 148.493 80.2667C148.493 103.773 167.413 122.693 190.92 122.693C214.14 122.693 233.347 103.773 233.347 80.2667C233.347 74.2467 231.913 68.2267 229.62 63.0667C290.68 29.5267 359.767 11.7533 430 11.7533C660.48 11.7533 848.247 199.233 848.247 430C848.247 514.567 823.02 596.267 775.433 665.64C773.713 668.22 774.287 671.947 776.867 673.953C778.013 674.527 779.16 675.1 780.307 675.1C782.313 675.1 784.033 674.24 785.18 672.52C834.2 600.853 860 517.147 860 430C860 192.927 667.073 0 430 0ZM190.92 110.653C174.007 110.653 160.533 97.18 160.533 80.2667C160.533 63.3533 174.293 49.88 190.92 49.88C207.833 49.88 221.307 63.64 221.307 80.2667C221.593 97.18 207.833 110.653 190.92 110.653Z"
@@ -58,14 +49,11 @@ export function Logo(props: LogoProps) {
           </clipPath>
         </defs>
       </svg>
-      {showTitle && <span class={LOGO.title()}>níama</span>}
-      <span class={LOGO.subtitle()}>{discipline?.name}</span>
+      <Show when={local.showTitle}>
+        <span class={LOGO.title()}>níama</span>
+      </Show>
+      <span class={LOGO.subtitle()}>{local.discipline?.name}</span>
     </div>
   );
 }
-
-export type LogoProps = JSX.SVGAttributes<SVGSVGElement> & {
-  class?: string;
-  discipline?: Disciplines["Entity"];
-  showTitle?: boolean;
-};
+type LogoProps = ComponentProps<"svg"> & { discipline?: Disciplines["Entity"]; showTitle?: boolean };

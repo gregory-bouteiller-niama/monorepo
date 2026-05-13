@@ -3,7 +3,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "preserve",
-    "jsxImportSource": "@solidjs/web",
+    "jsxImportSource": "solid-js",
     "module": "ESNext",
     "paths": {
       "@/*": ["./src/*"]

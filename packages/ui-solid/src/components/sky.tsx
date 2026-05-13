@@ -1,12 +1,13 @@
 import { initializeSky, SKY, SKY_ORBITS } from "@niama/ui/sky";
 import { cn } from "@niama/ui-solid/lib/utils";
-import { onSettled } from "solid-js";
+import { onMount } from "solid-js";
 
 export function Sky(props: SkyProps) {
   const { class: className, ...rest } = props;
+  // biome-ignore lint/suspicious/noUnassignedVariables: false positive in solid
   let starsRef!: HTMLDivElement;
 
-  onSettled(() => {
+  onMount(() => {
     if (starsRef) return initializeSky(starsRef);
   });
 

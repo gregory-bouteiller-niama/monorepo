@@ -4,10 +4,10 @@ import { cn } from "@niama/ui-solid/lib/utils";
 import { Button } from "@niama/ui-solid/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui-solid/ui/card";
 import { Input } from "@niama/ui-solid/ui/input";
+import { LoadingSwap } from "@niama/ui-solid/ui/loading-swap";
 import { Textarea } from "@niama/ui-solid/ui/textarea";
 import { createSignal } from "solid-js";
 import { toast } from "solid-sonner";
-import { LoadingSwap } from "@/components/loading-swap";
 import { createContact } from "@/functions/form";
 
 const CONTACT = {

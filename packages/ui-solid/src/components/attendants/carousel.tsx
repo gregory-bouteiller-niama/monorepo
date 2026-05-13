@@ -4,7 +4,7 @@ import { prefersReducedMotion } from "@niama/ui/motion";
 import { cn } from "@niama/ui-solid/lib/utils";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui-solid/ui/card";
 import { Image } from "@unpic/solid";
-import { createSignal, createTrackedEffect, type JSX } from "solid-js";
+import { createEffect, createSignal, type JSX } from "solid-js";
 import { DisciplinesBadge } from "../disciplines/badge";
 
 export function AttendantsCarousel(props: AttendantsCarouselProps) {
@@ -22,7 +22,7 @@ export function AttendantsCarousel(props: AttendantsCarouselProps) {
     viewportRef.scrollBy({ left: -viewportRef.clientWidth * 0.88, behavior: "smooth" });
   };
 
-  createTrackedEffect(() => {
+  createEffect(() => {
     if (typeof window === "undefined") return;
 
     if (prefersReducedMotion()) return;

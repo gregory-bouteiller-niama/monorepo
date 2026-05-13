@@ -1,9 +1,9 @@
 import { SEO } from "@niama/domain/functions/site";
-// import { initialize } from "@niama/ui/root-layout";
-// import { themeScript } from "@niama/ui/theme";
-import { HydrationScript, type JSX } from "@solidjs/web";
-import { createRootRoute, HeadContent, Scripts } from "@tanstack/solid-router";
-// import { onSettled } from "solid-js";
+import { initialize } from "@niama/ui/root-layout";
+import { themeScript } from "@niama/ui/theme";
+import { createRootRoute, HeadContent, ScriptOnce, Scripts } from "@tanstack/solid-router";
+import { type JSX, onMount } from "solid-js";
+import { HydrationScript } from "solid-js/web";
 import appCss from "@/styles.css?url";
 
 export const Route = createRootRoute({
@@ -25,14 +25,14 @@ export const Route = createRootRoute({
 });
 
 function RootDocument(props: RootDocumentProps) {
-  // onSettled(initialize);
+  onMount(initialize);
 
   return (
     <html lang="fr">
       <head>
         <HydrationScript />
         <HeadContent />
-        {/* <ScriptOnce>{themeScript}</ScriptOnce> */}
+        <ScriptOnce>{themeScript}</ScriptOnce>
       </head>
       <body class="group/body">
         {props.children}

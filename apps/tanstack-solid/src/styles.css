@@ -4,8 +4,9 @@
 @import "@fontsource/cormorant-upright";
 
 @source "./**/*.{ts,tsx}";
-@source "../../../packages/ui/src/components/shared/**/*.{ts}";
-@source "../../../packages/domain/src/**/*.{ts}";
+@source "../../../packages/ui/src/components/**/*.ts";
+@source "../../../packages/ui-solid/src/components/**/*.{ts,tsx}";
+@source "../../../packages/domain/src/**/*.ts";
 
 :root {
   --font-heading: "Cormorant Upright", serif;

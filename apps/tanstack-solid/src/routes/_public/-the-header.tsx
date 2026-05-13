@@ -1,17 +1,17 @@
 import { headerStore, selectStainStyle } from "@niama/ui/lib/stores/header";
 import { clearHovered, observeNavLink, THE_HEADER } from "@niama/ui/the-header";
+import { ThemeSwitcher } from "@niama/ui-solid/theme-switcher";
+import { Logo } from "@niama/ui-solid/ui/logo";
+import { Section } from "@niama/ui-solid/ui/section";
 import { Separator } from "@niama/ui-solid/ui/separator";
-import { createSignal, createTrackedEffect } from "solid-js";
-import { Logo } from "@/components/logo";
-import { Section } from "@/components/section";
-import { ThemeSwitcher } from "@/components/theme-switcher";
+import { createEffect, createSignal } from "solid-js";
 import type { ReadPublicLayoutProps } from "@/lib/layouts";
 
 export function TheHeader(props: Pick<ReadPublicLayoutProps, "navs">) {
   const { navs } = props;
   const [stainStyle, setStainStyle] = createSignal(selectStainStyle(headerStore.state));
 
-  createTrackedEffect(() => {
+  createEffect(() => {
     if (typeof window === "undefined") return;
 
     const setActiveFromHash = () => {
@@ -67,7 +67,7 @@ function HeaderNav(props: HeaderNavProps) {
   const { nav } = props;
   let linkRef: HTMLAnchorElement | undefined;
 
-  createTrackedEffect(() => {
+  createEffect(() => {
     if (typeof window === "undefined") return;
 
     if (!linkRef) return;
