@@ -1,18 +1,18 @@
-import { CAROUSEL, type CarouselStore } from "@niama/ui/carousel";
+import { CAROUSEL, type CarouselStore, CLONE_ATTR } from "@niama/ui/carousel";
+import { cn } from "@niama/ui-solid/lib/utils";
+import { Button, type ButtonProps } from "@niama/ui-solid/ui/button";
 import { createStoreContext, shallow, useSelector } from "@tanstack/solid-store";
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-solid";
-import type { ComponentProps } from "solid-js";
-import { createEffect, mergeProps, on, splitProps } from "solid-js";
-import { cn } from "@/lib/utils";
-import { Button, type ButtonProps } from "@/raw/button";
+import { type ComponentProps, createContext, createEffect, mergeProps, on, Show, splitProps, useContext } from "solid-js";
 
 // CONTEXT ---------------------------------------------------------------------------------------------------------------------------------
 const { StoreProvider: CarouselProvider, useStoreContext: useCarousel } = createStoreContext<CarouselContextProps>();
 type CarouselContextProps = { ref: UseEmblaCarouselType[0]; store: CarouselStore };
+const CarouselCloneContext = createContext(false);
 
 // BASE ------------------------------------------------------------------------------------------------------------------------------------
 export const Carousel = (props: CarouselProps) => {
-  const [local, others] = splitProps(props, ["class", "store"]);
+  const [local, others] = splitProps(props, ["children", "class", "store"]);
   const opts = useSelector(local.store, (state) => state.opts, { compare: shallow });
   const plugins = useSelector(local.store, (state) => state.plugins);
   const [ref, api] = useEmblaCarousel(opts, plugins);
@@ -25,15 +25,18 @@ export const Carousel = (props: CarouselProps) => {
 
   return (
     <CarouselProvider value={{ ref, store: local.store }}>
+      {/** biome-ignore lint/a11y/noNoninteractiveElementInteractions: carousel keyboard navigation */}
       <section
         aria-roledescription="carousel"
         class={cn(CAROUSEL.base(), local.class)}
         data-axis={opts().axis ?? "x"}
         data-slot="carousel"
-        onKeyDownCapture={local.store.actions.handleKeydown}
+        onKeyDown={local.store.actions.handleKeydown}
         role="region"
         {...others}
-      />
+      >
+        {local.children}
+      </section>
     </CarouselProvider>
   );
 };
@@ -41,20 +44,18 @@ type CarouselProps = ComponentProps<"section"> & Pick<CarouselContextProps, "sto
 
 // CONTENT ---------------------------------------------------------------------------------------------------------------------------------
 export const CarouselContent = (props: CarouselContentProps) => {
-  const [local, others] = splitProps(props, ["class", "viewportClass"]);
+  const [local, others] = splitProps(props, ["children", "class", "viewportClass"]);
   const { ref, store } = useCarousel();
   const allSlidesClipped = useSelector(store, ({ allSlidesClipped }) => allSlidesClipped);
 
-  // let slides = local.children;
-
-  // if (allSlidesClipped) {
-  //   const all = Children.toArray(children);
-  //   slides = [...all, ...all.map((c) => (isValidElement(c) ? cloneElement(c, { ...CLONE_ATTRS, key: `${c.key ?? "slide"}:clone` }) : c))];
-  // }
-
   return (
     <div class={cn(CAROUSEL.viewport(), local.viewportClass)} data-slot="carousel-content" ref={ref}>
-      <div class={cn(CAROUSEL.content(), local.class)} data-slot="carousel-container" {...others} />
+      <div class={cn(CAROUSEL.content(), local.class)} data-slot="carousel-container" {...others}>
+        {local.children}
+        <Show when={allSlidesClipped()}>
+          <CarouselCloneContext.Provider value>{local.children}</CarouselCloneContext.Provider>
+        </Show>
+      </div>
     </div>
   );
 };
@@ -62,8 +63,24 @@ type CarouselContentProps = ComponentProps<"div"> & { viewportClass?: string };
 
 // ITEM ------------------------------------------------------------------------------------------------------------------------------------
 export const CarouselItem = (props: CarouselItemProps) => {
-  const [local, others] = splitProps(props, ["class"]);
-  return <section class={cn(CAROUSEL.item(), local.class)} data-slot="carousel-item" {...others} />;
+  const [local, others] = splitProps(props, ["children", "class"]);
+  const clone = useContext(CarouselCloneContext);
+
+  return (
+    // biome-ignore lint/a11y/useSemanticElements: carousel slide semantics
+    <section
+      aria-hidden={clone}
+      aria-roledescription="slide"
+      class={cn(CAROUSEL.item(), local.class)}
+      data-slot="carousel-item"
+      inert={clone}
+      role="group"
+      {...{ [CLONE_ATTR]: clone ? "" : undefined }}
+      {...others}
+    >
+      {local.children}
+    </section>
+  );
 };
 type CarouselItemProps = ComponentProps<"section">;
 

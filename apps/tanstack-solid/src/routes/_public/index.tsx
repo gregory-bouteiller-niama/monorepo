@@ -1,6 +1,6 @@
 import { readIndexPage } from "@niama/domain/functions/pages";
 import { INDEX_PAGE, nativeHashUpdater, updateHash } from "@niama/ui/index-page";
-// import { AttendantsCarousel } from "@niama/ui-solid/attendants/carousel";
+import { AttendantsCarousel } from "@niama/ui-solid/attendants/carousel";
 import { DisciplinesCarousel } from "@niama/ui-solid/disciplines/carousel";
 import { Section } from "@niama/ui-solid/ui/section";
 import { Separator } from "@niama/ui-solid/ui/separator";
@@ -16,6 +16,8 @@ export const Route = createFileRoute("/_public/")({
 function IndexPage() {
   const data = Route.useLoaderData();
   const { attendants, contact, disciplines, hero } = data();
+  const { items: attendantItems, ...attendantSection } = attendants;
+  const { items: disciplineItems, ...disciplineSection } = disciplines;
 
   onMount(() => updateHash(nativeHashUpdater));
 
@@ -27,11 +29,11 @@ function IndexPage() {
           <p class={INDEX_PAGE.heroDescription()}>{hero.description}</p>
         </div>
       </Section>
-      <Section id="les-voies" {...disciplines} withSeparator>
-        <DisciplinesCarousel items={disciplines.items} />
+      <Section id="les-voies" {...disciplineSection} withSeparator>
+        <DisciplinesCarousel items={disciplineItems} />
       </Section>
-      <Section id="les-accompagnants" {...attendants} withSeparator>
-        {/* <AttendantsCarousel items={attendants.items} /> */}
+      <Section id="les-accompagnants" {...attendantSection} withSeparator>
+        <AttendantsCarousel items={attendantItems} />
       </Section>
       <Section id="contact" {...contact} withSeparator>
         {/* <ContactForm /> */}
