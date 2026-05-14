@@ -1,48 +1,17 @@
+import { LOADING_SWAP, type LoadingSwapStyles } from "@niama/ui/loading-swap";
 import { cn } from "@niama/ui-solid/lib/utils";
-import { cva, type VariantProps } from "class-variance-authority";
-import type { JSX } from "solid-js";
+import { type ComponentProps, splitProps } from "solid-js";
 
-const LOADING_SWAP = {
-  base: cva("grid grid-cols-1 items-center justify-items-center"),
-  children: cva("col-start-1 col-end-2 row-start-1 row-end-2 w-full", {
-    variants: {
-      isLoading: {
-        false: "visible",
-        true: "invisible",
-      },
-    },
-    defaultVariants: {
-      isLoading: false,
-    },
-  }),
-  loader: cva("col-start-1 col-end-2 row-start-1 row-end-2", {
-    variants: {
-      isLoading: {
-        false: "invisible",
-        true: "visible",
-      },
-    },
-    defaultVariants: {
-      isLoading: false,
-    },
-  }),
-  spinner: cva("icon-[lucide--loader-circle] animate-spin"),
-} as const;
-
+// MAIN ------------------------------------------------------------------------------------------------------------------------------------
 export function LoadingSwap(props: LoadingSwapProps) {
-  const { class: className, children, isLoading } = props;
+  const [local, others] = splitProps(props, ["children", "class", "isLoading"]);
   return (
-    <div class={LOADING_SWAP.base()}>
-      <div class={cn(LOADING_SWAP.children({ isLoading }), className)}>{children}</div>
-      <div class={cn(LOADING_SWAP.loader({ isLoading }), className)}>
+    <div class={LOADING_SWAP.base()} {...others}>
+      <div class={cn(LOADING_SWAP.children({ isLoading: local.isLoading }), local.class)}>{local.children}</div>
+      <div class={cn(LOADING_SWAP.loader({ isLoading: local.isLoading }), local.class)}>
         <span class={LOADING_SWAP.spinner()} />
       </div>
     </div>
   );
 }
-
-export type LoadingSwapProps = {
-  children?: JSX.Element;
-} & VariantProps<typeof LOADING_SWAP.children> & {
-    class?: string;
-  };
+export type LoadingSwapProps = ComponentProps<"div"> & LoadingSwapStyles;

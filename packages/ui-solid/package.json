@@ -10,7 +10,6 @@
     "@kobalte/core": "^0.13.11",
     "@niama/domain": "workspace:*",
     "@niama/ui": "workspace:*",
-    "@solidjs/web": "2.0.0-beta.11",
     "@tanstack/solid-store": "^0.11.0",
     "@unpic/solid": "^1.0.0",
     "class-variance-authority": "^0.7.1",

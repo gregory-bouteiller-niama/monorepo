@@ -1,77 +1,55 @@
 import type { Attendants } from "@niama/domain/functions/attendants";
 import { ATTENDANT, ATTENDANTS, AUTOPLAY, ROTATIONS } from "@niama/ui/attendants/carousel";
-import { prefersReducedMotion } from "@niama/ui/motion";
-import { cn } from "@niama/ui-solid/lib/utils";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@niama/ui-solid/ui/card";
+import { createCarouselStore } from "@niama/ui/carousel";
+import { DisciplinesBadge } from "@niama/ui-solid/disciplines/badge";
+import { Card, CardContent, CardDescription, CardHeader, type CardProps, CardTitle } from "@niama/ui-solid/ui/card";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@niama/ui-solid/ui/carousel";
 import { Image } from "@unpic/solid";
-import { createEffect, createSignal, type JSX } from "solid-js";
-import { DisciplinesBadge } from "../disciplines/badge";
+import Autoplay from "embla-carousel-autoplay";
+import Ssr from "embla-carousel-ssr";
+import { createSignal, For } from "solid-js";
 
-export function AttendantsCarousel(props: AttendantsCarouselProps) {
-  const { items } = props;
+// MAIN ------------------------------------------------------------------------------------------------------------------------------------
+export function AttendantsCarousel({ items }: AttendantsCarouselProps) {
+  const store = createCarouselStore({ loop: true }, [Autoplay({ delay: AUTOPLAY }), Ssr()]);
   const [flippedName, setFlippedName] = createSignal<string | undefined>();
-  let viewportRef: HTMLDivElement | undefined;
-
-  const scrollNext = () => {
-    if (!viewportRef) return;
-    viewportRef.scrollBy({ left: viewportRef.clientWidth * 0.88, behavior: "smooth" });
-  };
-
-  const scrollPrev = () => {
-    if (!viewportRef) return;
-    viewportRef.scrollBy({ left: -viewportRef.clientWidth * 0.88, behavior: "smooth" });
-  };
-
-  createEffect(() => {
-    if (typeof window === "undefined") return;
-
-    if (prefersReducedMotion()) return;
-    const timer = window.setInterval(scrollNext, AUTOPLAY);
-    return () => window.clearInterval(timer);
-  });
 
   return (
     <section class={ATTENDANTS.base()}>
-      <div class={ATTENDANTS.carousel()}>
-        <div class={ATTENDANTS.viewport()} ref={viewportRef} style={{ "scroll-snap-type": "x mandatory" }}>
-          <div class="flex w-max">
-            {items.map((item, renderIndex) => (
-              <div class={ATTENDANTS.item()} style={{ "scroll-snap-align": "center" }}>
+      <Carousel class={ATTENDANTS.carousel()} store={store}>
+        <CarouselContent viewportClass={ATTENDANTS.viewport()}>
+          <For each={items}>
+            {(item, index) => (
+              <CarouselItem class={ATTENDANTS.item()}>
                 <AttendantItem
-                  index={renderIndex}
+                  index={index()}
                   isFlipped={flippedName() === item.name}
                   item={item}
                   onToggle={() => {
                     setFlippedName((currentValue) => (currentValue === item.name ? undefined : item.name));
                   }}
                 />
-              </div>
-            ))}
-          </div>
-        </div>
+              </CarouselItem>
+            )}
+          </For>
+        </CarouselContent>
         <aside class={ATTENDANTS.controls()}>
-          <button aria-label="Participant précédent" class={ATTENDANTS.control()} onClick={scrollPrev} type="button">
-            <span class="icon-[tabler--chevron-left]" />
-          </button>
-          <button aria-label="Participant suivant" class={ATTENDANTS.control()} onClick={scrollNext} type="button">
-            <span class="icon-[tabler--chevron-right]" />
-          </button>
+          <CarouselPrevious aria-label="Participant précédent" class={ATTENDANTS.control()} />
+          <CarouselNext aria-label="Participant suivant" class={ATTENDANTS.control()} />
         </aside>
-      </div>
+      </Carousel>
     </section>
   );
 }
-
 export type AttendantsCarouselProps = { items: Attendants["Entity"][] };
 
-function AttendantItem(props: AttendantItemProps) {
-  const { index, isFlipped, item, onToggle } = props;
-
+// ITEM ------------------------------------------------------------------------------------------------------------------------------------
+function AttendantItem({ index, isFlipped, item, onToggle }: AttendantItemProps) {
   return (
     <button
       aria-label={`Afficher la fiche de ${item.name}`}
-      aria-pressed={isFlipped ? "true" : "false"}
-      class={cn(ATTENDANT.base(), ROTATIONS[index % ROTATIONS.length])}
+      aria-pressed={isFlipped}
+      class={ATTENDANT.base({ className: ROTATIONS[index % ROTATIONS.length] })}
       data-flipped={isFlipped}
       onClick={onToggle}
       type="button"
@@ -82,53 +60,35 @@ function AttendantItem(props: AttendantItemProps) {
             <span class={ATTENDANT.icon()} />
           </div>
           <Image
-            alt={item.image.alt}
-            background={item.image.background}
-            height={item.image.height}
-            src={item.image.src}
-            width={item.image.width}
+            {...item.image}
+            breakpoints={[420, 840]}
+            operations={{ imagekit: { f: "avif", q: 80 } }}
+            sizes="(min-width: 640px) 420px, 100vw"
           />
         </CardContent>
       </AttendantItemCard>
       <AttendantItemCard data-back item={item}>
         <CardContent class={ATTENDANT.description()}>
-          {item.description.map((paragraph) => (
-            <p>{paragraph}</p>
-          ))}
+          <For each={item.description}>{(paragraph) => <p>{paragraph}</p>}</For>
         </CardContent>
       </AttendantItemCard>
     </button>
   );
 }
+type AttendantItemProps = { index: number; isFlipped: boolean; item: Attendants["Entity"]; onToggle: () => void };
 
-type AttendantItemProps = {
-  index: number;
-  isFlipped: boolean;
-  item: Attendants["Entity"];
-  onToggle: () => void;
-};
-
-function AttendantItemCard(props: AttendantItemCardProps) {
-  const { children, item, ...rest } = props;
-
+// CARD ------------------------------------------------------------------------------------------------------------------------------------
+function AttendantItemCard({ children, item, ...props }: AttendantItemCardProps) {
   return (
-    <Card class={ATTENDANT.card()} {...rest}>
+    <Card class={ATTENDANT.card()} {...props}>
       <CardHeader>
         <CardTitle class={ATTENDANT.title()}>{item.name}</CardTitle>
         <CardDescription class={ATTENDANT.badges()}>
-          {item.disciplines.map(({ slug }) => (
-            <DisciplinesBadge slug={slug} />
-          ))}
+          <For each={item.disciplines}>{(discipline) => <DisciplinesBadge slug={discipline.slug} />}</For>
         </CardDescription>
       </CardHeader>
       {children}
     </Card>
   );
 }
-
-type AttendantItemCardProps = {
-  children?: JSX.Element;
-  item: Attendants["Entity"];
-  class?: string;
-  "data-back"?: boolean;
-};
+type AttendantItemCardProps = CardProps & { item: Attendants["Entity"] };
