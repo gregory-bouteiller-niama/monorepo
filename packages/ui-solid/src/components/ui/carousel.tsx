@@ -1,14 +1,10 @@
-import { CAROUSEL, type CarouselStore, CLONE_ATTR } from "@niama/ui/carousel";
+import { CAROUSEL, CLONE_ATTR } from "@niama/ui/carousel";
 import { cn } from "@niama/ui-solid/lib/utils";
 import { Button, type ButtonProps } from "@niama/ui-solid/ui/button";
-import { createStoreContext, shallow, useSelector } from "@tanstack/solid-store";
-import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-solid";
-import { type ComponentProps, createContext, createEffect, mergeProps, on, Show, splitProps, useContext } from "solid-js";
-
-// CONTEXT ---------------------------------------------------------------------------------------------------------------------------------
-const { StoreProvider: CarouselProvider, useStoreContext: useCarousel } = createStoreContext<CarouselContextProps>();
-type CarouselContextProps = { ref: UseEmblaCarouselType[0]; store: CarouselStore };
-const CarouselCloneContext = createContext(false);
+import { shallow, useSelector } from "@tanstack/solid-store";
+import useEmblaCarousel from "embla-carousel-solid";
+import { type ComponentProps, createEffect, mergeProps, on, Show, splitProps, useContext } from "solid-js";
+import { CarouselCloneContext, type CarouselContext, CarouselProvider, useCarousel } from "./carousel.context";
 
 // BASE ------------------------------------------------------------------------------------------------------------------------------------
 export const Carousel = (props: CarouselProps) => {
@@ -40,7 +36,7 @@ export const Carousel = (props: CarouselProps) => {
     </CarouselProvider>
   );
 };
-type CarouselProps = ComponentProps<"section"> & Pick<CarouselContextProps, "store">;
+type CarouselProps = ComponentProps<"section"> & Pick<CarouselContext, "store">;
 
 // CONTENT ---------------------------------------------------------------------------------------------------------------------------------
 export const CarouselContent = (props: CarouselContentProps) => {
