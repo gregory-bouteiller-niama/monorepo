@@ -22,28 +22,28 @@
     "@niama/ui": "workspace:*",
     "@niama/ui-solid": "workspace:*",
     "@tailwindcss/vite": "^4.3.0",
-    "@tanstack/solid-router": "^1.169.2",
-    "@tanstack/solid-router-devtools": "^1.166.13",
-    "@tanstack/solid-start": "^1.167.62",
+    "@tanstack/solid-router": "^1.170.1",
+    "@tanstack/solid-router-devtools": "^1.167.0",
+    "@tanstack/solid-start": "^1.168.1",
     "@unpic/solid": "^1.0.0",
     "class-variance-authority": "^0.7.1",
-    "solid-js": "^1.9.12",
+    "solid-js": "^1.9.13",
     "solid-sonner": "^0.3.1",
     "tailwindcss": "^4.3.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.36.4",
+    "@cloudflare/vite-plugin": "^1.37.1",
     "@rsbuild/core": "^2.0.6",
     "@tailwindcss/typography": "^0.5.16",
-    "@tanstack/devtools-vite": "0.6.1",
-    "@types/node": "^25.7.0",
+    "@tanstack/devtools-vite": "0.7.0",
+    "@types/node": "^25.8.0",
     "jsdom": "^29.1.1",
     "typescript": "^6.0.3",
-    "vite": "^8.0.12",
+    "vite": "^8.0.13",
     "vite-plugin-solid": "^2.11.12",
     "vitest": "^4.1.6",
-    "wrangler": "^4.90.1"
+    "wrangler": "^4.92.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

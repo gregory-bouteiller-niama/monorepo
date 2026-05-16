@@ -11,29 +11,29 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.5.0",
+    "@astrojs/cloudflare": "^13.5.1",
     "@astrojs/sitemap": "^3.7.2",
-    "@astrojs/svelte": "^8.1.0",
+    "@astrojs/svelte": "^8.1.1",
     "@niama/backend": "workspace:*",
     "@niama/domain": "workspace:*",
     "@niama/ui": "workspace:*",
     "@niama/ui-astro": "workspace:*",
     "@niama/ui-svelte": "workspace:*",
     "@unpic/core": "^1.0.3",
-    "astro": "^6.3.1",
+    "astro": "^6.3.3",
     "class-variance-authority": "^0.7.1",
-    "convex": "^1.38.0",
+    "convex": "^1.39.1",
     "embla-carousel-autoplay": "^9.0.0-rc02",
     "embla-carousel-ssr": "^9.0.0-rc02",
-    "svelte": "^5.55.5",
+    "svelte": "^5.55.7",
     "svelte-sonner": "^1.1.1",
     "unpic": "^4.2.2"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.0",
-    "@types/node": "^25.7.0",
+    "@types/node": "^25.8.0",
     "globals": "^17.6.0",
     "typescript": "^6.0.3",
-    "wrangler": "^4.90.1"
+    "wrangler": "^4.92.0"
   }
 }

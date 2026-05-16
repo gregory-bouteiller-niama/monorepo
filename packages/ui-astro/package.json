@@ -12,7 +12,7 @@
     "@tabler/icons": "^3.44.0",
     "@tanstack/store": "^0.11.0",
     "@unpic/core": "^1.0.3",
-    "astro": "^6.3.1",
+    "astro": "^6.3.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel": "^9.0.0-rc02",
@@ -23,7 +23,7 @@
     "unpic": "^4.2.2"
   },
   "devDependencies": {
-    "@types/node": "^25.7.0",
+    "@types/node": "^25.8.0",
     "typescript": "^6.0.3"
   },
   "exports": {

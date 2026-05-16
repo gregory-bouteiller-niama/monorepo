@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "devDependencies": {
     "@biomejs/biome": "2.4.15",
-    "turbo": "^2.9.12",
+    "turbo": "^2.9.14",
     "typescript": "6.0.3",
     "ultracite": "7.7.0"
   },
